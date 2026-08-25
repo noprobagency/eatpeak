@@ -8,6 +8,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Showcase from './pages/Showcase'
+import Prototypes from './pages/Prototypes'
 import LandingDemo from './pages/LandingDemo'
 import ProductDemo from './pages/ProductDemo'
 import { Logo } from './brand'
@@ -15,6 +16,7 @@ import { cn } from './lib/cn'
 
 const ROUTES = {
   '#/showcase': { label: 'Showcase', component: Showcase },
+  '#/prototipi': { label: 'Prototipi', component: Prototypes },
   '#/landing': { label: 'Landing', component: LandingDemo },
   '#/product': { label: 'Prodotto', component: ProductDemo },
 } as const

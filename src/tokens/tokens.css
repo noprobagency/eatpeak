@@ -39,6 +39,17 @@
   --color-bosco-800: #102D26;
   --color-bosco-900: #081915;
 
+  --color-rosso-50: #FDECEA;
+  --color-rosso-100: #FAD5D0;
+  --color-rosso-200: #F2ADA4;
+  --color-rosso-300: #E88377;
+  --color-rosso-400: #D95F50;
+  --color-rosso-500: #C0392B;
+  --color-rosso-600: #A32C20;
+  --color-rosso-700: #7F2418;
+  --color-rosso-800: #5C1A11;
+  --color-rosso-900: #3A100A;
+
   --color-neutral-0: #FFFFFF;
   --color-neutral-50: #FAF9F7;
   --color-neutral-100: #F5F4F2;
@@ -67,6 +78,7 @@
   --bg-brand: var(--color-terracotta-400);
   --bg-brand-soft: var(--color-terracotta-50);
   --bg-forest: var(--color-bosco-500);
+  --bg-danger: var(--color-rosso-50);
   --text-primary: var(--color-neutral-900);
   --text-secondary: var(--color-neutral-700);
   --text-muted: var(--color-neutral-600);
@@ -74,10 +86,12 @@
   --text-brand: var(--color-terracotta-600);
   --text-on-brand: var(--color-terracotta-900);
   --text-on-brand-large: var(--color-neutral-0);
+  --text-danger: var(--color-rosso-700);
   --border-subtle: var(--color-neutral-200);
   --border-default: var(--color-neutral-300);
   --border-strong: var(--color-neutral-400);
   --border-brand: var(--color-terracotta-400);
+  --border-danger: var(--color-rosso-500);
   --logo-fill: var(--color-miele-300);
   --logo-stroke: var(--color-terracotta-400);
   --logo-stroke-deep: var(--color-terracotta-700);
@@ -169,6 +183,7 @@
 
   /* --- layout --- */
   --container-max: 1200px;
+  --media-max: 1100px;
   --container-padding: 28px;
 }
 

@@ -82,6 +82,20 @@ Sezioni, secondo prodotto. Base: **500 `#2F6E5E`**, profondo: **700 `#174036`**.
 | 800 | `#102D26` | — |
 | 900 | `#081915` | — |
 
+### Rosso — avvisi
+
+Warm anche questo: un rosso freddo qui stonerebbe quanto un grigio freddo
+altrove. Il **500 è lo stesso hex di `error`**.
+
+| Step | Hex | Uso tipico |
+|---|---|---|
+| 50 | `#FDECEA` | `bg-danger`, fondo dei blocchi di avviso |
+| 500 | `#C0392B` | `border-danger`, colore di stato `error` |
+| 700 | `#7F2418` | `text-danger` — il primo step leggibile su fondo chiaro |
+
+Gli step intermedi (100–400, 600, 800–900) esistono in `tokens.json` per
+completezza della scala, ma nel sistema oggi non sono usati.
+
 ### Neutri caldi
 
 | Step | Hex | | Step | Hex |
@@ -132,6 +146,9 @@ Gli unici che i componenti devono conoscere.
 | `--border-default` | neutral 300 |
 | `--border-strong` | neutral 400 |
 | `--border-brand` | terracotta 400 |
+| `--bg-danger` | rosso 50 |
+| `--border-danger` | rosso 500 |
+| `--text-danger` | rosso 700 |
 | `--logo-fill` | miele 300 |
 | `--logo-stroke` | terracotta 400 |
 | `--logo-stroke-deep` | terracotta 700 |
@@ -214,6 +231,8 @@ _Tabella generata da `npm run tokens:contrast`. Non modificarla a mano._
 | `#C0392B` | `#FFFFFF` | `error` su bianco | 5.44:1 | AA | Consentita. |
 | `#26594C` | `#FFFFFF` | bosco 600 (success testuale) su bianco | 8.03:1 | AAA | Consentita. |
 | `#855717` | `#FDF2DC` | miele 800 su miele 100 (badge warning) | 5.61:1 | AA | Consentita. |
+| `#7F2418` | `#FDECEA` | `text-danger` su `bg-danger` (blocco di avviso) | 8.47:1 | AAA | Consentita. |
+| `#7F2418` | `#FFFFFF` | `text-danger` su bianco | 9.69:1 | AAA | Consentita. |
 | `#FCD589` | `#FFFFFF` | miele 300 come **testo** su bianco | 1.40:1 | FAIL | **Vietata.** Il miele vive come riempimento, fondo o bordo. Mai come testo su fondo chiaro. |
 | `#E9724C` | `#FFFFFF` | terracotta 400 come **testo** su bianco | 3.01:1 | FAIL | **Vietata.** Per il testo brand su fondo chiaro si usa il 600 o il 700, mai il 400. |
 | `#FCD589` | `#E9724C` | miele 300 su terracotta 400 | 2.15:1 | FAIL | **Vietata.** E la combinazione del wordmark, dove il contorno risolve. Nel testo no: il testo su terracotta 400 e bianco o terracotta 900. |
@@ -362,3 +381,8 @@ più e diventa una riga fissa che va a capo, invece di restare fermo a metà.
 `sm` 640 · `md` 768 · `lg` 1024 · `xl` 1280 · `2xl` 1536
 
 Container: larghezza massima 1200px, padding 28px.
+
+`<Container width>` offre quattro colonne: `narrow` 760px per il testo lungo,
+`default` 1200px, `media` **1100px** per le pagine fatte di immagini — così una
+fotografia a piena colonna non diventa smisurata — e `wide` 1440px per le
+griglie prodotto.

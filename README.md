@@ -49,6 +49,7 @@ Tre pagine, sull'hash:
 | Rotta | Cosa |
 |---|---|
 | `#/showcase` | **Ogni token, ogni componente, ogni stato.** La mappa del sistema. |
+| `#/prototipi` | **Galleria dei prototipi di packaging e creatività.** |
 | `#/landing` | Landing completa con contenuti reali. |
 | `#/product` | Pagina prodotto. |
 

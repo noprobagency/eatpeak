@@ -17,18 +17,21 @@ export const tokens = raw
 export const terracotta = raw.color.terracotta
 export const miele = raw.color.miele
 export const bosco = raw.color.bosco
+export const rosso = raw.color.rosso
 export const neutral = raw.color.neutral
 export const stateColor = raw.color.state
 
 export type TerracottaStep = keyof typeof terracotta
 export type MieleStep = keyof typeof miele
 export type BoscoStep = keyof typeof bosco
+export type RossoStep = keyof typeof rosso
 export type NeutralStep = keyof typeof neutral
 
 export const palette = {
   terracotta,
   miele,
   bosco,
+  rosso,
   neutral,
 } as const
 

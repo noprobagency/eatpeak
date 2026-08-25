@@ -12,8 +12,12 @@ import { cn } from '../lib/cn'
 
 export interface ContainerProps {
   children: ReactNode
-  /** `narrow` per i blocchi di testo lungo, `wide` per le griglie prodotto. */
-  width?: 'narrow' | 'default' | 'wide'
+  /**
+   * `narrow` per i blocchi di testo lungo, `wide` per le griglie prodotto,
+   * `media` per le pagine fatte di immagini: piu' stretta della default, cosi'
+   * una fotografia a piena colonna non diventa smisurata.
+   */
+  width?: 'narrow' | 'default' | 'media' | 'wide'
   as?: ElementType
   className?: string
 }
@@ -21,6 +25,7 @@ export interface ContainerProps {
 const WIDTHS = {
   narrow: 'max-w-[760px]',
   default: 'max-w-container',
+  media: 'max-w-media',
   wide: 'max-w-[1440px]',
 } as const
 

@@ -52,6 +52,8 @@ const PAIRS = [
   { fg: c.state.error, bg: c.neutral['0'], label: '`error` su bianco', allowed: true },
   { fg: c.bosco['600'], bg: c.neutral['0'], label: 'bosco 600 (success testuale) su bianco', allowed: true },
   { fg: c.miele['800'], bg: c.miele['100'], label: 'miele 800 su miele 100 (badge warning)', allowed: true },
+  { fg: c.rosso['700'], bg: c.rosso['50'], label: '`text-danger` su `bg-danger` (blocco di avviso)', allowed: true },
+  { fg: c.rosso['700'], bg: c.neutral['0'], label: '`text-danger` su bianco', allowed: true },
 
   // --- le combinazioni vietate dal manuale ---
   {

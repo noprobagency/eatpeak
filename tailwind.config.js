@@ -37,6 +37,7 @@ export default {
       terracotta: t.color.terracotta,
       miele: t.color.miele,
       bosco: t.color.bosco,
+      rosso: t.color.rosso,
       neutral: t.color.neutral,
       success: t.color.state.success,
       warning: t.color.state.warning,
@@ -76,6 +77,7 @@ export default {
       },
       maxWidth: {
         container: t.layout.containerMax,
+        media: t.layout.mediaMax,
         prose: '68ch',
       },
       keyframes: {

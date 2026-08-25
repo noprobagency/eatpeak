@@ -73,6 +73,7 @@ push()
 
 push('  /* --- layout --- */')
 push(`  --container-max: ${t.layout.containerMax};`)
+push(`  --media-max: ${t.layout.mediaMax};`)
 push(`  --container-padding: ${t.layout.containerPadding};`)
 push('}')
 push()
