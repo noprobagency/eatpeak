@@ -15,3 +15,6 @@ public/fonts/*.woff
 public/fonts/*.woff2
 public/fonts/*.otf
 public/fonts/*.ttf
+
+# artefatti di build di TypeScript
+*.tsbuildinfo

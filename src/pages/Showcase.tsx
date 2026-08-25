@@ -51,7 +51,7 @@ function Block({ id, title, intro, children }: {
   id: string; title: string; intro?: string; children: React.ReactNode
 }) {
   return (
-    <section id={id} className="scroll-mt-24 border-b border-border-subtle py-14 last:border-0">
+    <section id={id} className="scroll-mt-24 border-b border-border-subtle py-12 last:border-0">
       <p className="type-mono-md text-text-muted">{title}</p>
       <h2 className="type-display-sm mt-3 text-text-primary">{intro ?? title}</h2>
       <div className="mt-8">{children}</div>
@@ -76,7 +76,7 @@ function Swatch({ name, hex }: { name: string; hex: string }) {
       <div className="flex h-16 items-end p-2" style={{ background: hex, color: ink }}>
         <span className="font-mono text-mono-sm uppercase opacity-80">{name}</span>
       </div>
-      <div className="bg-bg-surface px-2 py-1.5 font-mono text-mono-sm uppercase text-text-muted">{hex}</div>
+      <div className="bg-bg-surface px-2 py-2 font-mono text-mono-sm uppercase text-text-muted">{hex}</div>
     </div>
   )
 }
@@ -126,7 +126,7 @@ function ContrastTable() {
                 <td className="px-4 py-3 text-body-sm text-text-primary">{p.label}</td>
                 <td className="px-4 py-3">
                   <span
-                    className="inline-block rounded-sm px-3 py-1.5 text-body-sm"
+                    className="inline-block rounded-sm px-3 py-2 text-body-sm"
                     style={{ background: p.bg, color: p.fg }}
                   >
                     Uno stick. Tre grammi.
@@ -164,27 +164,16 @@ export function Showcase() {
 
   return (
     <>
+      {/*
+        L'apertura della pagina e' la scheda del brand, non un titolo sullo
+        showcase. Chi legge i token senza sapere cos'e' peak applica il sistema
+        senza capirlo, ed e' cosi' che un design system si degrada in una
+        tavolozza. E' un'introduzione: deve occupare poco e finire presto.
+      */}
       <Section tone="page" spacing="tight">
         <Container>
-          <SectionHeader
-            eyebrow="design system · v0.1"
-            title="tutto il sistema, in una pagina"
-            size="lg"
-            body={
-              <>
-                Ogni token col suo valore, ogni componente in ogni stato, e i limiti dichiarati invece che
-                nascosti. Se aggiungi qualcosa al sistema e non compare qui, per il sistema non esiste.
-              </>
-            }
-          />
-
-          {/*
-            Il contesto prima dei colori. Chi legge i token senza sapere cos'e'
-            peak applica il sistema senza capirlo, ed e' cosi' che un design
-            system si degrada in una tavolozza.
-          */}
-          <div id="scheda" className="mt-12 scroll-mt-24">
-            <BrandOverview authorizedClaim="physical-performance" />
+          <div id="scheda" className="scroll-mt-24">
+            <BrandOverview authorizedClaim="physical-performance" titleAs="h1" />
           </div>
         </Container>
       </Section>
@@ -192,13 +181,13 @@ export function Showcase() {
       <Container>
         <div className="flex gap-12 py-10">
           {/* Navigazione laterale */}
-          <nav aria-label="Sezioni dello showcase" className="sticky top-24 hidden h-fit w-52 shrink-0 lg:block">
+          <nav aria-label="Sezioni dello showcase" className="sticky top-24 hidden h-fit w-[208px] shrink-0 lg:block">
             <ul className="flex flex-col gap-1 border-l border-border-subtle">
               {NAV.map((n) => (
                 <li key={n.id}>
                   <a
                     href={`#${n.id}`}
-                    className="-ml-px block border-l-2 border-transparent py-1.5 pl-4 text-body-sm text-text-secondary transition-colors duration-fast hover:border-border-brand hover:text-text-brand"
+                    className="-ml-px block border-l-2 border-transparent py-2 pl-4 text-body-sm text-text-secondary transition-colors duration-fast hover:border-border-brand hover:text-text-brand"
                   >
                     {n.label}
                   </a>
@@ -259,7 +248,7 @@ export function Showcase() {
                   return (
                     <div key={name} className="flex items-center gap-3 rounded-md border border-border-subtle bg-bg-surface p-3">
                       <span
-                        className="h-9 w-9 shrink-0 rounded-sm border border-border-subtle"
+                        className="h-control-sm w-control-sm shrink-0 rounded-sm border border-border-subtle"
                         style={{ background: hex }}
                         aria-hidden="true"
                       />
@@ -287,7 +276,7 @@ export function Showcase() {
                   const s = typeScale[name]
                   return (
                     <div key={name} className="flex flex-col gap-3 border-b border-border-subtle p-6 last:border-0 lg:flex-row lg:items-baseline lg:gap-8">
-                      <div className="w-44 shrink-0">
+                      <div className="w-[176px] shrink-0">
                         <p className="font-mono text-mono-md uppercase text-text-primary">{name}</p>
                         <p className="font-mono text-mono-sm uppercase text-text-muted">
                           {s.size} / {s.lineHeight} / {s.tracking}
@@ -800,7 +789,7 @@ export function Showcase() {
               </Sub>
 
               <Sub title="StickyAddToCart" note="Compare quando l'elemento osservato esce dallo schermo. Qui l'ancora e' il riquadro sotto: scorri finche' sparisce.">
-                <div ref={stickyAnchor} className="flex h-28 items-center justify-center rounded-lg border border-dashed border-border-strong bg-bg-raised">
+                <div ref={stickyAnchor} className="flex h-24 items-center justify-center rounded-lg border border-dashed border-border-strong bg-bg-raised">
                   <span className="font-mono text-mono-sm uppercase text-text-muted">ancora osservata</span>
                 </div>
               </Sub>

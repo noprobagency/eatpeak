@@ -48,9 +48,9 @@ const VARIANTS: Record<ButtonVariant, string> = {
 }
 
 const SIZES: Record<ButtonSize, string> = {
-  sm: 'h-9 px-4 text-body-sm gap-2',
-  md: 'h-11 px-6 text-body-md gap-2',
-  lg: 'h-14 px-8 text-body-lg gap-3',
+  sm: 'h-control-sm px-4 text-body-sm gap-2',
+  md: 'h-control-md px-6 text-body-md gap-2',
+  lg: 'h-control-lg px-8 text-body-lg gap-3',
 }
 
 function Spinner() {

@@ -290,6 +290,40 @@ Base 4px.
 Lo spazio appartiene al contenitore, non ai figli: usa `<Stack gap="6">`, non
 `margin-bottom` sugli elementi.
 
+### ⚠ La scala sostituisce quella di Tailwind, non la estende
+
+`tailwind.config.js` imposta `spacing` con questi valori **al posto** di quelli
+di default. È voluto: `p-7` o `gap-1.5` non esistono, e non si possono scrivere
+per distrazione.
+
+Il rovescio è che **Tailwind non protesta**. Una classe fuori scala non genera
+CSS e la pagina resta in piedi lo stesso: un pulsante senza altezza si regge sul
+padding, e il difetto passa inosservato per settimane. È già successo in questo
+repo — `h-11`, `h-9` e `h-14` non hanno mai prodotto una riga di CSS.
+
+Per questo esiste `npm run check:utilities`: confronta ogni utility di
+dimensione usata nel sorgente con il CSS costruito e fallisce sulla differenza.
+Gira dentro `npm test`, dopo la build.
+
+Quando serve una misura che non sta nella scala e non è uno spazio — la
+larghezza di una barra laterale, l'altezza di un segnaposto — si usa un valore
+arbitrario, `w-[208px]`, che compila sempre ed è visibilmente un'eccezione.
+
+---
+
+## Altezze dei controlli
+
+Non sono spazi e non stanno nella scala di spaziatura: sono decisioni sulla
+dimensione dei bersagli.
+
+| Token | Valore | Uso |
+|---|---|---|
+| `control-sm` | 36px | Pulsanti piccoli, chiudi di una modale |
+| `control-md` | 44px | Pulsanti, campi, select. **Il minimo per un bersaglio touch.** |
+| `control-lg` | 56px | La chiamata all'azione principale |
+
+Disponibili come `h-control-md`, `w-control-sm`, `min-h-control-md`.
+
 ---
 
 ## Forma

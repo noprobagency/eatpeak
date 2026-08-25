@@ -48,7 +48,7 @@ export function QuantityStepper({
         disabled={disabled || value <= min}
         aria-label={`Diminuisci ${label.toLowerCase()}`}
       >
-        <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <svg className="h-4 w-4" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path d="M2.5 7h9" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
         </svg>
       </button>
@@ -68,7 +68,7 @@ export function QuantityStepper({
         disabled={disabled || value >= max}
         aria-label={`Aumenta ${label.toLowerCase()}`}
       >
-        <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <svg className="h-4 w-4" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path d="M7 2.5v9M2.5 7h9" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
         </svg>
       </button>

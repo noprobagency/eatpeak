@@ -83,7 +83,7 @@ export function StickyAddToCart({
           disabled={disabled || !visible}
           tabIndex={visible ? 0 : -1}
           className={cn(
-            'h-11 shrink-0 rounded-full bg-bg-brand px-6 text-body-md font-medium text-text-on-brand',
+            'h-control-md shrink-0 rounded-full bg-bg-brand px-6 text-body-md font-medium text-text-on-brand',
             'transition-colors duration-base ease-standard hover:bg-terracotta-500',
             'disabled:cursor-not-allowed disabled:opacity-45',
           )}

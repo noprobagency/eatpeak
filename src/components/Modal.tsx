@@ -101,7 +101,7 @@ export function Modal({ open, onClose, title, children, footer, size = 'md', cla
             type="button"
             onClick={onClose}
             aria-label="Chiudi"
-            className="-mr-2 -mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-text-secondary transition-colors duration-fast hover:bg-bg-raised hover:text-text-primary"
+            className="-mr-2 -mt-1 flex h-control-sm w-control-sm shrink-0 items-center justify-center rounded-full text-text-secondary transition-colors duration-fast hover:bg-bg-raised hover:text-text-primary"
           >
             <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />

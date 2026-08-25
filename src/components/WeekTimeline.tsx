@@ -56,7 +56,7 @@ export function WeekTimeline({ steps = WEEK_TIMELINE, tone = 'default', highligh
             {/* Il serbatoio. Decorativo: nessuna percentuale dichiarata. */}
             <div
               aria-hidden="true"
-              className={cn('h-1.5 w-full overflow-hidden rounded-full', inverse ? 'bg-white/15' : 'bg-neutral-200')}
+              className={cn('h-2 w-full overflow-hidden rounded-full', inverse ? 'bg-white/15' : 'bg-neutral-200')}
             >
               <div
                 className="h-full rounded-full bg-bg-brand transition-[width] duration-slow ease-standard"

@@ -95,7 +95,7 @@ export function PriceTiers({
 
               <span className="flex min-w-0 flex-1 flex-col gap-1">
                 {tier.badge && (
-                  <span className="mb-1 w-fit rounded-full bg-bg-brand px-3 py-0.5 font-mono text-mono-sm uppercase text-text-on-brand">
+                  <span className="mb-1 w-fit rounded-full bg-bg-brand px-3 py-1 font-mono text-mono-sm uppercase text-text-on-brand">
                     {tier.badge}
                   </span>
                 )}

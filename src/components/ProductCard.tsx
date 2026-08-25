@@ -74,7 +74,7 @@ export function ProductCard({
             onClick={onAddToCart}
             disabled={soldOut}
             className={cn(
-              'mt-3 h-11 rounded-full bg-bg-brand px-6 text-body-md font-medium text-text-on-brand',
+              'mt-3 h-control-md rounded-full bg-bg-brand px-6 text-body-md font-medium text-text-on-brand',
               'transition-colors duration-base ease-standard hover:bg-terracotta-500',
               'disabled:cursor-not-allowed disabled:opacity-45',
             )}

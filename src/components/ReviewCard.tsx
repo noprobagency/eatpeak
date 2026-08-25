@@ -26,9 +26,9 @@ export interface ReviewCardProps {
 
 function Stars({ value }: { value: number }) {
   return (
-    <span className="flex gap-0.5" role="img" aria-label={`${value} stelle su 5`}>
+    <span className="flex gap-1" role="img" aria-label={`${value} stelle su 5`}>
       {Array.from({ length: 5 }, (_, i) => (
-        <svg key={i} className="h-3.5 w-3.5" viewBox="0 0 16 16" aria-hidden="true">
+        <svg key={i} className="h-4 w-4" viewBox="0 0 16 16" aria-hidden="true">
           <path
             d="M8 1.6l1.9 3.9 4.3.6-3.1 3 .7 4.3L8 11.4l-3.8 2 .7-4.3-3.1-3 4.3-.6z"
             fill={i < value ? 'var(--color-terracotta-400)' : 'var(--color-neutral-300)'}

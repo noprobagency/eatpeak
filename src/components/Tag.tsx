@@ -31,7 +31,7 @@ export function Tag({ children, onRemove, selected = false, onClick, className }
           className="-mr-1 flex h-5 w-5 items-center justify-center rounded-full transition-colors duration-fast hover:bg-neutral-200"
           aria-label={`Togli ${typeof children === 'string' ? children : 'filtro'}`}
         >
-          <svg className="h-2.5 w-2.5" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+          <svg className="h-3 w-3" viewBox="0 0 10 10" fill="none" aria-hidden="true">
             <path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
           </svg>
         </button>
@@ -40,7 +40,7 @@ export function Tag({ children, onRemove, selected = false, onClick, className }
   )
 
   const classes = cn(
-    'inline-flex items-center gap-2 rounded-full border px-3 py-1.5',
+    'inline-flex items-center gap-2 rounded-full border px-3 py-2',
     'transition-colors duration-fast ease-standard',
     selected
       ? 'border-border-brand bg-bg-brand-soft text-text-brand'

@@ -64,6 +64,8 @@ Tre pagine, sull'hash:
 | `npm run lint:compliance` | Cerca claim non autorizzati in tutto il sorgente |
 | `npm run tokens:contrast` | Calcola i rapporti e aggiorna la tabella nei doc |
 | `npm run tokens:build` | Rigenera `tokens.css` da `tokens.json` |
+| `npm run check:utilities` | Verifica che ogni utility usata generi davvero CSS |
+| `npm run docs:brand` | Rigenera `docs/00-brand-overview.md` dalla sua sorgente |
 | `npm run assets:generate` | Rigenera logo, favicon, PNG e `favicon.ico` |
 
 ---
@@ -132,7 +134,9 @@ non si rompe: cambia la voce tipografica, non il funzionamento. L'avviso di
 ├── scripts/                 generatori e verifiche, senza dipendenze
 │   ├── build-tokens.mjs     tokens.json → tokens.css
 │   ├── compliance-lint.mjs  cerca claim non autorizzati
+│   ├── check-utilities.mjs  scova le classi fuori scala, che non generano CSS
 │   ├── contrast-report.mjs  calcola i rapporti, aggiorna i doc, fallisce se serve
+│   ├── build-brand-doc.mjs  brand-overview.ts → docs/00-brand-overview.md
 │   ├── generate-assets.mjs  logo, favicon, PNG, favicon.ico
 │   └── lib/                 rasterizzatore e utility di contrasto
 ├── src/

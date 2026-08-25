@@ -54,6 +54,10 @@ push('  /* --- spazio --- */')
 for (const [k, v] of Object.entries(t.space)) push(`  --space-${k}: ${v};`)
 push()
 
+push('  /* --- altezze dei controlli: non sono spazi, hanno la loro scala --- */')
+for (const [k, v] of Object.entries(t.control)) push(`  --control-${k}: ${v};`)
+push()
+
 push('  /* --- raggi --- */')
 for (const [k, v] of Object.entries(t.radius)) push(`  --radius-${k}: ${v};`)
 push()

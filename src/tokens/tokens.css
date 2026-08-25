@@ -142,6 +142,11 @@
   --space-24: 96px;
   --space-32: 128px;
 
+  /* --- altezze dei controlli: non sono spazi, hanno la loro scala --- */
+  --control-sm: 36px;
+  --control-md: 44px;
+  --control-lg: 56px;
+
   /* --- raggi --- */
   --radius-sm: 8px;
   --radius-md: 14px;

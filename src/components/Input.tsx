@@ -46,7 +46,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy}
         className={cn(
-          'h-11 w-full rounded-md border bg-bg-surface px-4 text-body-md text-text-primary',
+          'h-control-md w-full rounded-md border bg-bg-surface px-4 text-body-md text-text-primary',
           'transition-colors duration-base ease-standard',
           'placeholder:text-text-muted',
           'disabled:cursor-not-allowed disabled:bg-bg-raised disabled:opacity-60',

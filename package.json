@@ -13,9 +13,10 @@
     "tokens:contrast": "node scripts/contrast-report.mjs",
     "assets:generate": "node scripts/generate-assets.mjs",
     "assets:favicon": "node scripts/generate-favicon-ico.mjs",
-    "test": "npm run typecheck && npm run lint:compliance && npm run tokens:contrast",
+    "test": "npm run typecheck && npm run lint:compliance && npm run tokens:contrast && npm run build && npm run check:utilities",
     "tokens:build": "node scripts/build-tokens.mjs",
-    "docs:brand": "node scripts/build-brand-doc.mjs"
+    "docs:brand": "node scripts/build-brand-doc.mjs",
+    "check:utilities": "node scripts/check-utilities.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

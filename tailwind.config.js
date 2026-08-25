@@ -14,6 +14,10 @@ const semanticColors = Object.fromEntries(
   Object.keys(t.semantic).map((name) => [name, `var(--${name})`]),
 )
 
+const controlSizes = Object.fromEntries(
+  Object.entries(t.control).map(([name, value]) => [`control-${name}`, value]),
+)
+
 const fontSize = Object.fromEntries(
   Object.entries(t.type).map(([name, s]) => [
     name,
@@ -40,6 +44,11 @@ export default {
       info: t.color.state.info,
       ...semanticColors,
     },
+    // La scala di spaziatura SOSTITUISCE quella di Tailwind: un valore fuori
+    // dai 4px di base non esiste e non genera CSS. E' voluto — impedisce di
+    // scrivere `p-7` senza accorgersene — ma vale anche per width e height, che
+    // in Tailwind leggono la stessa scala. Le altezze dei controlli hanno
+    // quindi i loro token, sotto: 36, 44 e 56px non sono spazi.
     spacing: t.space,
     borderRadius: t.radius,
     boxShadow: { ...t.shadow, none: 'none' },
@@ -51,6 +60,12 @@ export default {
     },
     fontSize,
     extend: {
+      // Le altezze dei controlli, aggiunte a width/height/minHeight senza
+      // toccare la scala di spaziatura. 44px e' anche il minimo per un
+      // bersaglio touch.
+      height: controlSizes,
+      minHeight: controlSizes,
+      width: controlSizes,
       transitionDuration: {
         fast: t.motion.duration.fast,
         base: t.motion.duration.base,
