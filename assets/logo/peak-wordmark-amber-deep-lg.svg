@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 74" role="img" aria-label="peak">
+  <title>peak</title>
+  <!-- ATTENZIONE: il testo NON e' vettorializzato. Senza Rund Display installato
+       si vede il fallback. Per stampa e packaging serve la versione outlined. -->
+  <text x="105" y="56" text-anchor="middle"
+        font-family="'Rund Display', Gabarito, system-ui, sans-serif" font-weight="900" font-size="60"
+        letter-spacing="-2"
+        fill="#F7B733" stroke="#B4491F" stroke-width="7.02" paint-order="stroke" stroke-linejoin="round">peak</text>
+</svg>

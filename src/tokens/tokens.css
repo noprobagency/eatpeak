@@ -1,0 +1,276 @@
+/* ============================================================
+ * peak — design tokens
+ * FILE GENERATO. Non modificare a mano.
+ * Sorgente: src/tokens/tokens.json — rigenera con `npm run tokens:build`
+ * ============================================================ */
+
+:root {
+  /* --- colori grezzi: non usarli nei componenti, usa i semantici --- */
+  --color-terracotta-50: #FDF1EC;
+  --color-terracotta-100: #FADCD1;
+  --color-terracotta-200: #F5BCA8;
+  --color-terracotta-300: #F09A7F;
+  --color-terracotta-400: #E9724C;
+  --color-terracotta-500: #D45E39;
+  --color-terracotta-600: #B54A2A;
+  --color-terracotta-700: #8F3A20;
+  --color-terracotta-800: #6B2B18;
+  --color-terracotta-900: #47190E;
+
+  --color-miele-50: #FEFAF0;
+  --color-miele-100: #FDF2DC;
+  --color-miele-200: #FCE7BE;
+  --color-miele-300: #FCD589;
+  --color-miele-400: #F7C463;
+  --color-miele-500: #EFAE3D;
+  --color-miele-600: #D9922A;
+  --color-miele-700: #B0741F;
+  --color-miele-800: #855717;
+  --color-miele-900: #5A3A0F;
+
+  --color-bosco-50: #EFF5F3;
+  --color-bosco-100: #D6E5E0;
+  --color-bosco-200: #ADCBC2;
+  --color-bosco-300: #7FAEA1;
+  --color-bosco-400: #4F8B7B;
+  --color-bosco-500: #2F6E5E;
+  --color-bosco-600: #26594C;
+  --color-bosco-700: #174036;
+  --color-bosco-800: #102D26;
+  --color-bosco-900: #081915;
+
+  --color-neutral-0: #FFFFFF;
+  --color-neutral-50: #FAF9F7;
+  --color-neutral-100: #F5F4F2;
+  --color-neutral-200: #E8E5E0;
+  --color-neutral-300: #DFDCD7;
+  --color-neutral-400: #BDB8B0;
+  --color-neutral-500: #928C84;
+  --color-neutral-600: #6E6862;
+  --color-neutral-700: #4A443E;
+  --color-neutral-800: #33312E;
+  --color-neutral-900: #1B1A18;
+  --color-neutral-1000: #0F0E0D;
+
+  /* --- stato --- */
+  --color-success: #2F6E5E;
+  --color-warning: #D9922A;
+  --color-error: #C0392B;
+  --color-info: #4A443E;
+
+  /* --- token semantici: SOLO questi nei componenti --- */
+  --bg-page: var(--color-neutral-50);
+  --bg-surface: var(--color-neutral-0);
+  --bg-raised: var(--color-neutral-100);
+  --bg-warm: var(--color-miele-50);
+  --bg-inverse: var(--color-neutral-900);
+  --bg-brand: var(--color-terracotta-400);
+  --bg-brand-soft: var(--color-terracotta-50);
+  --bg-forest: var(--color-bosco-500);
+  --text-primary: var(--color-neutral-900);
+  --text-secondary: var(--color-neutral-700);
+  --text-muted: var(--color-neutral-600);
+  --text-inverse: var(--color-neutral-0);
+  --text-brand: var(--color-terracotta-600);
+  --text-on-brand: var(--color-terracotta-900);
+  --text-on-brand-large: var(--color-neutral-0);
+  --border-subtle: var(--color-neutral-200);
+  --border-default: var(--color-neutral-300);
+  --border-strong: var(--color-neutral-400);
+  --border-brand: var(--color-terracotta-400);
+  --logo-fill: var(--color-miele-300);
+  --logo-stroke: var(--color-terracotta-400);
+  --logo-stroke-deep: var(--color-terracotta-700);
+  --focus-ring: var(--color-terracotta-700);
+
+  /* --- famiglie --- */
+  --font-display: 'Rund Display', 'Gabarito', system-ui, sans-serif;
+  --font-text: 'Rund Text', 'Inter', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* --- scala tipografica --- */
+  --type-display-xl-size: 76px;
+  --type-display-xl-lh: 0.95;
+  --type-display-xl-tracking: -0.05em;
+  --type-display-lg-size: 58px;
+  --type-display-lg-lh: 0.98;
+  --type-display-lg-tracking: -0.045em;
+  --type-display-md-size: 42px;
+  --type-display-md-lh: 1.0;
+  --type-display-md-tracking: -0.04em;
+  --type-display-sm-size: 32px;
+  --type-display-sm-lh: 1.05;
+  --type-display-sm-tracking: -0.035em;
+  --type-heading-lg-size: 26px;
+  --type-heading-lg-lh: 1.15;
+  --type-heading-lg-tracking: -0.03em;
+  --type-heading-md-size: 21px;
+  --type-heading-md-lh: 1.2;
+  --type-heading-md-tracking: -0.02em;
+  --type-heading-sm-size: 18px;
+  --type-heading-sm-lh: 1.3;
+  --type-heading-sm-tracking: -0.015em;
+  --type-body-lg-size: 18px;
+  --type-body-lg-lh: 1.6;
+  --type-body-lg-tracking: 0;
+  --type-body-md-size: 16px;
+  --type-body-md-lh: 1.6;
+  --type-body-md-tracking: 0;
+  --type-body-sm-size: 14px;
+  --type-body-sm-lh: 1.55;
+  --type-body-sm-tracking: 0;
+  --type-mono-md-size: 12px;
+  --type-mono-md-lh: 1.4;
+  --type-mono-md-tracking: 0.14em;
+  --type-mono-sm-size: 10px;
+  --type-mono-sm-lh: 1.4;
+  --type-mono-sm-tracking: 0.16em;
+
+  /* --- spazio --- */
+  --space-0: 0px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* --- raggi --- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
+  --radius-2xl: 44px;
+  --radius-full: 9999px;
+
+  /* --- ombre --- */
+  --shadow-sm: 0 1px 2px rgba(27,26,24,.06);
+  --shadow-md: 0 4px 12px rgba(27,26,24,.08);
+  --shadow-lg: 0 12px 32px rgba(27,26,24,.10);
+
+  /* --- movimento --- */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 360ms;
+  --duration-marquee: 24s;
+  --easing-standard: cubic-bezier(.2,.8,.2,1);
+
+  /* --- layout --- */
+  --container-max: 1200px;
+  --container-padding: 28px;
+}
+
+/* Le classi tipografiche riproducono la scala con famiglia, peso e case corretti.
+   I display sono sempre minuscoli: fa parte dell identita, non e uno stile. */
+.type-display-xl {
+  font-family: var(--font-display);
+  font-size: var(--type-display-xl-size);
+  line-height: var(--type-display-xl-lh);
+  letter-spacing: var(--type-display-xl-tracking);
+  font-weight: 900;
+  text-transform: lowercase;
+}
+.type-display-lg {
+  font-family: var(--font-display);
+  font-size: var(--type-display-lg-size);
+  line-height: var(--type-display-lg-lh);
+  letter-spacing: var(--type-display-lg-tracking);
+  font-weight: 900;
+  text-transform: lowercase;
+}
+.type-display-md {
+  font-family: var(--font-display);
+  font-size: var(--type-display-md-size);
+  line-height: var(--type-display-md-lh);
+  letter-spacing: var(--type-display-md-tracking);
+  font-weight: 900;
+  text-transform: lowercase;
+}
+.type-display-sm {
+  font-family: var(--font-display);
+  font-size: var(--type-display-sm-size);
+  line-height: var(--type-display-sm-lh);
+  letter-spacing: var(--type-display-sm-tracking);
+  font-weight: 900;
+  text-transform: lowercase;
+}
+.type-heading-lg {
+  font-family: var(--font-text);
+  font-size: var(--type-heading-lg-size);
+  line-height: var(--type-heading-lg-lh);
+  letter-spacing: var(--type-heading-lg-tracking);
+  font-weight: 600;
+}
+.type-heading-md {
+  font-family: var(--font-text);
+  font-size: var(--type-heading-md-size);
+  line-height: var(--type-heading-md-lh);
+  letter-spacing: var(--type-heading-md-tracking);
+  font-weight: 600;
+}
+.type-heading-sm {
+  font-family: var(--font-text);
+  font-size: var(--type-heading-sm-size);
+  line-height: var(--type-heading-sm-lh);
+  letter-spacing: var(--type-heading-sm-tracking);
+  font-weight: 600;
+}
+.type-body-lg {
+  font-family: var(--font-text);
+  font-size: var(--type-body-lg-size);
+  line-height: var(--type-body-lg-lh);
+  letter-spacing: var(--type-body-lg-tracking);
+  font-weight: 400;
+}
+.type-body-md {
+  font-family: var(--font-text);
+  font-size: var(--type-body-md-size);
+  line-height: var(--type-body-md-lh);
+  letter-spacing: var(--type-body-md-tracking);
+  font-weight: 400;
+}
+.type-body-sm {
+  font-family: var(--font-text);
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  letter-spacing: var(--type-body-sm-tracking);
+  font-weight: 400;
+}
+.type-mono-md {
+  font-family: var(--font-mono);
+  font-size: var(--type-mono-md-size);
+  line-height: var(--type-mono-md-lh);
+  letter-spacing: var(--type-mono-md-tracking);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.type-mono-sm {
+  font-family: var(--font-mono);
+  font-size: var(--type-mono-sm-size);
+  line-height: var(--type-mono-sm-lh);
+  letter-spacing: var(--type-mono-sm-tracking);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* Ogni animazione del sistema si spegne se l utente lo ha chiesto. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

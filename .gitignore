@@ -1,0 +1,17 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+.vite
+
+# I file dei font NON vanno committati: Rund e' in licenza trial.
+# Vedi assets/fonts/README.md
+assets/fonts/*.woff
+assets/fonts/*.woff2
+assets/fonts/*.otf
+assets/fonts/*.ttf
+public/fonts/*.woff
+public/fonts/*.woff2
+public/fonts/*.otf
+public/fonts/*.ttf

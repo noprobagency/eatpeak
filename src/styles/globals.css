@@ -1,0 +1,107 @@
+@import './../tokens/tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+ * Font
+ *
+ * I file NON sono nel repo: Rund e' in licenza trial. Vedi assets/fonts/README.md.
+ * Se i file mancano queste regole falliscono in silenzio e il browser scende
+ * sui fallback gratuiti (Gabarito, Inter, system-ui). Il sito non si rompe,
+ * cambia solo la voce tipografica.
+ * ------------------------------------------------------------------------ */
+
+@font-face {
+  font-family: 'Rund Display';
+  src: url('/fonts/RundDisplay-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rund Text';
+  src: url('/fonts/RundText-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rund Text';
+  src: url('/fonts/RundText-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rund Text';
+  src: url('/fonts/RundText-Semibold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: var(--font-text);
+    font-size: var(--type-body-md-size);
+    line-height: var(--type-body-md-lh);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* peak-compliance-ignore focus — anello di focus da tastiera, non un claim */
+  /* Focus visibile su tutto. `outline: none` senza sostituto e' un bug. */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Il display e' sempre minuscolo: fa parte dell'identita'. */
+  :where(h1, h2, h3, h4, h5, h6) {
+    margin: 0;
+    font-weight: inherit;
+  }
+
+  :where(p) {
+    margin: 0;
+  }
+
+  ::selection {
+    background: var(--color-miele-300);
+    color: var(--color-neutral-900);
+  }
+}
+
+@layer components {
+  /* Contenuto per soli screen reader. Serve al Marquee, che altrimenti
+     verrebbe letto come testo scorrevole e duplicato. */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .focus-ring {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+}

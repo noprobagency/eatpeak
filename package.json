@@ -1,0 +1,33 @@
+{
+  "name": "peak-design-system",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Design system di peak — brand DTC di integratori. Token, componenti e documentazione.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint:compliance": "node scripts/compliance-lint.mjs",
+    "tokens:contrast": "node scripts/contrast-report.mjs",
+    "assets:generate": "node scripts/generate-assets.mjs",
+    "assets:favicon": "node scripts/generate-favicon-ico.mjs",
+    "test": "npm run typecheck && npm run lint:compliance && npm run tokens:contrast",
+    "tokens:build": "node scripts/build-tokens.mjs"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11"
+  }
+}
