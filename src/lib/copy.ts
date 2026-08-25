@@ -121,10 +121,10 @@ export const NUTRITION_ROWS = [
  * gesto e il tempo. L'effetto lo dice il claim autorizzato, altrove.
  */
 export const WEEK_TIMELINE = [
-  { week: 1, title: 'niente', body: 'Apri il primo stick. Non senti nulla, ed e’ normale: i muscoli si stanno riempiendo.' },
-  { week: 2, title: 'quasi', body: 'Il gesto e’ diventato automatico. Trenta secondi la mattina, senza pensarci.' },
-  { week: 3, title: 'tutto', body: 'La saturazione e’ completa. Da qui in poi conta solo continuare.' },
-  { week: 4, title: 'e poi', body: 'Ultimo stick della confezione. Il prodotto funziona finche’ lo prendi.' },
+  { week: 1, title: 'niente', body: 'Apri il primo stick. Non senti nulla, ed è normale: i muscoli si stanno riempiendo.' },
+  { week: 2, title: 'quasi', body: 'Il gesto è diventato automatico. Trenta secondi la mattina, senza pensarci.' },
+  { week: 3, title: 'tutto', body: 'La saturazione è completa. Da qui in poi conta solo continuare.' },
+  { week: 4, title: 'e poi', body: 'Ultimo stick della confezione. Il prodotto funziona finché lo prendi.' },
 ] as const
 
 // ---------------------------------------------------------------------------
@@ -144,7 +144,7 @@ export const TRUST_ITEMS = [
 
 export const REVIEWS = [
   { stars: 5, text: 'Il barattolo lo saltavo un giorno su tre. Lo stick no: sta in tasca e lo apro sul tram.', author: 'Giulia R.', benefit: 'COSTANZA' },
-  { stars: 5, text: 'Nessun grumo sul fondo del bicchiere. Sembra una sciocchezza, ma e’ il motivo per cui ho smesso col misurino.', author: 'Marco T.', benefit: 'NIENTE GRUMI' },
+  { stars: 5, text: 'Nessun grumo sul fondo del bicchiere. Sembra una sciocchezza, ma è il motivo per cui ho smesso col misurino.', author: 'Marco T.', benefit: 'NIENTE GRUMI' },
   { stars: 4, text: 'Trenta giorni, trenta stick. Sai sempre a che punto sei e quando riordinare.', author: 'Anna P.', benefit: 'FORMATO' },
 ] as const
 
@@ -154,7 +154,7 @@ export const REVIEWS = [
 
 export const FAQ = [
   {
-    q: 'Quanta creatina c’e’ in uno stick?',
+    q: 'Quanta creatina c’è in uno stick?',
     a: 'Tre grammi di creatina monoidrato. E’ la quantita’ giornaliera a cui si riferisce il claim autorizzato: uno stick al giorno, tutti i giorni.',
   },
   {
@@ -163,11 +163,11 @@ export const FAQ = [
   },
   {
     q: 'Devo fare la fase di carico?',
-    a: 'No. Tre grammi al giorno portano alla saturazione in tre o quattro settimane, senza dosi iniziali piu’ alte.',
+    a: 'No. Tre grammi al giorno portano alla saturazione in tre o quattro settimane, senza dosi iniziali più alte.',
   },
   {
     q: 'Perche’ uno stick invece di un barattolo?',
-    a: 'Perche’ il barattolo richiede un misurino, un calcolo a occhio e un gesto in piu’. Lo stick e’ gia’ dosato: si apre, si beve, si va.',
+    a: 'Perche’ il barattolo richiede un misurino, un calcolo a occhio e un gesto in più. Lo stick è già dosato: si apre, si beve, si va.',
   },
   {
     q: 'Si scioglie bene?',
@@ -175,7 +175,7 @@ export const FAQ = [
   },
   {
     q: 'Cosa succede se salto un giorno?',
-    a: 'Niente di grave, riprendi il giorno dopo. Ma il prodotto e’ pensato per l’uso quotidiano: il claim autorizzato vale per l’assunzione di tutti i giorni.',
+    a: 'Niente di grave, riprendi il giorno dopo. Ma il prodotto è pensato per l’uso quotidiano: il claim autorizzato vale per l’assunzione di tutti i giorni.',
   },
 ] as const
 

@@ -26,7 +26,7 @@ export const EFSA_CLAIMS = {
       'Consentito solo per alimenti che apportano un’assunzione giornaliera di 3 g di creatina. Va informato il consumatore che il claim riguarda adulti che praticano esercizio fisico ad alta intensita’.',
   },
   'muscle-strength-55plus': {
-    it: 'L’assunzione quotidiana di creatina puo’ aumentare l’effetto dell’allenamento di resistenza sulla forza muscolare negli adulti oltre i 55 anni.',
+    it: 'L’assunzione quotidiana di creatina può aumentare l’effetto dell’allenamento di resistenza sulla forza muscolare negli adulti oltre i 55 anni.',
     en: 'Daily creatine consumption can enhance the effect of resistance training on muscle strength in adults over the age of 55.',
     condition:
       'Consentito solo per alimenti che apportano un’assunzione giornaliera di 3 g di creatina, in combinazione con allenamento di resistenza che consenta un aumento della forza muscolare.',

@@ -142,6 +142,23 @@ annunciano senza spostare il focus.
 
 ## Specifici del brand
 
+### `<BrandOverview>` e `<BrandPrinciples>`
+
+L'apertura e il posizionamento, letti dalla stessa sorgente
+(`src/lib/brand-overview.ts`) che genera anche
+[00 — Scheda del brand](00-brand-overview.md).
+
+`<BrandOverview>` sono le tre righe in cima: nome, cosa vendiamo, il claim.
+`<BrandPrinciples>` sono i sei punti — posizionamento, target, perché peak,
+prodotto, tono, cosa non siamo — con l'etichetta sopra e il testo sotto, in una
+colonna sola. Il label a sinistra sembra ordinato finché i blocchi non hanno
+lunghezze diverse: poi le righe si disallineano.
+
+Il claim corto è un beneficio generico, quindi `authorizedClaim` è obbligatoria.
+L'unico modo per ometterla è dichiarare `internalUseOnly`, che vale per lo
+Showcase e per i documenti di lavoro — non è una scorciatoia, è una riga che
+qualcuno deve scrivere di proposito e che si vede in code review.
+
 ### `<SectionHeader>` e `<Hero>`
 
 Occhiello mono + titolo display minuscolo.

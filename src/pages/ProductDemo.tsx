@@ -115,8 +115,8 @@ export function ProductDemo() {
               <TrustRow variant="compact" />
 
               {/*
-                Il claim autorizzato sta sopra la piega, accanto al prezzo: e'
-                il punto in cui l'utente decide, ed e' li' che l'articolo 10(3)
+                Il claim autorizzato sta sopra la piega, accanto al prezzo: è
+                il punto in cui l'utente decide, ed è li' che l'articolo 10(3)
                 vuole la copertura.
               */}
               <p className="text-body-sm text-text-muted" data-compliance="authorized-claim">
@@ -168,7 +168,7 @@ export function ProductDemo() {
       {/* --- composizione ------------------------------------------------ */}
       <Section tone="surface">
         <Container width="narrow">
-          <SectionHeader eyebrow="composizione" title="tutto quello che c’e’ dentro" />
+          <SectionHeader eyebrow="composizione" title="tutto quello che c’è dentro" />
           <div className="mt-10">
             <IngredientPanel />
           </div>

@@ -69,18 +69,18 @@ export function LandingDemo() {
               body={
                 <>
                   Il misurino va trovato, riempito, livellato. La polvere resta sul fondo del bicchiere. E un
-                  giorno che hai fretta, salti. Poi ne salti un altro. Il barattolo non e’ fatto per essere
-                  preso tutti i giorni: e’ fatto per stare su uno scaffale.
+                  giorno che hai fretta, salti. Poi ne salti un altro. Il barattolo non è fatto per essere
+                  preso tutti i giorni: è fatto per stare su uno scaffale.
                 </>
               }
             />
 
             <Grid cols={2}>
               {[
-                { n: '1', t: 'niente misurini', d: 'La dose e’ gia’ dentro. Non c’e’ niente da pesare.' },
+                { n: '1', t: 'niente misurini', d: 'La dose è già dentro. Non c’è niente da pesare.' },
                 { n: '2', t: 'niente grumi', d: 'Si scioglie in qualche secondo, senza residui sul fondo.' },
                 { n: '3', t: 'niente scuse', d: 'Sta in tasca, in borsa, nel cassetto della scrivania.' },
-                { n: '4', t: 'sai a che punto sei', d: `${PRODUCT.days} stick, ${PRODUCT.days} giorni. Il conteggio e’ la confezione.` },
+                { n: '4', t: 'sai a che punto sei', d: `${PRODUCT.days} stick, ${PRODUCT.days} giorni. Il conteggio è la confezione.` },
               ].map((item) => (
                 <Card key={item.n} tone="surface" padding="md">
                   <p className="font-mono text-mono-sm uppercase text-text-muted">{item.n}</p>
@@ -202,7 +202,7 @@ export function LandingDemo() {
             </div>
 
             {/*
-              Il claim autorizzato compare anche qui, perche' il claim corto
+              Il claim autorizzato compare anche qui, perché il claim corto
               compare nell'hero e nel footer del sito: l'articolo 10(3) chiede
               che la copertura sia nelle immediate vicinanze, non una volta per
               dominio.

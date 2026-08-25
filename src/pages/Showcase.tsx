@@ -13,7 +13,8 @@
 
 import { useRef, useState } from 'react'
 import {
-  Accordion, Badge, BrandOverview, Button, Card, Checkbox, Container, Divider, DoseSeal,
+  Accordion, Badge, BrandOverview, BrandPrinciples, Button, Card, Checkbox, Container,
+  Divider, DoseSeal,
   FaqAccordion, Grid, IngredientPanel, Input, Marquee, Modal, PriceTiers,
   ProductCard, QuantityStepper, RadioGroup, ReviewCard, Section, SectionHeader,
   Select, Stack, StickPack, StickyAddToCart, Tabs, Tag, Toast, ToastStack,
@@ -34,7 +35,7 @@ import { cn } from '../lib/cn'
 // ---------------------------------------------------------------------------
 
 const NAV = [
-  { id: 'scheda', label: 'Il brand' },
+  { id: 'brand', label: 'Brand' },
   { id: 'colore', label: 'Colore' },
   { id: 'contrasto', label: 'Contrasto' },
   { id: 'semantici', label: 'Token semantici' },
@@ -44,7 +45,7 @@ const NAV = [
   { id: 'icona', label: 'Icona' },
   { id: 'lockup', label: 'Lockup' },
   { id: 'fondamentali', label: 'Componenti base' },
-  { id: 'brand', label: 'Componenti brand' },
+  { id: 'componenti-brand', label: 'Componenti brand' },
 ] as const
 
 function Block({ id, title, intro, children }: {
@@ -165,16 +166,14 @@ export function Showcase() {
   return (
     <>
       {/*
-        L'apertura della pagina e' la scheda del brand, non un titolo sullo
-        showcase. Chi legge i token senza sapere cos'e' peak applica il sistema
-        senza capirlo, ed e' cosi' che un design system si degrada in una
+        L'apertura della pagina è la scheda del brand, non un titolo sullo
+        showcase. Chi legge i token senza sapere cos’è peak applica il sistema
+        senza capirlo, ed è così che un design system si degrada in una
         tavolozza. E' un'introduzione: deve occupare poco e finire presto.
       */}
       <Section tone="page" spacing="tight">
         <Container>
-          <div id="scheda" className="scroll-mt-24">
-            <BrandOverview authorizedClaim="physical-performance" titleAs="h1" />
-          </div>
+          <BrandOverview internalUseOnly titleAs="h1" />
         </Container>
       </Section>
 
@@ -198,6 +197,18 @@ export function Showcase() {
 
           <div className="min-w-0 flex-1">
             {/* ---------------------------------------------------------- */}
+            <Block id="brand" title="00 — brand" intro="il posizionamento in sei punti">
+              <p className="max-w-prose text-body-md text-text-secondary">
+                Sta prima del colore perché viene prima: ogni scelta delle sezioni successive — i neutri
+                caldi, il minuscolo, il mono sui numeri — discende da queste sei righe. Chi legge i token
+                senza sapere cos’è peak applica il sistema senza capirlo.
+              </p>
+              <div className="mt-6">
+                <BrandPrinciples />
+              </div>
+            </Block>
+
+            {/* ---------------------------------------------------------- */}
             <Block id="colore" title="01 — colore" intro="quattro scale, tutte calde">
               <p className="max-w-prose text-body-md text-text-secondary">
                 I neutri sono caldi di proposito. Un grigio neutro o freddo, anche uno solo, spezza la
@@ -214,7 +225,7 @@ export function Showcase() {
                 </Sub>
               ))}
 
-              <Sub title="stato" note="Success riusa il bosco: non serviva un verde in piu'.">
+              <Sub title="stato" note="Success riusa il bosco: non serviva un verde in più.">
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                   {Object.entries(tokens.color.state).map(([name, hex]) => (
                     <Swatch key={name} name={name} hex={hex} />
@@ -227,7 +238,7 @@ export function Showcase() {
             <Block id="contrasto" title="02 — contrasto" intro="cosa si legge e cosa no">
               <p className="max-w-prose text-body-md text-text-secondary">
                 I rapporti sono calcolati, non stimati. Le ultime tre righe sono le combinazioni vietate dal
-                manuale: stanno qui apposta, perche' un divieto senza la prova visiva non viene rispettato.
+                manuale: stanno qui apposta, perché un divieto senza la prova visiva non viene rispettato.
               </p>
               <div className="mt-6">
                 <ContrastTable />
@@ -267,8 +278,8 @@ export function Showcase() {
             {/* ---------------------------------------------------------- */}
             <Block id="tipografia" title="04 — tipografia" intro="rounded minuscolo, mono per i dati">
               <p className="max-w-prose text-body-md text-text-secondary">
-                I display sono sempre minuscoli: e' identita', non stile. Il mono non e' decorativo — porta
-                tutti i dati oggettivi, ed e' il contrappeso che impedisce al rounded di diventare infantile.
+                I display sono sempre minuscoli: è identita', non stile. Il mono non è decorativo — porta
+                tutti i dati oggettivi, ed è il contrappeso che impedisce al rounded di diventare infantile.
               </p>
 
               <div className="mt-6 rounded-lg border border-border-subtle bg-bg-surface">
@@ -337,7 +348,7 @@ export function Showcase() {
                 </div>
               </Sub>
 
-              <Sub title="ombre" note="Mai ombre colorate, mai glow. Il brand e' piatto: l'ombra dice solo cosa sta sopra cosa.">
+              <Sub title="ombre" note="Mai ombre colorate, mai glow. Il brand è piatto: l'ombra dice solo cosa sta sopra cosa.">
                 <div className="flex flex-wrap gap-6">
                   {Object.entries(shadow).map(([token, value]) => (
                     <div key={token} className="flex flex-col items-center gap-3">
@@ -361,7 +372,7 @@ export function Showcase() {
             {/* ---------------------------------------------------------- */}
             <Block id="logo" title="06 — wordmark" intro="undici varianti, tre spessori">
               <p className="max-w-prose text-body-md text-text-secondary">
-                Il contorno sta all'esterno del disegno della lettera, cosi' la lettera non si assottiglia.
+                Il contorno sta all'esterno del disegno della lettera, così la lettera non si assottiglia.
                 E il filo non scala col logo: sotto una certa soglia entrerebbe nelle contro-forme di
                 &quot;e&quot; e &quot;a&quot; e il nome diventerebbe una macchia.
               </p>
@@ -400,7 +411,7 @@ export function Showcase() {
                 </div>
               </Sub>
 
-              <Sub title="alle misure reali" note="La terza e' la misura nell'header di un sito, la quarta e' il limite basso. Nota come il filo si assottiglia: e' automatico.">
+              <Sub title="alle misure reali" note="La terza è la misura nell'header di un sito, la quarta è il limite basso. Nota come il filo si assottiglia: è automatico.">
                 <div className="flex flex-wrap items-end gap-8 rounded-lg border border-border-subtle bg-bg-surface p-8">
                   {[200, 110, 64, 34].map((size) => (
                     <div key={size} className="flex flex-col items-center gap-2">
@@ -452,7 +463,7 @@ export function Showcase() {
             {/* ---------------------------------------------------------- */}
             <Block id="icona" title="07 — icona" intro="la saetta che punta in su">
               <p className="max-w-prose text-body-md text-text-secondary">
-                L'orientamento all'insu' e' il dettaglio che la fa leggere come ascesa e non come scarica
+                L'orientamento all'insu' è il dettaglio che la fa leggere come ascesa e non come scarica
                 elettrica, e la lega al significato di &quot;peak&quot; senza disegnare una montagna.
               </p>
 
@@ -481,7 +492,7 @@ export function Showcase() {
               </Sub>
 
               <Sub
-                title="perche' il contorno sparisce sotto i 48px"
+                title="perché il contorno sparisce sotto i 48px"
                 note="A sinistra il comportamento reale del componente, a destra lo stesso con forceOutline. Sotto i 32px il filo scuro si mangia la saetta e l'icona diventa una macchia."
               >
                 <div className="grid gap-4 lg:grid-cols-2">
@@ -507,8 +518,8 @@ export function Showcase() {
             {/* ---------------------------------------------------------- */}
             <Block id="lockup" title="08 — lockup" intro="una regola sola">
               <p className="max-w-prose text-body-md text-text-secondary">
-                Lo spazio tra icona e parola e' pari alla meta' dell'altezza dell'icona. Non serve altro.
-                L'area di rispetto e' un margine libero pari all'altezza della &quot;p&quot; minuscola.
+                Lo spazio tra icona e parola è pari alla metà dell'altezza dell'icona. Non serve altro.
+                L'area di rispetto è un margine libero pari all'altezza della &quot;p&quot; minuscola.
               </p>
               <div className="mt-6 grid gap-4 lg:grid-cols-2">
                 <Card padding="lg" className="flex items-center justify-center">
@@ -525,7 +536,7 @@ export function Showcase() {
                   </div>
                 </Card>
                 <p className="mt-2 font-mono text-mono-sm uppercase text-text-muted">
-                  area di rispetto — il tratteggio e' il limite oltre cui non entra nulla
+                  area di rispetto — il tratteggio è il limite oltre cui non entra nulla
                 </p>
               </div>
             </Block>
@@ -547,7 +558,7 @@ export function Showcase() {
                 </Stack>
                 <p className="mt-4 text-body-sm text-text-secondary">
                   {/* peak-compliance-ignore focus — anello di focus da tastiera, non un claim */}
-                Hover, active e focus si provano col puntatore e col tasto Tab: l'anello di focus e'
+                Hover, active e focus si provano col puntatore e col tasto Tab: l'anello di focus è
                   terracotta 700 con offset 2px su tutto il sistema.
                 </p>
               </Sub>
@@ -647,7 +658,7 @@ export function Showcase() {
                 </div>
                 <div className="mt-6 flex items-center gap-3">
                   <span className="text-body-md text-text-secondary">Creatina monoidrato</span>
-                  <Tooltip content="La forma piu' studiata, e quella a cui si riferisce il claim autorizzato.">
+                  <Tooltip content="La forma più studiata, e quella a cui si riferisce il claim autorizzato.">
                     <span className="flex h-5 w-5 items-center justify-center rounded-full border border-border-default font-mono text-mono-sm text-text-muted">?</span>
                   </Tooltip>
                 </div>
@@ -679,8 +690,8 @@ export function Showcase() {
             </Block>
 
             {/* ---------------------------------------------------------- */}
-            <Block id="brand" title="10 — componenti brand" intro="quelli che esistono solo qui">
-              <Sub title="SectionHeader" note="Con genericBenefit il claim autorizzato diventa obbligatorio per tipo: e' il vincolo di compliance espresso nel sistema dei tipi.">
+            <Block id="componenti-brand" title="10 — componenti brand" intro="quelli che esistono solo qui">
+              <Sub title="SectionHeader" note="Con genericBenefit il claim autorizzato diventa obbligatorio per tipo: è il vincolo di compliance espresso nel sistema dei tipi.">
                 <div className="grid gap-8 lg:grid-cols-2">
                   <Card padding="lg">
                     <SectionHeader eyebrow="il formato" title="uno stick, non un barattolo" body={CLAIMS.againstTheTub.it} />
@@ -705,7 +716,7 @@ export function Showcase() {
                 </div>
               </Sub>
 
-              <Sub title="StickPack" note="La banda colore e' parametrica: cambiando band si ottiene la variante di gusto senza toccare il disegno.">
+              <Sub title="StickPack" note="La banda colore è parametrica: cambiando band si ottiene la variante di gusto senza toccare il disegno.">
                 <div className="flex flex-wrap items-end gap-8 rounded-lg bg-bg-warm p-8">
                   <StickPack height={260} />
                   <StickPack height={260} band="#2F6E5E" body="#D6E5E0" ink="#102D26" label="3 G" />
@@ -736,7 +747,7 @@ export function Showcase() {
                 </div>
               </Sub>
 
-              <Sub title="PriceTiers" note="Il risparmio e' calcolato sul prezzo unitario del primo livello, non scritto a mano: cosi' non puo' mentire.">
+              <Sub title="PriceTiers" note="Il risparmio è calcolato sul prezzo unitario del primo livello, non scritto a mano: così non può mentire.">
                 <PriceTiers value={tier} onChange={setTier} />
               </Sub>
 
@@ -788,7 +799,7 @@ export function Showcase() {
                 <FaqAccordion structuredData={false} />
               </Sub>
 
-              <Sub title="StickyAddToCart" note="Compare quando l'elemento osservato esce dallo schermo. Qui l'ancora e' il riquadro sotto: scorri finche' sparisce.">
+              <Sub title="StickyAddToCart" note="Compare quando l'elemento osservato esce dallo schermo. Qui l'ancora è il riquadro sotto: scorri finché sparisce.">
                 <div ref={stickyAnchor} className="flex h-24 items-center justify-center rounded-lg border border-dashed border-border-strong bg-bg-raised">
                   <span className="font-mono text-mono-sm uppercase text-text-muted">ancora osservata</span>
                 </div>
@@ -809,7 +820,7 @@ export function Showcase() {
           </>
         }
       >
-        <p>{CLAIMS.gesture.it} Uno stick al giorno, tutti i giorni: e' la costanza a fare il lavoro.</p>
+        <p>{CLAIMS.gesture.it} Uno stick al giorno, tutti i giorni: è la costanza a fare il lavoro.</p>
       </Modal>
 
       {toastOpen && (
