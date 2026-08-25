@@ -21,12 +21,18 @@
  */
 
 import type { ElementType } from 'react'
+import { Logo } from '../brand'
 import { cn } from '../lib/cn'
 import { BRAND_OVERVIEW, type BrandOverviewContent } from '../lib/brand-overview'
 import { authorizedClaimText, type AuthorizedClaimId, type Locale } from '../lib/compliance'
 
 interface BrandOverviewBase {
   content?: BrandOverviewContent
+  /**
+   * Larghezza del wordmark in apertura, in px. `false` lo toglie, per quando
+   * il marchio e' gia' presente poco sopra e ripeterlo lo indebolisce.
+   */
+  logo?: number | false
   /** `h1` quando la scheda apre la pagina, `h2` quando sta dentro a qualcosa. */
   titleAs?: ElementType
   locale?: Locale
@@ -49,6 +55,7 @@ export type BrandOverviewProps = BrandOverviewBase &
 export function BrandOverview(props: BrandOverviewProps) {
   const {
     content = BRAND_OVERVIEW,
+    logo = 420,
     titleAs: Title = 'h2',
     locale = 'it',
     className,
@@ -59,6 +66,15 @@ export function BrandOverview(props: BrandOverviewProps) {
 
   return (
     <div className={cn('flex flex-col gap-6', className)}>
+      {/*
+        Il marchio prima del nome scritto. E' decorativo per gli screen reader:
+        il titolo qui sotto dice gia' come si chiama, e sentirlo due volte non
+        aggiunge niente.
+      */}
+      {logo !== false && (
+        <Logo size={logo} align="left" title="" className="mb-2 h-auto max-w-full" />
+      )}
+
       <header className="flex flex-col gap-2">
         <Title className="type-display-md text-text-primary">{content.title}</Title>
         <p className="max-w-prose text-body-md text-text-secondary">{content.intro}</p>

@@ -55,6 +55,22 @@ Con un contorno spesso serve il peso pieno sotto. Il Black regge, il Bold è al
 limite, il Semibold si impasta. È il motivo per cui il wordmark è bloccato sul
 900 e non espone una prop per cambiarlo.
 
+### Allineamento
+
+Il viewBox del wordmark è più largo dell'inchiostro, quindi di default la parola
+risulta **rientrata** rispetto al testo che le sta accanto o sotto. Quando il
+logo apre una colonna, serve `align="left"`:
+
+```tsx
+<Logo size={420} align="left" />
+```
+
+L'origine del testo va a `x=0`: il filo esce di metà spessore verso sinistra e
+copre quasi esattamente l'avvicinamento sinistro della "p", così il bordo
+visibile del marchio cade sulla colonna al pixel. L'SVG ha `overflow="visible"`,
+quindi con un font di ripiego dalle metriche diverse sborda invece di perdere un
+pezzo di lettera.
+
 ### Le undici varianti colore
 
 | # | Nome | Pieno | Contorno | Quando |

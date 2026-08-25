@@ -42,6 +42,15 @@ export interface LogoProps {
   background?: 'light' | 'warm' | 'brand' | 'forest' | 'dark'
   /** Forza la versione di filo. Lasciala stare, a meno di esportazioni. */
   strokeSize?: StrokeSize
+  /**
+   * Dove sta la parola dentro il suo riquadro.
+   *
+   * Il viewBox del wordmark e' piu' largo dell'inchiostro, quindi con `center`
+   * il marchio risulta rientrato rispetto al testo che gli sta sotto. Con
+   * `left` il bordo esterno del filo cade esatto a x=0, e il logo si allinea
+   * alla colonna come qualsiasi altro elemento.
+   */
+  align?: 'center' | 'left'
   /** Testo alternativo. Se vuoto il logo diventa decorativo (aria-hidden). */
   title?: string
   className?: string
@@ -62,6 +71,7 @@ export function Logo({
   variant,
   background = 'light',
   strokeSize,
+  align = 'center',
   title = 'peak',
   className,
   style,
@@ -73,6 +83,14 @@ export function Logo({
   const strokeWidth = spec.strokeWidth ?? strokeWidthFor(step)
 
   const height = (size * WORDMARK_VIEWBOX.height) / WORDMARK_VIEWBOX.width
+
+  // Ancorata a sinistra l'origine del testo va a x=0: il filo esce di meta'
+  // spessore verso sinistra e va a coprire quasi esattamente l'avvicinamento
+  // sinistro della "p", cosi' il bordo visibile del marchio cade sulla colonna.
+  // `overflow="visible"` garantisce che, con un font di ripiego dalle metriche
+  // diverse, sbordi invece di perdere un pezzo di lettera.
+  const left = align === 'left'
+  const anchorX = left ? 0 : WORDMARK_VIEWBOX.width / 2
   const decorative = title.trim() === ''
 
   if (import.meta.env.DEV && resolvedVariant === 'outline-only' && size < 120) {
@@ -93,12 +111,15 @@ export function Logo({
       aria-hidden={decorative || undefined}
       aria-label={decorative ? undefined : title}
       focusable="false"
+      // Senza font Rund il fallback ha metriche diverse e potrebbe eccedere il
+      // riquadro: meglio che sbordi, piuttosto che perdere una lettera.
+      overflow="visible"
     >
       {!decorative && <title>{title}</title>}
       <text
-        x={WORDMARK_VIEWBOX.width / 2}
+        x={anchorX}
         y={WORDMARK_BASELINE_Y}
-        textAnchor="middle"
+        textAnchor={left ? 'start' : 'middle'}
         fontFamily="var(--font-display)"
         fontWeight={900}
         fontSize={WORDMARK_FONT_SIZE}

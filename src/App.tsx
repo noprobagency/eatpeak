@@ -6,7 +6,7 @@
  * mantenere. Se le pagine diventano un sito vero, si sostituisce qui.
  */
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Showcase from './pages/Showcase'
 import LandingDemo from './pages/LandingDemo'
 import ProductDemo from './pages/ProductDemo'
@@ -30,11 +30,37 @@ function currentRoute(): Route {
 
 export function App() {
   const [route, setRoute] = useState<Route>(currentRoute)
+  const [scrolled, setScrolled] = useState(false)
+  const sentinel = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const onHashChange = () => setRoute(currentRoute())
     window.addEventListener('hashchange', onHashChange)
     return () => window.removeEventListener('hashchange', onHashChange)
+  }, [])
+
+  /**
+   * La barra compare appena si scorre, non subito.
+   * In cima la pagina si apre col marchio grande, e un header con lo stesso
+   * marchio in piccolo gliela toglierebbe di mano.
+   *
+   * La soglia e' una sentinella alta l'1% della finestra (minimo 8px) messa in
+   * cima al documento: quando esce dallo schermo, la barra entra. Un
+   * IntersectionObserver invece di un listener di scroll perche' non impegna
+   * il thread principale a ogni frame, e perche' non dipende da eventi che in
+   * alcuni contesti non arrivano.
+   */
+  useEffect(() => {
+    const target = sentinel.current
+    if (!target) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setScrolled(!entry.isIntersecting),
+      { threshold: 0 },
+    )
+
+    observer.observe(target)
+    return () => observer.disconnect()
   }, [])
 
   const Page = ROUTES[route].component
@@ -48,7 +74,26 @@ export function App() {
         Salta al contenuto
       </a>
 
-      <header className="sticky top-0 z-30 border-b border-border-subtle bg-bg-page/90 backdrop-blur">
+      {/* La sentinella: finche' si vede, siamo in cima e la barra resta fuori. */}
+      <div
+        ref={sentinel}
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[max(8px,1vh)]"
+      />
+
+      {/*
+        `fixed` e non `sticky`: da sticky occuperebbe spazio in cima anche da
+        nascosta, e la pagina si aprirebbe con un vuoto.
+        `focus-within` la richiama per chi naviga da tastiera: nascosta non
+        vuol dire irraggiungibile.
+      */}
+      <header
+        className={cn(
+          'fixed inset-x-0 top-0 z-30 border-b border-border-subtle bg-bg-page/90 backdrop-blur',
+          'transition-transform duration-base ease-standard focus-within:translate-y-0',
+          scrolled ? 'translate-y-0' : '-translate-y-full',
+        )}
+      >
         <div className="mx-auto flex max-w-container items-center justify-between gap-6 px-6 py-4 md:px-[28px]">
           <a href={DEFAULT_ROUTE} className="flex items-center" aria-label="peak — vai allo showcase">
             <Logo size={92} title="" />
