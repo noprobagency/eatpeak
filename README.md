@@ -67,6 +67,7 @@ Tre pagine, sull'hash:
 | `npm run check:utilities` | Verifica che ogni utility usata generi davvero CSS |
 | `npm run docs:brand` | Rigenera `docs/00-brand-overview.md` dalla sua sorgente |
 | `npm run assets:generate` | Rigenera logo, favicon, PNG e `favicon.ico` |
+| `npm run export:logo` | Esporta il wordmark in PNG ad alta risoluzione |
 
 ---
 

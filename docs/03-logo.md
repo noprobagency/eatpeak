@@ -193,6 +193,33 @@ Lo Showcase li mostra barrati, alla sezione **06 — wordmark**. Qui l'elenco.
 
 ---
 
+## Esportare il wordmark in PNG
+
+```bash
+npm run export:logo -- honey-terracotta --size=2400
+npm run export:logo -- --list
+```
+
+Esce in `assets/export/`, fondo trasparente, ritagliato al pixel. La cartella è
+fuori dal versionamento: gli export si rigenerano, e sono prodotti con un font
+in licenza trial.
+
+Perché passa da Chrome e non dal rasterizzatore di casa: il wordmark è **testo**,
+non un tracciato. Per rasterizzarlo serve un motore tipografico che sappia cosa
+fare di Rund Display, del tracking negativo e del contorno esterno.
+`scripts/lib/raster.mjs` disegna poligoni — va benissimo per la saetta, di testo
+non sa niente.
+
+Il ritaglio non è calcolato: si disegna su una tela abbondante, si legge il
+canale alfa e si taglia sull'ultimo pixel non trasparente. Nessun margine
+residuo, nessuna lettera tagliata.
+
+**Il PNG non è il formato di consegna del logo.** È comodo per una slide o per
+mandarlo a qualcuno al volo. Per stampa, packaging e web serve l'SVG con il
+testo vettorializzato — vedi qui sotto.
+
+---
+
 ## Il font, prima della produzione
 
 Gli SVG in `assets/logo/` contengono **testo non vettorializzato**: senza Rund

@@ -16,7 +16,8 @@
     "test": "npm run typecheck && npm run lint:compliance && npm run tokens:contrast && npm run build && npm run check:utilities",
     "tokens:build": "node scripts/build-tokens.mjs",
     "docs:brand": "node scripts/build-brand-doc.mjs",
-    "check:utilities": "node scripts/check-utilities.mjs"
+    "check:utilities": "node scripts/check-utilities.mjs",
+    "export:logo": "node scripts/export-logo.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

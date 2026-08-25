@@ -18,3 +18,7 @@ public/fonts/*.ttf
 
 # artefatti di build di TypeScript
 *.tsbuildinfo
+
+# Export raster del wordmark: sono prodotti con Rund in licenza trial e si
+# rigenerano con `npm run export:logo`. Non vanno versionati.
+assets/export/
