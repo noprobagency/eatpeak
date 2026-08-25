@@ -36,7 +36,13 @@ export function App() {
   const sentinel = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const onHashChange = () => setRoute(currentRoute())
+    const onHashChange = () => {
+      setRoute(currentRoute())
+      // Si riparte dall'alto. Senza questo si cambia pagina restando alla
+      // stessa altezza di quella precedente: la barra e' gia' comparsa e
+      // copre le prime righe della pagina nuova.
+      window.scrollTo(0, 0)
+    }
     window.addEventListener('hashchange', onHashChange)
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [])

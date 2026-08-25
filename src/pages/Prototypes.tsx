@@ -22,11 +22,8 @@ import { cn } from '../lib/cn'
 
 const NOTICE = {
   title: 'NOTA BENE',
-  paragraphs: [
-    'Questi sono prototipi generati rapidamente, senza rifiniture e senza alcuna cura del dettaglio. Servono a un solo scopo: cominciare a vedere qualcosa di concreto e capire che forma sta prendendo il brand.',
-    'Testi, colori, proporzioni, materiali e composizioni sono tutti provvisori e verranno rifatti da zero. Alcuni dettagli sono volutamente sbagliati o incompleti.',
-    'Prendeteli per quello che sono: un punto di partenza. È il 2% del lavoro finito.',
-  ],
+  text:
+    'Prototipi generati rapidamente, senza rifiniture. Servono solo a vedere che forma sta prendendo il brand. Testi, colori, proporzioni e materiali sono provvisori e verranno rifatti da zero, e alcuni dettagli sono volutamente sbagliati. È il 2% del lavoro finito.',
 } as const
 
 const PAGE_DATE = '25 agosto 2026'
@@ -35,7 +32,8 @@ const PAGE_DATE = '25 agosto 2026'
 // Le sezioni
 // ---------------------------------------------------------------------------
 
-type Layout = 'due' | 'singola'
+/** Quante colonne, da mobile in su. Due sempre: cosi' resta incolonnato. */
+type Cols = 'due' | 'tre' | 'quattro'
 
 interface GallerySection {
   id: string
@@ -43,7 +41,14 @@ interface GallerySection {
   label: string
   title: string
   caption: string
-  layout: Layout
+  cols: Cols
+  /**
+   * Proporzione del riquadro. Tutte le immagini della sezione la condividono e
+   * ci stanno dentro con `object-contain`: e' cosi' che il flat dello stick,
+   * che e' 1:5, finisce alla stessa altezza di quello della busta invece di
+   * allungare la riga.
+   */
+  ratio: string
   files: readonly string[]
 }
 
@@ -54,19 +59,35 @@ const SECTIONS: readonly GallerySection[] = [
     label: 'FLAT DI PACKAGING',
     title: 'le grafiche distese',
     caption:
-      'I due formati stesi in piano, senza volume: la busta da 30 stick e il singolo stickpack, entrambi nella versione arancia.',
-    layout: 'due',
-    files: ['prototipo busta svg.png', 'prototipo svg.png'],
+      'Le grafiche stese in piano, senza volume: prima le tre buste da 30 stick, poi i tre stickpack. Arancia, mela, ciliegia.',
+    cols: 'tre',
+    ratio: 'aspect-[3/4]',
+    files: [
+      'prototipo busta svg.png',
+      'peak-busta-v1-mela.png',
+      'peak-busta-v1-ciliegia.png',
+      'prototipo svg.png',
+      'peak-stick-v1-mela.png',
+      'peak-stick-v1-ciliegia.png',
+    ],
   },
   {
     id: 'render',
     number: '02',
     label: 'RENDER NEUTRI',
-    title: 'il pack su fondo pulito',
+    title: 'i tre gusti su fondo pulito',
     caption:
-      'Gli stessi due formati resi in tre dimensioni su fondo neutro, per giudicare materiale, proporzioni e leggibilità senza che il contesto aiuti.',
-    layout: 'singola',
-    files: ['realistico busta .png', 'realistico bustina.png'],
+      'Gli stessi sei pezzi resi in tre dimensioni su fondo neutro, affiancati per gusto: è qui che si vede se i tre colori reggono come famiglia.',
+    cols: 'tre',
+    ratio: 'aspect-[4/5]',
+    files: [
+      'realistico busta .png',
+      'Packaging peak_Gemini 3 (Nano Banana Pro)_2026-08-25_16-40-52.png',
+      'Packaging peak_Gemini 3 (Nano Banana Pro)_2026-08-25_16-40-48.png',
+      'realistico bustina.png',
+      'Packaging peak_Gemini 3 (Nano Banana Pro)_2026-08-25_16-40-57.png',
+      'Packaging peak_Gemini 3 (Nano Banana Pro)_2026-08-25_16-46-22.png',
+    ],
   },
   {
     id: 'ambient-busta',
@@ -75,7 +96,8 @@ const SECTIONS: readonly GallerySection[] = [
     title: 'la busta dove vive',
     caption:
       'La confezione da 30 in situazioni quotidiane: cucine, luce naturale, un bicchiere d’acqua. Nessuna palestra.',
-    layout: 'due',
+    cols: 'quattro',
+    ratio: 'aspect-[4/5]',
     files: ['ambient 1.png', 'ambient 2.png', 'ambient 3.png', 'ambient 4.png'],
   },
   {
@@ -85,7 +107,8 @@ const SECTIONS: readonly GallerySection[] = [
     title: 'il gesto',
     caption:
       'Lo stick che si apre e si versa: è il momento che il brand deve rendere facile, e quindi quello che va mostrato per primo.',
-    layout: 'singola',
+    cols: 'tre',
+    ratio: 'aspect-[4/5]',
     files: ['ambient bustina 1.png.png', 'ambient bustina 2.png', 'ambient bustina 3.png'],
   },
   {
@@ -95,10 +118,18 @@ const SECTIONS: readonly GallerySection[] = [
     title: 'due quadrati per il feed',
     caption:
       'Formato quadrato con il pack accanto all’elenco dei benefici, per capire quanto regge il marchio a dimensioni da telefono.',
-    layout: 'due',
+    cols: 'due',
+    ratio: 'aspect-square',
     files: ['meta adv 1.png', 'meta adv 2.png'],
   },
 ]
+
+/** Due colonne sempre, di piu' quando c'e' spazio. */
+const COLS: Record<Cols, string> = {
+  due: 'grid-cols-2',
+  tre: 'grid-cols-2 md:grid-cols-3',
+  quattro: 'grid-cols-2 md:grid-cols-4',
+}
 
 /** I nomi contengono spazi e doppie estensioni: vanno codificati per l'URL. */
 function srcFor(file: string): string {
@@ -170,28 +201,34 @@ function Lightbox({ file, onClose }: { file: string; onClose: () => void }) {
 // La griglia
 // ---------------------------------------------------------------------------
 
-function Shot({ file, onOpen }: { file: string; onOpen: (file: string) => void }) {
+function Shot({ file, ratio, onOpen }: { file: string; ratio: string; onOpen: (file: string) => void }) {
   return (
-    <figure className="m-0 flex flex-col gap-3">
+    <figure className="m-0 flex flex-col gap-2">
       <button
         type="button"
         onClick={() => onOpen(file)}
         className={cn(
-          'group block overflow-hidden rounded-lg bg-bg-raised shadow-sm',
+          'block w-full overflow-hidden rounded-lg bg-bg-raised shadow-sm',
           'transition-shadow duration-base ease-standard hover:shadow-md',
+          ratio,
         )}
         aria-label={`Ingrandisci ${file}`}
       >
+        {/*
+          `contain` e non `cover`: qui non si può ritagliare niente. Un flat
+          tagliato perde metà della grafica, ed è proprio la grafica la cosa
+          da guardare.
+        */}
         <img
           src={srcFor(file)}
           alt=""
           loading="lazy"
           decoding="async"
-          className="block h-auto w-full"
+          className="h-full w-full object-contain"
         />
       </button>
 
-      <figcaption className="type-mono-sm text-text-muted">{file}</figcaption>
+      <figcaption className="type-mono-sm break-words text-text-muted">{file}</figcaption>
     </figure>
   )
 }
@@ -213,20 +250,13 @@ export function Prototypes() {
       */}
       <aside
         aria-labelledby="nota-bene"
-        className="border-y border-l-8 border-border-danger bg-bg-danger"
+        className="border-y border-l-8 border-border-danger bg-bg-danger px-6 py-5 md:px-[28px]"
       >
-        <Container width="media">
-          <div className="flex flex-col gap-4 py-8">
-            <h2 id="nota-bene" className="type-mono-md text-text-danger">
-              {NOTICE.title}
-            </h2>
-            {NOTICE.paragraphs.map((p) => (
-              <p key={p} className="max-w-prose text-body-md text-text-danger">
-                {p}
-              </p>
-            ))}
-          </div>
-        </Container>
+        <h2 id="nota-bene" className="type-mono-md text-text-danger">
+          {NOTICE.title}
+        </h2>
+        {/* Niente max-width: qui la larghezza piena e' il punto, si deve vedere. */}
+        <p className="mt-2 text-body-sm text-text-danger">{NOTICE.text}</p>
       </aside>
 
       <Section tone="page" spacing="tight">
@@ -240,7 +270,7 @@ export function Prototypes() {
 
       <Section tone="page" spacing="flush">
         <Container width="media">
-          <div className="flex flex-col gap-20 pb-24 md:gap-24">
+          <div className="flex flex-col gap-16 pb-24 md:gap-20">
             {SECTIONS.map((section) => (
               <section key={section.id} id={section.id} className="scroll-mt-24">
                 <header className="flex flex-col gap-3">
@@ -251,14 +281,9 @@ export function Prototypes() {
                   <p className="max-w-prose text-body-md text-text-secondary">{section.caption}</p>
                 </header>
 
-                <div
-                  className={cn(
-                    'mt-8 grid gap-6',
-                    section.layout === 'due' ? 'md:grid-cols-2' : 'grid-cols-1',
-                  )}
-                >
+                <div className={cn('mt-6 grid gap-4 md:gap-6', COLS[section.cols])}>
                   {section.files.map((file) => (
-                    <Shot key={file} file={file} onOpen={setZoomed} />
+                    <Shot key={file} file={file} ratio={section.ratio} onOpen={setZoomed} />
                   ))}
                 </div>
               </section>
