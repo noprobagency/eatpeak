@@ -243,14 +243,26 @@ export function Prototypes() {
 
   return (
     <>
+      <div>
       {/*
         L'avviso prima di ogni altra cosa, titolo della pagina compreso. Chi
         apre questo link deve sapere cosa sta per vedere prima di vederlo,
         altrimenti giudica un prototipo come se fosse un lavoro finito.
+
+        Sta sotto la barra e ci resta. La barra e' `fixed` e non occupa spazio,
+        quindi appena compare si posa sopra le prime righe: il margine lo tiene
+        scoperto da fermo, `sticky` lo tiene scoperto anche mentre si scorre.
+        Un avviso mezzo coperto vale come un avviso assente.
+
+        Si stacca quando finisce il blocco di apertura: da li' in poi si e' gia'
+        letto, e restare inchiodato darebbe solo fastidio.
       */}
       <aside
         aria-labelledby="nota-bene"
-        className="border-y border-l-8 border-border-danger bg-bg-danger px-6 py-5 md:px-[28px]"
+        className={cn(
+          'sticky top-[var(--header-height)] z-20 mt-[var(--header-height)]',
+          'border-y border-l-8 border-border-danger bg-bg-danger px-6 py-5 md:px-[28px]',
+        )}
       >
         <h2 id="nota-bene" className="type-mono-md text-text-danger">
           {NOTICE.title}
@@ -259,14 +271,15 @@ export function Prototypes() {
         <p className="mt-2 text-body-sm text-text-danger">{NOTICE.text}</p>
       </aside>
 
-      <Section tone="page" spacing="tight">
-        <Container width="media">
-          <header className="flex flex-col gap-3">
-            <h1 className="type-display-lg text-text-primary">prototipi</h1>
-            <p className="type-mono-md text-text-muted">v1 · {PAGE_DATE}</p>
-          </header>
-        </Container>
-      </Section>
+        <Section tone="page" spacing="tight">
+          <Container width="media">
+            <header className="flex flex-col gap-3">
+              <h1 className="type-display-lg text-text-primary">prototipi</h1>
+              <p className="type-mono-md text-text-muted">v1 · {PAGE_DATE}</p>
+            </header>
+          </Container>
+        </Section>
+      </div>
 
       <Section tone="page" spacing="flush">
         <Container width="media">

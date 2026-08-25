@@ -34,6 +34,7 @@ export function App() {
   const [route, setRoute] = useState<Route>(currentRoute)
   const [scrolled, setScrolled] = useState(false)
   const sentinel = useRef<HTMLDivElement>(null)
+  const header = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const onHashChange = () => {
@@ -58,6 +59,26 @@ export function App() {
    * il thread principale a ogni frame, e perche' non dipende da eventi che in
    * alcuni contesti non arrivano.
    */
+  /**
+   * L'altezza della barra, pubblicata come variabile CSS.
+   *
+   * La barra e' `fixed`, quindi non occupa spazio: qualunque contenuto debba
+   * restare scoperto quando compare deve sapere quanto e' alta. Misurata e non
+   * scritta a mano, cosi' resta giusta se cambiano il logo o il padding.
+   */
+  useEffect(() => {
+    const el = header.current
+    if (!el) return
+
+    const apply = () =>
+      document.documentElement.style.setProperty('--header-height', `${el.offsetHeight}px`)
+
+    apply()
+    const observer = new ResizeObserver(apply)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
   useEffect(() => {
     const target = sentinel.current
     if (!target) return
@@ -96,6 +117,7 @@ export function App() {
         vuol dire irraggiungibile.
       */}
       <header
+        ref={header}
         className={cn(
           'fixed inset-x-0 top-0 z-30 border-b border-border-subtle bg-bg-page/90 backdrop-blur',
           'transition-transform duration-base ease-standard focus-within:translate-y-0',

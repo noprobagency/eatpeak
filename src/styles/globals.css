@@ -46,6 +46,11 @@
 }
 
 @layer base {
+  :root {
+    /* Sovrascritta a runtime con l'altezza misurata della barra. */
+    --header-height: 65px;
+  }
+
   html {
     -webkit-text-size-adjust: 100%;
   }
