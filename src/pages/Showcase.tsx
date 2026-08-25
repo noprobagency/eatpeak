@@ -13,7 +13,7 @@
 
 import { useRef, useState } from 'react'
 import {
-  Accordion, Badge, Button, Card, Checkbox, Container, Divider, DoseSeal,
+  Accordion, Badge, BrandOverview, Button, Card, Checkbox, Container, Divider, DoseSeal,
   FaqAccordion, Grid, IngredientPanel, Input, Marquee, Modal, PriceTiers,
   ProductCard, QuantityStepper, RadioGroup, ReviewCard, Section, SectionHeader,
   Select, Stack, StickPack, StickyAddToCart, Tabs, Tag, Toast, ToastStack,
@@ -34,6 +34,7 @@ import { cn } from '../lib/cn'
 // ---------------------------------------------------------------------------
 
 const NAV = [
+  { id: 'scheda', label: 'Il brand' },
   { id: 'colore', label: 'Colore' },
   { id: 'contrasto', label: 'Contrasto' },
   { id: 'semantici', label: 'Token semantici' },
@@ -176,6 +177,15 @@ export function Showcase() {
               </>
             }
           />
+
+          {/*
+            Il contesto prima dei colori. Chi legge i token senza sapere cos'e'
+            peak applica il sistema senza capirlo, ed e' cosi' che un design
+            system si degrada in una tavolozza.
+          */}
+          <div id="scheda" className="mt-12 scroll-mt-24">
+            <BrandOverview authorizedClaim="physical-performance" />
+          </div>
         </Container>
       </Section>
 

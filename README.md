@@ -155,6 +155,7 @@ non si rompe: cambia la voce tipografica, non il funzionamento. L'avviso di
 
 | # | Documento | Cosa contiene |
 |---|---|---|
+| 00 | [**Scheda del brand**](docs/00-brand-overview.md) | Claim, posizionamento, target, tono. **Comincia da qui.** |
 | 01 | [Brand](docs/01-brand.md) | Posizionamento, target, tono, le tensioni da tenere |
 | 02 | [Token](docs/02-tokens.md) | Colore, tipografia, spazio, forma, movimento, contrasto |
 | 03 | [Logo e icone](docs/03-logo.md) | Wordmark, spessori, icona, lockup, usi vietati |

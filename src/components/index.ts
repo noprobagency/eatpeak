@@ -31,6 +31,7 @@ export { StickyAddToCart, type StickyAddToCartProps } from './StickyAddToCart'
 export { TrustRow, type TrustRowProps, type TrustItem } from './TrustRow'
 export { IngredientPanel, type IngredientPanelProps, type IngredientRow } from './IngredientPanel'
 export { SectionHeader, type SectionHeaderProps } from './SectionHeader'
+export { BrandOverview, type BrandOverviewProps } from './BrandOverview'
 export { Hero, type HeroProps } from './Hero'
 
 // --- layout ---

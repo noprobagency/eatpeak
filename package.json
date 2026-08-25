@@ -14,7 +14,8 @@
     "assets:generate": "node scripts/generate-assets.mjs",
     "assets:favicon": "node scripts/generate-favicon-ico.mjs",
     "test": "npm run typecheck && npm run lint:compliance && npm run tokens:contrast",
-    "tokens:build": "node scripts/build-tokens.mjs"
+    "tokens:build": "node scripts/build-tokens.mjs",
+    "docs:brand": "node scripts/build-brand-doc.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

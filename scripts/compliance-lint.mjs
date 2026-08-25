@@ -157,7 +157,13 @@ function blockSuppressions(lines) {
   lines.forEach((line, i) => {
     if (open === null) {
       const m = line.match(SUPPRESS_START)
-      if (m) { open = { term: normalize(m[1].trim()), reason: cleanReason(m[2]) }; return }
+      if (m) {
+        open = { term: normalize(m[1].trim()), reason: cleanReason(m[2]) }
+        // La direttiva nomina il termine che sopprime: copre anche se stessa,
+        // altrimenti si segnala da sola.
+        map[i] = open
+        return
+      }
     } else if (SUPPRESS_END.test(line)) {
       open = null
       return
