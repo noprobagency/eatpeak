@@ -6,114 +6,63 @@
 
 ---
 
-## ⚠ Rund è in versione trial
+## Rund abbandonato
 
-**Rund Display e Rund Text sono attualmente in licenza trial e non sono
-utilizzabili in produzione.** Vale per il sito, per il packaging, per le
-creatività e per qualunque file destinato a uscire dallo studio.
+**Rund Display e Rund Text sono usciti dal sistema con la 2.0.** Motivo: costi e
+licenze. Rund era in trial e avrebbe richiesto due licenze separate — desktop
+per il packaging e i vettoriali, web per il sito, quest'ultima ricorrente sulle
+visite mensili. Il wordmark, per giunta, dipendeva da un font installato.
 
-Finché la licenza non è comprata, il progetto gira sui fallback gratuiti. Non è
-un ripiego temporaneo mal fatto: è configurato apposta e non si rompe.
+**Gabarito è il display definitivo.** È SIL Open Font License: gratis per web,
+packaging e logo, senza pratiche. Il wordmark è stato vettorializzato da
+Gabarito 900 una volta per tutte e non dipende più da nessun font.
 
----
-
-## Le famiglie
-
-| Ruolo | Font | Fonderia | Fallback |
-|---|---|---|---|
-| Display | **Rund Display** peso 900 | Letters from Sweden | `Gabarito`, `system-ui`, sans-serif |
-| Testo | **Rund Text** 400/500/600 | Letters from Sweden | `Inter`, `system-ui`, sans-serif |
-| Utility / numeri | **DM Mono** 400/500 | Colophon (Google Fonts) | `ui-monospace`, monospace |
-
-DM Mono è su Google Fonts con licenza SIL Open Font: nessun costo, nessuna
-pratica. È già caricato in `index.html`.
+I file di Rund della 1.0 restano nell'archivio `v1/public/fonts/`, fuori dal
+versionamento.
 
 ---
 
-## Le due licenze da comprare
+## Le quattro famiglie
 
-Servono **due licenze separate**, e la seconda si tariffa diversamente dalla
-prima. È l'errore di budget più comune con le fonderie indipendenti.
+| Ruolo | Font | Pesi | Licenza | Da dove |
+|---|---|---|---|---|
+| Display + wordmark | **Gabarito** | 900 (700/800 dove serve) | SIL OFL | Google Fonts |
+| Testo | **Inter** | 400 / 500 / 600 | SIL OFL | Google Fonts |
+| Numeri e dati | **DM Mono** | 400 / 500 | SIL OFL | Google Fonts |
+| Accento (solo i nomi dei gusti) | **Fraunces** Italic | 500 | SIL OFL | Google Fonts |
 
-### 1. Desktop
-
-Per il packaging, i vettoriali, le creatività, tutto ciò che si apre in un
-programma di grafica.
-
-Si tariffa a **numero di postazioni**. Serve a chiunque tocchi i file:
-designer interni, agenzia, studio di packaging.
-
-### 2. Web
-
-Per il sito e le landing.
-
-Si tariffa sulle **visite mensili** ed è quindi una spesa ricorrente che cresce
-col traffico. Va stimata sul traffico previsto a dodici mesi, non su quello di
-oggi.
-
-### Cosa chiedere alla fonderia
-
-- Il numero di postazioni desktop e la soglia di pageview web
-- Se la licenza web copre i **sottodomini** e gli ambienti di staging
-- Se copre le **email transazionali** (spesso no: lì si usano i fallback)
-- Se il logo vettorializzato ricade sotto la licenza desktop — **normalmente sì,
-  ed è quello che serve**
+Tutte caricate da un solo `<link>` in `index.html`. Nessun `@font-face` locale,
+nessun file in `public/fonts/`.
 
 ---
 
-## Il wordmark va vettorializzato
+## Il TTF di Gabarito, solo in locale
 
-Gli SVG in [`../logo/`](../logo/) contengono **testo non vettorializzato**: senza
-Rund Display installato mostrano il fallback.
+Serve a una cosa sola: **rigenerare il tracciato del wordmark** con
+`npm run brand:vectorize`. Non serve per far girare il sito.
 
-Appena la licenza desktop è attiva:
-
-1. Apri il wordmark in un editor vettoriale con Rund Display installato
-2. Converti il testo in tracciati **una volta sola**
-3. Sostituisci i file in `assets/logo/`
-4. Da quel momento il logo non dipende più da nessun font
-
-Questo passaggio va fatto **prima** di mandare qualsiasi cosa in stampa.
-
----
-
-## Come installare i file, quando ci sono
-
-Metti i `.woff2` in `public/fonts/` con questi nomi esatti — sono quelli che
-`src/styles/globals.css` si aspetta:
-
-```
-public/fonts/
-├── RundDisplay-Black.woff2
-├── RundText-Regular.woff2
-├── RundText-Medium.woff2
-└── RundText-Semibold.woff2
+```bash
+npm run brand:vectorize -- --download     # scarica assets/fonts/Gabarito-900.ttf e rigenera
+npm run brand:vectorize -- --compare      # confronta i tracking -0.03 / -0.04 / -0.05
 ```
 
-Non serve toccare il CSS: le regole `@font-face` ci sono già.
+Il download prende da Google Fonts l'istanza statica a peso 900 (un browser che
+non dichiara il supporto ai font variabili riceve un TTF statico). Il file resta
+in `assets/fonts/`, ignorato da git. Il risultato — `src/brand/wordmark.json` —
+è committato ed è quello che il sistema usa.
 
 ---
 
-## Perché non si rompe se mancano
+## Se un font non carica
 
-Le regole `@font-face` puntano a file che possono non esistere. Se mancano, la
-richiesta fallisce e il browser scende sul font successivo nello stack.
+Gli stack hanno i fallback di sistema:
 
 ```css
---font-display: 'Rund Display', 'Gabarito', system-ui, sans-serif;
---font-text:    'Rund Text', 'Inter', system-ui, sans-serif;
+--font-display: 'Gabarito', system-ui, sans-serif;
+--font-text:    'Inter', system-ui, sans-serif;
+--font-mono:    'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+--font-accent:  'Fraunces', Georgia, 'Times New Roman', serif;
 ```
 
-`vite build` avvisa che i file non si risolvono. **È previsto**: significa che la
-configurazione sta funzionando come deve.
-
-Gabarito e Inter sono scelti apposta: Gabarito è un rounded geometrico con una
-metrica vicina a Rund Display, Inter è neutro e non combatte col resto. Il
-layout tiene, cambia la voce.
-
----
-
-## Come si vede se i font veri ci sono
-
-Lo Showcase, sezione **04 — tipografia**, mostra le tre famiglie con lo stack
-completo. Se vedi Gabarito al posto di Rund Display, i file non sono installati.
+Il wordmark non è toccato: è un tracciato. Cambia la voce del testo, non il
+marchio.

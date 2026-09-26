@@ -1,56 +1,51 @@
 /**
- * <Logo /> — il wordmark "peak".
+ * <Logo /> — il wordmark "peak" (2.0).
  *
  * QUANDO USARLO: header, footer, packaging, creativita', ovunque serva il nome
  * del brand come segno.
  * QUANDO NO: dentro un titolo di testo corrente. Il wordmark non e' una parola,
  * e' un'immagine — se stai scrivendo una frase, scrivi "peak" in tondo.
  *
- * La parola e' sempre minuscola e il tracking e' fisso: entrambi sono usi
- * vincolati, non preferenze. Vedi docs/03-logo.md.
+ * E' un tracciato, non un testo: si vede uguale ovunque, senza font. Un solo
+ * colore, pieno, senza contorno. Tre varianti: bianco (primaria, su ogni campo
+ * colore-gusto e su inchiostro), inchiostro (su bianco e carta), colore-gusto
+ * (raro, solo su chiaro e solo sopra i 48px di altezza).
  *
- * Il filo non scala col logo. Il componente sceglie da solo la versione di
- * spessore in base a `size`; `strokeSize` la forza solo se hai davvero un
- * motivo (es. un'esportazione per stampa).
+ * `background` sceglie la variante da solo: flavor/dark -> bianco, light ->
+ * inchiostro. Vedi docs/03-logo.md.
  */
 
 import type { CSSProperties } from 'react'
 import {
   DEFAULT_LOGO_VARIANT,
+  FLAVOR_VARIANT_MIN_HEIGHT_PX,
   LOGO_VARIANTS,
-  WORDMARK_BASELINE_Y,
-  WORDMARK_FONT_SIZE,
-  WORDMARK_LETTER_SPACING,
-  WORDMARK_TEXT,
+  WORDMARK_MIN_WIDTH_PX,
+  WORDMARK_PATH,
   WORDMARK_VIEWBOX,
-  strokeSizeFor,
-  strokeWidthFor,
+  flavorHex,
+  wordmarkHeightFor,
   type LogoVariant,
-  type LogoVariantSpec,
-  type StrokeSize,
 } from './paths'
+import type { FlavorId } from '../lib/copy'
 
 export interface LogoProps {
-  /** Larghezza resa in px. Determina anche la versione di filo. */
+  /** Larghezza resa in px. L'altezza segue il tracciato. */
   size?: number
   variant?: LogoVariant
+  /** Il gusto, per la variante `flavor`. Ignorato dalle altre. */
+  flavor?: FlavorId
   /**
    * Il fondo su cui il logo verra' posato. Non disegna nulla: serve al
    * componente per scegliere la variante giusta quando `variant` e' omessa,
-   * e per avvisare in dev se la combinazione e' illeggibile.
+   * e per avvisare in sviluppo se la combinazione e' illeggibile.
    */
-  background?: 'light' | 'warm' | 'brand' | 'forest' | 'dark'
-  /** Forza la versione di filo. Lasciala stare, a meno di esportazioni. */
-  strokeSize?: StrokeSize
+  background?: 'light' | 'flavor' | 'dark'
   /**
-   * Dove sta la parola dentro il suo riquadro.
-   *
-   * Il viewBox del wordmark e' piu' largo dell'inchiostro, quindi con `center`
-   * il marchio risulta rientrato rispetto al testo che gli sta sotto. Con
-   * `left` il bordo esterno del filo cade esatto a x=0, e il logo si allinea
-   * alla colonna come qualsiasi altro elemento.
+   * Come sta nel suo contenitore. Il viewBox e' stretto sull'inchiostro,
+   * quindi `left` e' il comportamento naturale; `center` lo centra come blocco.
    */
-  align?: 'center' | 'left'
+  align?: 'left' | 'center'
   /** Testo alternativo. Se vuoto il logo diventa decorativo (aria-hidden). */
   title?: string
   className?: string
@@ -59,45 +54,41 @@ export interface LogoProps {
 
 /** Per ogni fondo, la variante che ci si legge sopra. */
 const VARIANT_FOR_BACKGROUND: Record<NonNullable<LogoProps['background']>, LogoVariant> = {
-  light: 'honey-terracotta',
-  warm: 'honey-terracotta',
-  brand: 'honey-arancia-deep',
-  forest: 'honey-forest-deep',
-  dark: 'honey-terracotta',
+  light: 'ink',
+  flavor: 'white',
+  dark: 'white',
 }
 
 export function Logo({
   size = 160,
   variant,
-  background = 'light',
-  strokeSize,
-  align = 'center',
+  flavor = 'arancia',
+  background,
+  align = 'left',
   title = 'peak',
   className,
   style,
 }: LogoProps) {
-  const resolvedVariant = variant ?? VARIANT_FOR_BACKGROUND[background] ?? DEFAULT_LOGO_VARIANT
-  const spec: LogoVariantSpec = LOGO_VARIANTS[resolvedVariant]
+  const resolvedVariant: LogoVariant =
+    variant ?? (background ? VARIANT_FOR_BACKGROUND[background] : DEFAULT_LOGO_VARIANT)
+  const spec = LOGO_VARIANTS[resolvedVariant]
+  const fill = spec.fill === 'flavor' ? flavorHex(flavor) : spec.fill
 
-  const step = strokeSize ?? strokeSizeFor(size)
-  const strokeWidth = spec.strokeWidth ?? strokeWidthFor(step)
-
-  const height = (size * WORDMARK_VIEWBOX.height) / WORDMARK_VIEWBOX.width
-
-  // Ancorata a sinistra l'origine del testo va a x=0: il filo esce di meta'
-  // spessore verso sinistra e va a coprire quasi esattamente l'avvicinamento
-  // sinistro della "p", cosi' il bordo visibile del marchio cade sulla colonna.
-  // `overflow="visible"` garantisce che, con un font di ripiego dalle metriche
-  // diverse, sbordi invece di perdere un pezzo di lettera.
-  const left = align === 'left'
-  const anchorX = left ? 0 : WORDMARK_VIEWBOX.width / 2
+  const height = wordmarkHeightFor(size)
   const decorative = title.trim() === ''
 
-  if (import.meta.env.DEV && resolvedVariant === 'outline-only' && size < 120) {
-    console.warn(
-      `[peak/Logo] La variante "outline-only" non regge sotto i 120px (size=${size}). ` +
-        'Il filo da 2.4 sparisce. Usa "solid-terracotta" o "honey-terracotta".',
-    )
+  if (import.meta.env.DEV) {
+    if (size < WORDMARK_MIN_WIDTH_PX) {
+      console.warn(`[peak/Logo] ${size}px e sotto la misura minima di ${WORDMARK_MIN_WIDTH_PX}px di larghezza.`)
+    }
+    if (resolvedVariant === 'flavor' && height < FLAVOR_VARIANT_MIN_HEIGHT_PX) {
+      console.warn(
+        `[peak/Logo] La variante "flavor" non si usa sotto i ${FLAVOR_VARIANT_MIN_HEIGHT_PX}px di altezza (qui ${Math.round(height)}px). Usa "ink".`,
+      )
+    }
+    if (resolvedVariant === 'white' && background === 'light') {
+      console.warn('[peak/Logo] Logo bianco su fondo chiaro: non si legge. Usa "ink".')
+    }
   }
 
   return (
@@ -106,32 +97,15 @@ export function Logo({
       width={size}
       height={height}
       className={className}
-      style={style}
+      style={align === 'center' ? { display: 'block', marginInline: 'auto', ...style } : style}
       role={decorative ? undefined : 'img'}
       aria-hidden={decorative || undefined}
       aria-label={decorative ? undefined : title}
       focusable="false"
-      // Senza font Rund il fallback ha metriche diverse e potrebbe eccedere il
-      // riquadro: meglio che sbordi, piuttosto che perdere una lettera.
-      overflow="visible"
+      data-variant={resolvedVariant}
     >
       {!decorative && <title>{title}</title>}
-      <text
-        x={anchorX}
-        y={WORDMARK_BASELINE_Y}
-        textAnchor={left ? 'start' : 'middle'}
-        fontFamily="var(--font-display)"
-        fontWeight={900}
-        fontSize={WORDMARK_FONT_SIZE}
-        letterSpacing={WORDMARK_LETTER_SPACING}
-        fill={spec.fill ?? 'none'}
-        stroke={spec.stroke ?? undefined}
-        strokeWidth={spec.stroke ? strokeWidth : undefined}
-        paintOrder="stroke"
-        strokeLinejoin="round"
-      >
-        {WORDMARK_TEXT}
-      </text>
+      <path d={WORDMARK_PATH} fill={fill} />
     </svg>
   )
 }
