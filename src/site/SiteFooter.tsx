@@ -16,7 +16,7 @@ import { SITE_NAV, STUDIO_NAV, to } from '../lib/routes'
 
 export function SiteFooter() {
   return (
-    <footer className="bg-bg-inverse text-text-inverse">
+    <footer className="bg-bg-brand-deep text-text-inverse">
       <div className="mx-auto flex max-w-container flex-col gap-10 px-6 py-16 md:px-[28px]">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div className="flex flex-col gap-5">

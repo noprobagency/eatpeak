@@ -24,3 +24,6 @@ public/fonts/*.ttf
 # Export raster e vettoriali di logo e packaging: si rigenerano con
 # `npm run export:logo` e `npm run export:pack`. Non vanno versionati.
 assets/export/
+
+# Riferimenti di terzi e screenshot dei siti: non si committano.
+docs/references/

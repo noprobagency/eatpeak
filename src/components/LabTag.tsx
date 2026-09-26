@@ -28,7 +28,7 @@ export function LabTag({ children = 'dal laboratorio', what, size = 'sm', classN
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1 rounded-full border border-dashed border-neutral-400 bg-neutral-100 text-neutral-700',
+        'inline-flex items-center gap-1 rounded-full border border-dashed border-cacao-300 bg-cacao-50 text-cacao-600',
         'font-mono uppercase',
         size === 'sm' ? 'px-2 py-1 text-mono-sm' : 'px-3 py-1 text-mono-md',
         className,

@@ -20,7 +20,7 @@ export interface TrustItem {
 
 export interface TrustRowProps {
   items?: readonly TrustItem[]
-  tone?: 'default' | 'inverse'
+  tone?: 'default' | 'deep'
   /** `compact` per una riga sola senza dettagli. */
   variant?: 'compact' | 'detailed'
   className?: string
@@ -36,7 +36,7 @@ function CheckIcon() {
 }
 
 export function TrustRow({ items = TRUST_ITEMS, tone = 'default', variant = 'detailed', className }: TrustRowProps) {
-  const inverse = tone === 'inverse'
+  const inverse = tone === 'deep'
 
   if (variant === 'compact') {
     return (
@@ -55,7 +55,7 @@ export function TrustRow({ items = TRUST_ITEMS, tone = 'default', variant = 'det
     <ul className={cn('grid gap-6 sm:grid-cols-2 lg:grid-cols-4', className)}>
       {items.map((item) => (
         <li key={item.label} className="flex flex-col gap-2">
-          <span className={cn(inverse ? 'text-miele-300' : 'text-text-brand')}>{item.icon ?? <CheckIcon />}</span>
+          <span className={cn(inverse ? 'text-neutral-0' : 'text-text-brand')}>{item.icon ?? <CheckIcon />}</span>
           <p className={cn('type-mono-md', inverse ? 'text-neutral-0' : 'text-text-primary')}>{item.label}</p>
           {item.detail && (
             <p className={cn('text-body-sm', inverse ? 'text-neutral-0/75' : 'text-text-secondary')}>{item.detail}</p>

@@ -6,16 +6,18 @@
  * corretti: e' il punto in cui il sistema garantisce il contrasto.
  * QUANDO NO: per raggruppare elementi dentro un blocco. Li' basta <Stack />.
  *
- * Un solo colore-gusto per composizione: due sezioni arancia e lime una sotto
- * l'altra sono il Duo, non una pagina.
+ * 3.0: le superfici scure sono colore brand, mai nere. `brand-deep` (arancia
+ * 600) e `lime-deep` (lime 700) reggono il testo corrente bianco; `arancia` e
+ * `lime` (i 500) reggono solo logo, titoli e numeri grandi.
  */
 
 import type { ReactNode } from 'react'
 import { cn } from '../lib/cn'
 
 export type SectionTone =
-  | 'page' | 'surface' | 'warm' | 'inverse'
+  | 'page' | 'surface' | 'warm'
   | 'arancia' | 'lime' | 'arancia-tint' | 'lime-tint'
+  | 'brand-deep' | 'lime-deep'
 
 export interface SectionProps {
   children: ReactNode
@@ -24,34 +26,32 @@ export interface SectionProps {
   spacing?: 'flush' | 'tight' | 'default' | 'loose'
   id?: string
   className?: string
+  /** L'etichetta del reference, per `?ref=1`. Es. "create:hero". */
+  dataRef?: string
 }
 
-/**
- * Ogni tono porta con se' il colore di testo che ci si legge sopra.
- * Sui campi colore-gusto il testo corrente e' inchiostro: il bianco e' per il
- * logo e per i titoli, e va scelto a mano con `text-text-on-flavor`.
- */
 const TONES: Record<SectionTone, string> = {
   page: 'bg-bg-page text-text-primary',
   surface: 'bg-bg-surface text-text-primary',
   warm: 'bg-bg-warm text-text-primary',
-  inverse: 'bg-bg-inverse text-text-inverse',
-  arancia: 'bg-bg-flavor-arancia text-text-on-flavor-small',
-  lime: 'bg-bg-flavor-lime text-text-on-flavor-small',
+  arancia: 'bg-bg-flavor-arancia text-text-on-flavor',
+  lime: 'bg-bg-flavor-lime text-text-on-flavor',
   'arancia-tint': 'bg-bg-flavor-arancia-tint text-text-on-flavor-small',
   'lime-tint': 'bg-bg-flavor-lime-tint text-text-on-flavor-small',
+  'brand-deep': 'bg-bg-brand-deep text-text-inverse',
+  'lime-deep': 'bg-bg-lime-deep text-text-inverse',
 }
 
 const SPACING = {
   flush: '',
   tight: 'py-12 md:py-16',
-  default: 'py-16 md:py-24',
+  default: 'py-20 md:py-section',
   loose: 'py-24 md:py-32',
 } as const
 
-export function Section({ children, tone = 'page', spacing = 'default', id, className }: SectionProps) {
+export function Section({ children, tone = 'page', spacing = 'default', id, className, dataRef }: SectionProps) {
   return (
-    <section id={id} className={cn(TONES[tone], SPACING[spacing], className)} data-tone={tone}>
+    <section id={id} className={cn('relative', TONES[tone], SPACING[spacing], className)} data-tone={tone} data-ref={dataRef}>
       {children}
     </section>
   )

@@ -26,7 +26,7 @@ export interface Shot {
   /** Il gusto che domina la scena, se c'e'. Decide il colore del segnaposto. */
   flavor?: FlavorId
   /** Il fondo: campo colore pieno, carta, o inchiostro. */
-  tone: 'flavor' | 'paper' | 'ink'
+  tone: 'flavor' | 'paper' | 'deep'
   /** Dove lo usa il sito. */
   use: string
   /** Il file, quando c'e'. Percorso da public/, es. "/media/busta-arancia-hero.png". */

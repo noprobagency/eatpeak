@@ -135,7 +135,7 @@ function Lightbox({ file, onClose }: { file: string; onClose: () => void }) {
       role="dialog"
       aria-modal="true"
       aria-label={file}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-neutral-1000/90 p-4 md:p-12"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-cacao-900/90 p-4 md:p-12"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}

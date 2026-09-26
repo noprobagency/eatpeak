@@ -91,7 +91,7 @@ function Swatch({ name, hex }: { name: string; hex: string }) {
 const CORE_COLORS = [
   { name: 'bianco', hex: palette.neutral['0'], use: 'Superfici, pieni, il logo su colore.' },
   { name: 'carta', hex: palette.neutral['50'], use: 'Il fondo del sito e della stampa.' },
-  { name: 'inchiostro', hex: palette.neutral['900'], use: 'Testo, il logo su chiaro, pulsanti scuri.' },
+  { name: 'cacao', hex: palette.cacao['900'], use: 'Il testo e il logo su chiaro. Caldo, mai nero: le superfici scure sono arancia 600.' },
   { name: 'arancia', hex: palette.arancia['500'], use: 'Colore-gusto 01 e primario del brand. Campi pieni, pulsanti.' },
   { name: 'lime', hex: palette.lime['500'], use: 'Colore-gusto 02. Campi pieni delle comunicazioni del gusto.' },
   { name: 'miele', hex: palette.miele['300'], use: 'L unico accento: bollino della dose, badge, evidenziazioni. Mai testo su chiaro.' },
@@ -102,20 +102,22 @@ const CORE_COLORS = [
 // ---------------------------------------------------------------------------
 
 const CONTRAST_PAIRS: Array<{ fg: string; bg: string; label: string; allowed: boolean; large?: boolean; note?: string }> = [
-  { fg: palette.neutral['900'], bg: palette.neutral['50'], label: 'text-primary su carta', allowed: true },
-  { fg: palette.neutral['700'], bg: palette.neutral['50'], label: 'text-secondary su carta', allowed: true },
-  { fg: palette.neutral['600'], bg: palette.neutral['0'], label: 'text-muted su bianco', allowed: true },
+  { fg: palette.cacao['900'], bg: palette.neutral['50'], label: 'text-primary (cacao 900) su carta', allowed: true },
+  { fg: palette.cacao['600'], bg: palette.neutral['50'], label: 'text-secondary (cacao 600) su carta', allowed: true },
+  { fg: palette.cacao['500'], bg: palette.neutral['0'], label: 'text-muted (cacao 500) su bianco', allowed: true },
   { fg: palette.arancia['600'], bg: palette.neutral['0'], label: 'text-brand (arancia 600) su bianco', allowed: true },
-  { fg: palette.neutral['900'], bg: palette.arancia['500'], label: 'text-on-brand (inchiostro) su arancia 500', allowed: true },
-  { fg: palette.neutral['900'], bg: palette.lime['500'], label: 'inchiostro su lime 500', allowed: true },
+  { fg: palette.neutral['0'], bg: palette.arancia['600'], label: 'bianco su arancia 600: pulsante primario, footer, toast', allowed: true },
+  { fg: palette.neutral['0'], bg: palette.lime['700'], label: 'bianco su lime 700', allowed: true },
+  { fg: palette.arancia['700'], bg: palette.neutral['0'], label: 'arancia 700 su bianco: la pillola sui campi', allowed: true },
   { fg: palette.neutral['0'], bg: palette.arancia['500'], label: 'logo bianco e testo grande su arancia 500', allowed: true, large: true, note: 'Solo logo e testo grande: 3,68:1.' },
   { fg: palette.neutral['0'], bg: palette.lime['500'], label: 'logo bianco e testo grande su lime 500', allowed: true, large: true, note: 'Solo logo e testo grande: 3,29:1.' },
-  { fg: palette.neutral['900'], bg: palette.miele['300'], label: 'inchiostro su miele 300', allowed: true },
+  { fg: palette.cacao['900'], bg: palette.miele['300'], label: 'cacao 900 su miele 300', allowed: true },
   { fg: palette.lime['700'], bg: palette.neutral['0'], label: 'lime 700 (success) su bianco', allowed: true },
-  { fg: palette.neutral['0'], bg: palette.arancia['500'], label: 'bianco come testo corrente su arancia 500', allowed: false, note: 'Vietato: sotto 4,5:1. Si usa inchiostro sul tint.' },
+  { fg: palette.neutral['0'], bg: palette.arancia['500'], label: 'bianco come testo corrente su arancia 500', allowed: false, note: 'Vietato: 3,68:1. Il testo corrente sta sul deep (arancia 600) o in cacao sul tint.' },
+  { fg: palette.cacao['900'], bg: palette.arancia['500'], label: 'cacao 900 come testo corrente su arancia 500', allowed: false, note: 'Vietato: 3,72:1. Sul 500 stanno solo logo e testo grande.' },
   { fg: palette.arancia['500'], bg: palette.neutral['0'], label: 'arancia 500 come testo su bianco', allowed: false, note: 'Vietato. Il 500 e un campo; per il testo brand il 600 o il 700.' },
   { fg: palette.miele['300'], bg: palette.neutral['0'], label: 'miele 300 come testo su bianco', allowed: false, note: 'Vietato. Il miele e un accento, non un inchiostro.' },
-  { fg: palette.neutral['500'], bg: palette.neutral['0'], label: 'neutral 500 come testo su bianco', allowed: false, note: 'Non arriva a 4,5:1. text-muted punta al 600.' },
+  { fg: palette.cacao['400'], bg: palette.neutral['0'], label: 'cacao 400 come testo su bianco', allowed: false, note: 'Non arriva a 4,5:1: e il colore degli anelli da fare. text-muted parte dal 500.' },
 ]
 
 function ContrastTable() {
@@ -253,7 +255,7 @@ export function DesignSystem() {
                 {([
                   { bg: 'bg-bg-flavor-arancia', variant: 'white', label: 'bianco su arancia 500 — primaria, il logo del packaging' },
                   { bg: 'bg-bg-flavor-lime', variant: 'white', label: 'bianco su lime 500' },
-                  { bg: 'bg-bg-page border border-border-subtle', variant: 'ink', label: 'inchiostro su carta — header del sito, documenti' },
+                  { bg: 'bg-bg-page border border-border-subtle', variant: 'ink', label: 'cacao su carta — header del sito, documenti' },
                 ] as const).map((t) => (
                   <div key={t.label} className={cn('flex flex-col gap-6 rounded-xl p-8 md:p-12', t.bg)}>
                     <Logo size={520} variant={t.variant} title="" className="h-auto w-full max-w-[520px]" />
@@ -318,7 +320,7 @@ export function DesignSystem() {
                 <div className="grid gap-4 lg:grid-cols-3">
                   <Card padding="lg" className="flex items-center justify-center"><Lockup iconSize={56} /></Card>
                   <Card padding="lg" className="flex items-center justify-center"><Lockup iconSize={56} orientation="vertical" flavor="lime" /></Card>
-                  <Card padding="lg" tone="inverse" className="flex items-center justify-center"><Lockup iconSize={56} background="dark" /></Card>
+                  <Card padding="lg" tone="brand-deep" className="flex items-center justify-center"><Lockup iconSize={56} background="dark" /></Card>
                 </div>
               </Sub>
             </Block>
@@ -431,7 +433,7 @@ export function DesignSystem() {
                   <DoseSeal value={3} unit="g" caption="per stick" />
                   <DoseSeal value={30} unit="stick" caption="30 giorni" tone="arancia" />
                   <DoseSeal value={3} unit="ingredienti" tone="lime" size={104} />
-                  <DoseSeal value={0} unit="fase di carico" tone="ink" size={104} />
+                  <DoseSeal value={0} unit="fase di carico" tone="deep" size={104} />
                 </div>
               </Sub>
               <Sub title="WeekTimeline" note="Il componente narrativo centrale. I testi descrivono il gesto e il tempo, mai un effetto.">
@@ -444,7 +446,7 @@ export function DesignSystem() {
                 <div className="grid gap-4 md:grid-cols-3">
                   <div className="h-32 rounded-lg bg-bg-flavor-arancia p-4"><DotField direction="right" stretch className="h-full w-full" /></div>
                   <div className="h-32 rounded-lg bg-bg-flavor-lime p-4"><DotField direction="up" rows={5} cols={10} stretch className="h-full w-full" /></div>
-                  <div className="h-32 rounded-lg border border-border-subtle bg-bg-surface p-4"><DotField direction="down" color="#1B1A18" opacity={[0.08, 0.35]} stretch className="h-full w-full" /></div>
+                  <div className="h-32 rounded-lg border border-border-subtle bg-bg-surface p-4"><DotField direction="down" color="#3A2A22" opacity={[0.08, 0.35]} stretch className="h-full w-full" /></div>
                 </div>
               </Sub>
             </Block>
@@ -589,7 +591,7 @@ export function DesignSystem() {
 
                 <Sub title="Button — varianti e dimensioni">
                   <Stack gap="6">
-                    {(['primary', 'secondary', 'ghost', 'link', 'ink'] as const).map((variant) => (
+                    {(['primary', 'secondary', 'ghost', 'link'] as const).map((variant) => (
                       <div key={variant} className="flex flex-wrap items-center gap-4">
                         <span className="w-24 type-mono-sm text-text-muted">{variant}</span>
                         {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -599,8 +601,8 @@ export function DesignSystem() {
                         <Button variant={variant} disabled>Aggiungi</Button>
                       </div>
                     ))}
-                    <div className="flex flex-wrap items-center gap-4 rounded-lg bg-bg-flavor-arancia p-4">
-                      <span className="w-24 type-mono-sm text-neutral-900">inverse</span>
+                    <div className="flex flex-wrap items-center gap-4 rounded-lg bg-bg-brand-deep p-4">
+                      <span className="w-24 type-mono-sm text-neutral-0">inverse</span>
                       {(['sm', 'md', 'lg'] as const).map((size) => (
                         <Button key={size} variant="inverse" size={size}>Aggiungi</Button>
                       ))}
@@ -674,7 +676,7 @@ export function DesignSystem() {
 
                 <Sub title="Card" note="I toni colore-gusto pieni portano il testo inchiostro di default.">
                   <Grid cols={4}>
-                    {(['surface', 'raised', 'warm', 'inverse', 'arancia', 'lime', 'arancia-tint', 'lime-tint'] as const).map((tone) => (
+                    {(['surface', 'raised', 'warm', 'brand-deep', 'lime-deep', 'arancia', 'lime', 'arancia-tint', 'lime-tint'] as const).map((tone) => (
                       <Card key={tone} tone={tone} elevation={tone === 'surface' ? 'md' : 'none'}>
                         <p className="type-mono-sm opacity-70">{tone}</p>
                         <p className="mt-3 text-heading-md">{CLAIMS.product.it}</p>
@@ -747,7 +749,7 @@ export function DesignSystem() {
                   <div className="-mx-6 md:-mx-[28px]">
                     <Marquee />
                     <div className="mt-3"><Marquee tone="lime" /></div>
-                    <div className="mt-3"><Marquee tone="ink" /></div>
+                    <div className="mt-3"><Marquee tone="deep" /></div>
                     <div className="mt-3"><Marquee tone="miele" /></div>
                   </div>
                 </Sub>

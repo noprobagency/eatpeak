@@ -1,9 +1,8 @@
 /**
- * <SectionHeader /> — occhiello mono + titolo display minuscolo.
+ * <SectionHeader /> — occhiello + titolo display minuscolo.
  *
  * QUANDO USARLO: in apertura di ogni sezione di pagina.
- * QUANDO NO: dentro una card. Li' basta un <h3> con la classe type-heading-lg:
- * l'occhiello mono a quella scala diventa rumore.
+ * QUANDO NO: dentro una card. Li' basta un <h3> con la classe type-heading-lg.
  *
  * ─── VINCOLO DI COMPLIANCE ───────────────────────────────────────────────
  * Se il titolo e' un beneficio generico — "il piacere di sentirsi al picco",
@@ -12,6 +11,10 @@
  * vincolo e' nei tipi: passando `genericBenefit`, `authorizedClaim` diventa
  * obbligatoria e il claim EFSA viene stampato sotto il titolo.
  * ─────────────────────────────────────────────────────────────────────────
+ *
+ * 3.0: l'occhiello e' nel font display, peso 600, sentence case, arancia 600.
+ * Niente mono, niente maiuscolo tracciato. Il titolo accetta JSX: la parola in
+ * corsivo si scrive con <Em>.
  */
 
 import type { ReactNode } from 'react'
@@ -19,17 +22,14 @@ import { cn } from '../lib/cn'
 import { authorizedClaimText, type AuthorizedClaimId, type Locale } from '../lib/compliance'
 
 interface SectionHeaderBase {
-  /** Occhiello in mono maiuscolo. Breve: due o tre parole. */
-  eyebrow?: string
+  /** Occhiello, sentence case, due o tre parole. */
+  eyebrow?: ReactNode
   title: ReactNode
   body?: ReactNode
   align?: 'left' | 'center'
-  /**
-   * `inverse` su inchiostro, `flavor` su un campo colore-gusto pieno (titolo
-   * bianco, corpo inchiostro), `default` su bianco, carta e tint.
-   */
-  tone?: 'default' | 'inverse' | 'flavor'
-  size?: 'sm' | 'md' | 'lg'
+  /** `deep` sui campi brand scuri (arancia 600, lime 700): testo bianco. */
+  tone?: 'default' | 'deep'
+  size?: 'sm' | 'md' | 'lg' | 'xl'
   locale?: Locale
   className?: string
   /** Il tag del titolo. `h2` di default; `h1` quando apre la pagina. */
@@ -42,23 +42,23 @@ export type SectionHeaderProps = SectionHeaderBase &
     | { genericBenefit?: false; authorizedClaim?: AuthorizedClaimId }
   )
 
-const TITLE_SIZE = { sm: 'type-display-sm', md: 'type-display-md', lg: 'type-display-lg' } as const
+const TITLE_SIZE = { sm: 'type-display-sm', md: 'type-display-md', lg: 'type-display-lg', xl: 'type-display-xl' } as const
 
 export function SectionHeader(props: SectionHeaderProps) {
   const {
     eyebrow, title, body, align = 'left', tone = 'default',
-    size = 'md', locale = 'it', className, authorizedClaim, as: Title = 'h2',
+    size = 'lg', locale = 'it', className, authorizedClaim, as: Title = 'h2',
   } = props
 
-  const onFlavor = tone === 'flavor'
-  const inverse = tone === 'inverse'
-  const faint = onFlavor ? 'text-neutral-900/75' : inverse ? 'text-neutral-0/70' : 'text-text-muted'
-  const dim = onFlavor ? 'text-neutral-900/85' : inverse ? 'text-neutral-0/85' : 'text-text-secondary'
-  const strong = onFlavor ? 'text-text-on-flavor' : inverse ? 'text-text-inverse' : 'text-text-primary'
+  const deep = tone === 'deep'
+  const faint = deep ? 'text-neutral-0/80' : 'text-text-muted'
+  const dim = deep ? 'text-neutral-0/90' : 'text-text-secondary'
+  const strong = deep ? 'text-text-inverse' : 'text-text-primary'
+  const eyebrowColor = deep ? 'text-neutral-0/90' : 'text-text-brand'
 
   return (
     <header className={cn('flex flex-col gap-4', align === 'center' && 'items-center text-center', className)}>
-      {eyebrow && <p className={cn('type-mono-md', faint)}>{eyebrow}</p>}
+      {eyebrow && <p className={cn('type-eyebrow', eyebrowColor)}>{eyebrow}</p>}
 
       <Title className={cn(TITLE_SIZE[size], strong)}>{title}</Title>
 
@@ -71,6 +71,14 @@ export function SectionHeader(props: SectionHeaderProps) {
       )}
     </header>
   )
+}
+
+/**
+ * <Em /> — la parola in corsivo. Al massimo una per titolo: e' quella
+ * emotiva, in Fraunces Italic. `?italic=0` la spegne (html[data-italic="0"]).
+ */
+export function Em({ children }: { children: ReactNode }) {
+  return <em className="peak-em">{children}</em>
 }
 
 export default SectionHeader

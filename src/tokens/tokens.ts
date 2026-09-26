@@ -1,5 +1,5 @@
 /**
- * peak — token tipizzati (2.0).
+ * peak — token tipizzati (3.0).
  *
  * tokens.json e' la sorgente di verita'. Questo file la ri-esporta con i tipi
  * e aggiunge le utility di lettura. tokens.css e' generato dallo stesso JSON.
@@ -17,13 +17,17 @@ export const tokens = raw
 export const arancia = raw.color.arancia
 export const lime = raw.color.lime
 export const miele = raw.color.miele
+export const cacao = raw.color.cacao
 export const neutral = raw.color.neutral
 export const errore = raw.color.errore
+/** Solo per la stampa a un colore. Non entra mai nell'interfaccia. */
+export const printInk = raw.color.print.ink
 export const stateColor = raw.color.state
 
 export type AranciaStep = keyof typeof arancia
 export type LimeStep = keyof typeof lime
 export type MieleStep = keyof typeof miele
+export type CacaoStep = keyof typeof cacao
 export type NeutralStep = keyof typeof neutral
 export type ErroreStep = keyof typeof errore
 
@@ -31,6 +35,7 @@ export const palette = {
   arancia,
   lime,
   miele,
+  cacao,
   neutral,
   errore,
 } as const
@@ -87,5 +92,7 @@ export type ShadowToken = keyof typeof shadow
 
 export const logoTokens = raw.logo
 export const packTokens = raw.pack
+export const glassTokens = raw.glass
+export const grainTokens = raw.grain
 
 export default tokens

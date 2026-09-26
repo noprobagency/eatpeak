@@ -68,9 +68,9 @@ export const LOGO_VARIANTS = {
     note: 'Primaria. Su ogni campo colore-gusto (arancia, lime) e su inchiostro. E il logo del packaging.',
   },
   ink: {
-    fill: '#1B1A18',
-    label: 'Inchiostro',
-    note: 'Su bianco e carta: header del sito, documenti, stampa a un colore.',
+    fill: '#3A2A22',
+    label: 'Cacao',
+    note: 'Su bianco e carta: header del sito e documenti. E cacao 900, non nero: il nero e uscito dall interfaccia. La stampa a un colore usa print.ink dai token.',
   },
   flavor: {
     fill: 'flavor',
@@ -151,11 +151,11 @@ export const ICON_VARIANTS = {
     label: 'Lime',
     note: 'Sulle comunicazioni del gusto 02.',
   },
-  ink: {
-    background: '#1B1A18',
+  deep: {
+    background: '#C24926',
     dots: '#FFFFFF',
-    label: 'Inchiostro',
-    note: 'Documenti, stampa a un colore, dark mode.',
+    label: 'Arancia profondo',
+    note: 'Sulle superfici brand scure: toast, badge, footer. Niente nero.',
   },
   free: {
     background: null,
@@ -214,5 +214,6 @@ export const LOGO_FORBIDDEN_USES = [
   { label: 'rotazioni', reason: 'Tranne i 90 gradi sullo stick, dove il logo corre lungo la lunghezza.' },
   { label: 'tracking modificato', reason: 'E fissato a -0.04em nel tracciato. Non esiste una prop per cambiarlo.' },
   { label: 'su foto senza campo pieno', reason: 'Il bianco pieno tiene su una tinta piatta, non su una texture.' },
-  { label: 'bianco su fondi chiari', reason: 'Non si legge. Su bianco e carta il logo e inchiostro.' },
+  { label: 'bianco su fondi chiari', reason: 'Non si legge. Su bianco e carta il logo e cacao o arancia 600.' },
+  { label: 'nero', reason: 'L inchiostro nero e uscito dall interfaccia: il logo scuro e cacao 900, la stampa a un colore usa print.ink.' },
 ] as const

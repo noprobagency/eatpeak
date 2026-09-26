@@ -1,5 +1,5 @@
 /* ============================================================
- * peak — design tokens 2.0
+ * peak — design tokens 3.0
  * FILE GENERATO. Non modificare a mano.
  * Sorgente: src/tokens/tokens.json — rigenera con `npm run tokens:build`
  * ============================================================ */
@@ -39,50 +39,58 @@
   --color-miele-800: #855717;
   --color-miele-900: #5A3A0F;
 
+  --color-cacao-50: #F6F0EB;
+  --color-cacao-100: #EDE3DB;
+  --color-cacao-200: #DCCDC2;
+  --color-cacao-300: #C4B0A3;
+  --color-cacao-400: #A08B7E;
+  --color-cacao-500: #7A6A5F;
+  --color-cacao-600: #6E5F55;
+  --color-cacao-700: #55463D;
+  --color-cacao-800: #47372E;
+  --color-cacao-900: #3A2A22;
+
   --color-neutral-0: #FFFFFF;
   --color-neutral-50: #FAF7F2;
   --color-neutral-100: #F5F4F2;
   --color-neutral-200: #E8E5E0;
   --color-neutral-300: #DFDCD7;
   --color-neutral-400: #BDB8B0;
-  --color-neutral-500: #928C84;
-  --color-neutral-600: #6E6862;
-  --color-neutral-700: #4A443E;
-  --color-neutral-800: #33312E;
-  --color-neutral-900: #1B1A18;
-  --color-neutral-1000: #0F0E0D;
 
   --color-errore-50: #FDECEA;
   --color-errore-500: #C0392B;
   --color-errore-700: #7F2418;
 
+  --color-print-ink: #1B1A18;
+
   /* --- stato --- */
   --color-success: #406D15;
   --color-warning: #D9922A;
   --color-error: #C0392B;
-  --color-info: #4A443E;
+  --color-info: #6E5F55;
 
   /* --- token semantici: SOLO questi nei componenti --- */
   --bg-page: var(--color-neutral-50);
   --bg-surface: var(--color-neutral-0);
   --bg-raised: var(--color-neutral-100);
   --bg-warm: var(--color-miele-50);
-  --bg-inverse: var(--color-neutral-900);
   --bg-brand: var(--color-arancia-500);
+  --bg-brand-deep: var(--color-arancia-600);
   --bg-brand-soft: var(--color-arancia-50);
   --bg-flavor-arancia: var(--color-arancia-500);
   --bg-flavor-arancia-tint: var(--color-arancia-50);
   --bg-flavor-lime: var(--color-lime-500);
   --bg-flavor-lime-tint: var(--color-lime-50);
+  --bg-lime-deep: var(--color-lime-700);
   --bg-danger: var(--color-errore-50);
-  --text-primary: var(--color-neutral-900);
-  --text-secondary: var(--color-neutral-700);
-  --text-muted: var(--color-neutral-600);
+  --text-primary: var(--color-cacao-900);
+  --text-secondary: var(--color-cacao-600);
+  --text-muted: var(--color-cacao-500);
   --text-inverse: var(--color-neutral-0);
   --text-brand: var(--color-arancia-600);
-  --text-on-brand: var(--color-neutral-900);
+  --text-on-brand: var(--color-neutral-0);
   --text-on-flavor: var(--color-neutral-0);
-  --text-on-flavor-small: var(--color-neutral-900);
+  --text-on-flavor-small: var(--color-cacao-900);
   --text-danger: var(--color-errore-700);
   --border-subtle: var(--color-neutral-200);
   --border-default: var(--color-neutral-300);
@@ -90,52 +98,62 @@
   --border-brand: var(--color-arancia-500);
   --border-danger: var(--color-errore-500);
   --logo-on-flavor: var(--color-neutral-0);
-  --logo-on-light: var(--color-neutral-900);
+  --logo-on-light: var(--color-cacao-900);
+  --dot-todo: var(--color-cacao-500);
+  --dot-done: var(--color-arancia-500);
+  --dot-today: var(--color-miele-300);
+  --dot-today-ring: var(--color-arancia-700);
   --focus-ring: var(--color-arancia-700);
 
   /* --- famiglie --- */
-  --font-display: 'Gabarito', system-ui, sans-serif;
+  --font-display: 'Nunito', 'Gabarito', system-ui, sans-serif;
   --font-text: 'Inter', system-ui, sans-serif;
   --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-accent: 'Fraunces', Georgia, 'Times New Roman', serif;
 
   /* --- scala tipografica --- */
-  --type-display-xl-size: 84px;
-  --type-display-xl-lh: 0.92;
-  --type-display-xl-tracking: -0.05em;
-  --type-display-lg-size: 60px;
-  --type-display-lg-lh: 0.96;
-  --type-display-lg-tracking: -0.045em;
-  --type-display-md-size: 42px;
-  --type-display-md-lh: 1.0;
-  --type-display-md-tracking: -0.04em;
-  --type-display-sm-size: 32px;
-  --type-display-sm-lh: 1.05;
-  --type-display-sm-tracking: -0.035em;
-  --type-heading-lg-size: 26px;
-  --type-heading-lg-lh: 1.15;
-  --type-heading-lg-tracking: -0.03em;
-  --type-heading-md-size: 21px;
-  --type-heading-md-lh: 1.2;
-  --type-heading-md-tracking: -0.02em;
-  --type-heading-sm-size: 18px;
+  --type-display-xl-size: clamp(48px, 7.6vw, 112px);
+  --type-display-xl-lh: 1.02;
+  --type-display-xl-tracking: -0.02em;
+  --type-display-lg-size: clamp(40px, 4.6vw, 64px);
+  --type-display-lg-lh: 1.06;
+  --type-display-lg-tracking: -0.02em;
+  --type-display-md-size: clamp(30px, 3vw, 40px);
+  --type-display-md-lh: 1.1;
+  --type-display-md-tracking: -0.02em;
+  --type-display-sm-size: 28px;
+  --type-display-sm-lh: 1.1;
+  --type-display-sm-tracking: -0.02em;
+  --type-heading-lg-size: 24px;
+  --type-heading-lg-lh: 1.2;
+  --type-heading-lg-tracking: -0.015em;
+  --type-heading-md-size: 20px;
+  --type-heading-md-lh: 1.25;
+  --type-heading-md-tracking: -0.01em;
+  --type-heading-sm-size: 17px;
   --type-heading-sm-lh: 1.3;
-  --type-heading-sm-tracking: -0.015em;
+  --type-heading-sm-tracking: 0;
+  --type-eyebrow-size: 15px;
+  --type-eyebrow-lh: 1.3;
+  --type-eyebrow-tracking: 0;
   --type-body-lg-size: 18px;
   --type-body-lg-lh: 1.6;
   --type-body-lg-tracking: 0;
-  --type-body-md-size: 16px;
+  --type-body-md-size: 17px;
   --type-body-md-lh: 1.6;
   --type-body-md-tracking: 0;
-  --type-body-sm-size: 14px;
+  --type-body-sm-size: 15px;
   --type-body-sm-lh: 1.55;
   --type-body-sm-tracking: 0;
-  --type-mono-md-size: 12px;
+  --type-mono-lg-size: clamp(40px, 4vw, 64px);
+  --type-mono-lg-lh: 1;
+  --type-mono-lg-tracking: -0.02em;
+  --type-mono-md-size: 13px;
   --type-mono-md-lh: 1.4;
-  --type-mono-md-tracking: 0.14em;
-  --type-mono-sm-size: 10px;
+  --type-mono-md-tracking: 0.06em;
+  --type-mono-sm-size: 11px;
   --type-mono-sm-lh: 1.4;
-  --type-mono-sm-tracking: 0.16em;
+  --type-mono-sm-tracking: 0.1em;
   --type-flavor-lg-size: 32px;
   --type-flavor-lg-lh: 1.15;
   --type-flavor-lg-tracking: -0.01em;
@@ -172,13 +190,13 @@
   --radius-md: 14px;
   --radius-lg: 22px;
   --radius-xl: 30px;
-  --radius-2xl: 44px;
+  --radius-2xl: 40px;
   --radius-full: 9999px;
 
   /* --- ombre --- */
-  --shadow-sm: 0 1px 2px rgba(27,26,24,.06);
-  --shadow-md: 0 4px 12px rgba(27,26,24,.08);
-  --shadow-lg: 0 12px 32px rgba(27,26,24,.10);
+  --shadow-sm: 0 1px 2px rgba(58,42,34,.06);
+  --shadow-md: 0 4px 12px rgba(58,42,34,.08);
+  --shadow-lg: 0 12px 32px rgba(58,42,34,.10);
 
   /* --- movimento --- */
   --duration-fast: 120ms;
@@ -191,6 +209,24 @@
   --container-max: 1200px;
   --media-max: 1100px;
   --container-padding: 28px;
+
+  /* --- vetro: la ricetta dell header, in token --- */
+  --glass-blur: 21px;
+  --glass-saturate: 140%;
+  --glass-from: rgba(255,255,255,0.40);
+  --glass-mid: rgba(255,255,255,0.05);
+  --glass-border: rgba(255,255,255,0.10);
+  --glass-highlight: rgba(255,255,255,0.35);
+  --glass-veil: rgba(255,255,255,0.62);
+  --glass-fallback: rgba(255,255,255,0.85);
+  --glass-shadow: 0 2px 2px rgba(0,0,0,0.10);
+  --glass-inner-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -1px 0 rgba(58,42,34,0.06);
+  --glass-radius: 14px;
+
+  /* --- grana e ritmo delle sezioni --- */
+  --grain-opacity: 0.04;
+  --section-desktop: 144px;
+  --section-mobile: 88px;
 
   /* --- packaging: proporzioni parametriche, in attesa della fustella --- */
   --pack-safe: 0.08;
@@ -206,7 +242,7 @@
   font-size: var(--type-display-xl-size);
   line-height: var(--type-display-xl-lh);
   letter-spacing: var(--type-display-xl-tracking);
-  font-weight: 900;
+  font-weight: 800;
   text-transform: lowercase;
 }
 .type-display-lg {
@@ -214,7 +250,7 @@
   font-size: var(--type-display-lg-size);
   line-height: var(--type-display-lg-lh);
   letter-spacing: var(--type-display-lg-tracking);
-  font-weight: 900;
+  font-weight: 800;
   text-transform: lowercase;
 }
 .type-display-md {
@@ -222,7 +258,7 @@
   font-size: var(--type-display-md-size);
   line-height: var(--type-display-md-lh);
   letter-spacing: var(--type-display-md-tracking);
-  font-weight: 900;
+  font-weight: 700;
   text-transform: lowercase;
 }
 .type-display-sm {
@@ -230,28 +266,35 @@
   font-size: var(--type-display-sm-size);
   line-height: var(--type-display-sm-lh);
   letter-spacing: var(--type-display-sm-tracking);
-  font-weight: 900;
+  font-weight: 700;
   text-transform: lowercase;
 }
 .type-heading-lg {
-  font-family: var(--font-text);
+  font-family: var(--font-display);
   font-size: var(--type-heading-lg-size);
   line-height: var(--type-heading-lg-lh);
   letter-spacing: var(--type-heading-lg-tracking);
-  font-weight: 600;
+  font-weight: 700;
 }
 .type-heading-md {
-  font-family: var(--font-text);
+  font-family: var(--font-display);
   font-size: var(--type-heading-md-size);
   line-height: var(--type-heading-md-lh);
   letter-spacing: var(--type-heading-md-tracking);
-  font-weight: 600;
+  font-weight: 700;
 }
 .type-heading-sm {
-  font-family: var(--font-text);
+  font-family: var(--font-display);
   font-size: var(--type-heading-sm-size);
   line-height: var(--type-heading-sm-lh);
   letter-spacing: var(--type-heading-sm-tracking);
+  font-weight: 700;
+}
+.type-eyebrow {
+  font-family: var(--font-display);
+  font-size: var(--type-eyebrow-size);
+  line-height: var(--type-eyebrow-lh);
+  letter-spacing: var(--type-eyebrow-tracking);
   font-weight: 600;
 }
 .type-body-lg {
@@ -275,13 +318,19 @@
   letter-spacing: var(--type-body-sm-tracking);
   font-weight: 400;
 }
+.type-mono-lg {
+  font-family: var(--font-mono);
+  font-size: var(--type-mono-lg-size);
+  line-height: var(--type-mono-lg-lh);
+  letter-spacing: var(--type-mono-lg-tracking);
+  font-weight: 500;
+}
 .type-mono-md {
   font-family: var(--font-mono);
   font-size: var(--type-mono-md-size);
   line-height: var(--type-mono-md-lh);
   letter-spacing: var(--type-mono-md-tracking);
   font-weight: 500;
-  text-transform: uppercase;
 }
 .type-mono-sm {
   font-family: var(--font-mono);

@@ -170,17 +170,17 @@ export function Home() {
       </Section>
 
       {/* --- come funziona ------------------------------------------------ */}
-      <Section tone="inverse" id="come-funziona">
+      <Section tone="brand-deep" id="come-funziona">
         <Container>
           <SectionHeader
             eyebrow="come funziona"
             title={CLAIMS.narrative.it.toLowerCase()}
-            tone="inverse"
+            tone="deep"
             body="La creatina non si sente al primo stick. Si accumula: i muscoli si saturano nel giro di tre o quattro settimane, e da lì in poi conta solo continuare."
             authorizedClaim="physical-performance"
           />
           <div className="mt-12">
-            <WeekTimeline tone="inverse" />
+            <WeekTimeline tone="deep" />
           </div>
         </Container>
       </Section>

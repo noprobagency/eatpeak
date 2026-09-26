@@ -42,7 +42,7 @@ export function FlavorSelector({
               className={cn(
                 'flex cursor-pointer items-center gap-3 rounded-full border py-2 pl-2 pr-5',
                 'transition-colors duration-base ease-standard',
-                selected ? 'border-neutral-900 bg-bg-surface' : 'border-border-default bg-bg-surface hover:border-border-strong',
+                selected ? 'border-arancia-600 bg-bg-surface' : 'border-border-default bg-bg-surface hover:border-border-strong',
               )}
             >
               <input

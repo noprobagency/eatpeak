@@ -47,9 +47,9 @@ export function verdict(ratio: number, large = false): ContrastVerdict {
   return 'FAIL'
 }
 
-/** Il testo che si legge meglio su un fondo dato: bianco o inchiostro. */
-export function readableOn(background: string): '#FFFFFF' | '#1B1A18' {
-  return contrastRatio(background, '#FFFFFF') >= contrastRatio(background, '#1B1A18')
+/** Il testo che si legge meglio su un fondo dato: bianco o cacao. Niente inchiostro. */
+export function readableOn(background: string): '#FFFFFF' | '#3A2A22' {
+  return contrastRatio(background, '#FFFFFF') >= contrastRatio(background, '#3A2A22')
     ? '#FFFFFF'
-    : '#1B1A18'
+    : '#3A2A22'
 }

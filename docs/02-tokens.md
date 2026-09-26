@@ -185,40 +185,37 @@ _Tabella generata da `npm run tokens:contrast`. Non modificarla a mano._
 
 | Testo | Fondo | Coppia | Rapporto | Esito | Stato nel sistema |
 |---|---|---|---|---|---|
-| `#1B1A18` | `#FAF7F2` | `text-primary` su `bg-page` (carta) | 16.27:1 | AAA | Consentita. |
-| `#1B1A18` | `#FFFFFF` | `text-primary` su `bg-surface` | 17.39:1 | AAA | Consentita. |
-| `#4A443E` | `#FAF7F2` | `text-secondary` su `bg-page` | 8.98:1 | AAA | Consentita. |
-| `#6E6862` | `#FFFFFF` | `text-muted` su `bg-surface` | 5.50:1 | AA | Consentita. |
-| `#6E6862` | `#FAF7F2` | `text-muted` su `bg-page` | 5.14:1 | AA | Consentita. |
-| `#4A443E` | `#FEFAF0` | `text-secondary` su `bg-warm` | 9.21:1 | AAA | Consentita. |
-| `#C24926` | `#FFFFFF` | `text-brand` (arancia 600) su bianco | 4.91:1 | AA | Consentita. |
-| `#A03B1E` | `#FFFFFF` | arancia 700 su bianco | 6.69:1 | AA | Consentita. |
-| `#A03B1E` | `#FAF7F2` | arancia 700 su carta | 6.26:1 | AA | Consentita. |
+| `#3A2A22` | `#FAF7F2` | `text-primary` (cacao 900) su carta | 12.81:1 | AAA | Consentita. |
+| `#3A2A22` | `#FFFFFF` | `text-primary` su bianco | 13.69:1 | AAA | Consentita. |
+| `#6E5F55` | `#FAF7F2` | `text-secondary` (cacao 600) su carta | 5.73:1 | AA | Consentita. |
+| `#7A6A5F` | `#FAF7F2` | `text-muted` (cacao 500) su carta | 4.85:1 | AA | Consentita. |
+| `#7A6A5F` | `#FFFFFF` | `text-muted` su bianco | 5.18:1 | AA | Consentita. |
+| `#3A2A22` | `#FDF2EE` | `text-on-flavor-small` (cacao 900) su tint arancia | 12.46:1 | AAA | Consentita. |
+| `#3A2A22` | `#F2F7ED` | `text-on-flavor-small` su tint lime | 12.58:1 | AAA | Consentita. |
+| `#7A6A5F` | `#FDF2EE` | cacao 500 su tint arancia | 4.71:1 | AA | Consentita. |
+| `#6E5F55` | `#FEFAF0` | `text-secondary` su `bg-warm` | 5.87:1 | AA | Consentita. |
+| `#3A2A22` | `#FCD589` | cacao 900 su miele 300 (accento, badge) | 9.79:1 | AAA | Consentita. |
+| `#C24926` | `#FFFFFF` | `text-brand` (arancia 600) su bianco — occhielli | 4.91:1 | AA | Consentita. |
+| `#C24926` | `#FAF7F2` | arancia 600 su carta — occhielli | 4.60:1 | AA | Consentita. |
+| `#A03B1E` | `#FFFFFF` | arancia 700 su bianco — pillola bianca sui campi | 6.69:1 | AA | Consentita. |
 | `#A03B1E` | `#FDF2EE` | arancia 700 su arancia 50 (badge) | 6.09:1 | AA | Consentita. |
 | `#406D15` | `#FFFFFF` | lime 700 (`success`) su bianco | 6.15:1 | AA | Consentita. |
 | `#406D15` | `#F2F7ED` | lime 700 su lime 50 (badge) | 5.65:1 | AA | Consentita. |
+| `#FFFFFF` | `#C24926` | **bianco su arancia 600** — pulsante primario, footer, toast, `bg-brand-deep` | 4.91:1 | AA | Consentita. |
+| `#FFFFFF` | `#406D15` | **bianco su lime 700** — `bg-lime-deep` | 6.15:1 | AA | Consentita. |
+| `#FFFFFF` | `#A03B1E` | bianco su arancia 700 (hover del primario) | 6.69:1 | AA | Consentita. |
 | `#FFFFFF` | `#E4572E` | **logo bianco** e testo grande su arancia 500 | 3.68:1 | AA | Consentita solo per logo e testo grande. Solo logo, titoli display e numeri grandi (>= 24px bold o >= 32px regular). |
-| `#FFFFFF` | `#5E9E1F` | **logo bianco** e testo grande su lime 500 | 3.29:1 | AA | Consentita solo per logo e testo grande. Solo logo, titoli display e numeri grandi (>= 24px bold o >= 32px regular). |
-| `#FFFFFF` | `#1B1A18` | `logo-on-flavor` bianco su inchiostro | 17.39:1 | AAA | Consentita. |
-| `#1B1A18` | `#E4572E` | `text-on-brand` (inchiostro) su arancia 500 — pulsanti, badge | 4.72:1 | AA | Consentita. |
-| `#1B1A18` | `#5E9E1F` | inchiostro su lime 500 | 5.29:1 | AA | Consentita. |
-| `#1B1A18` | `#FDF2EE` | `text-on-flavor-small` su tint arancia | 15.83:1 | AAA | Consentita. |
-| `#1B1A18` | `#F2F7ED` | `text-on-flavor-small` su tint lime | 15.98:1 | AAA | Consentita. |
-| `#1B1A18` | `#FCD589` | inchiostro su miele 300 (accento) | 12.44:1 | AAA | Consentita. |
-| `#FFFFFF` | `#1B1A18` | `text-inverse` su `bg-inverse` | 17.39:1 | AAA | Consentita. |
-| `#E4572E` | `#1B1A18` | arancia 500 su inchiostro | 4.72:1 | AA | Consentita. |
-| `#5E9E1F` | `#1B1A18` | lime 500 su inchiostro | 5.29:1 | AA | Consentita. |
-| `#FCD589` | `#1B1A18` | miele 300 su inchiostro | 12.44:1 | AAA | Consentita. |
+| `#FFFFFF` | `#5E9E1F` | **logo bianco** e testo grande su lime 500 | 3.29:1 | AA | Consentita solo per logo e testo grande. Solo logo, titoli display e numeri grandi. |
+| `#3A2A22` | `#F6EFEA` | cacao 900 sul vetro con velo (bianco 62% su arancia) | 12.03:1 | AAA | Consentita. |
 | `#C0392B` | `#FFFFFF` | `error` su bianco | 5.44:1 | AA | Consentita. |
 | `#855717` | `#FDF2DC` | miele 800 su miele 100 (badge warning) | 5.61:1 | AA | Consentita. |
-| `#7F2418` | `#FDECEA` | `text-danger` su `bg-danger` (blocco di avviso) | 8.47:1 | AAA | Consentita. |
-| `#7F2418` | `#FFFFFF` | `text-danger` su bianco | 9.69:1 | AAA | Consentita. |
-| `#FFFFFF` | `#E4572E` | bianco come **testo corrente** su arancia 500 | 3.68:1 | AA | **Vietata.** Si ferma a 3,68:1. Il testo corrente su un campo colore e vietato: va inchiostro sul tint del gusto. Il bianco resta per il logo e il testo grande. |
-| `#FFFFFF` | `#5E9E1F` | bianco come **testo corrente** su lime 500 | 3.29:1 | AA | **Vietata.** Si ferma a 3,29:1. Stessa regola: inchiostro sul tint, bianco solo per logo e testo grande. |
-| `#E4572E` | `#FFFFFF` | arancia 500 come **testo** su bianco | 3.68:1 | FAIL | **Vietata.** Per il testo brand su fondo chiaro si usa il 600 o il 700, mai il 500. Il 500 e un campo, non un inchiostro. |
-| `#5E9E1F` | `#FFFFFF` | lime 500 come **testo** su bianco | 3.29:1 | FAIL | **Vietata.** Stessa regola dell arancia: il 500 e un campo. Per il testo verde si usa lime 700. |
-| `#FCD589` | `#FFFFFF` | miele 300 come **testo** su bianco | 1.40:1 | FAIL | **Vietata.** Il miele e l accento: vive come riempimento, sigillo o badge. Mai come testo su fondo chiaro. |
-| `#928C84` | `#FFFFFF` | neutral 500 come **testo** su bianco | 3.33:1 | FAIL | **Vietata.** Non raggiunge 4,5:1. E il motivo per cui `--text-muted` punta al 600 e non al 500. |
+| `#7F2418` | `#FDECEA` | `text-danger` su `bg-danger` | 8.47:1 | AAA | Consentita. |
+| `#FFFFFF` | `#E4572E` | bianco come **testo corrente** su arancia 500 | 3.68:1 | AA | **Vietata.** Si ferma a 3,68:1. Il testo corrente sta sul deep (arancia 600) o, in cacao, sul tint. |
+| `#3A2A22` | `#E4572E` | cacao 900 come **testo corrente** su arancia 500 | 3.72:1 | AA | **Vietata.** Si ferma a 3,72:1: nemmeno il cacao regge sul 500. Sul 500 stanno solo logo e testo grande. |
+| `#FFFFFF` | `#5E9E1F` | bianco come **testo corrente** su lime 500 | 3.29:1 | AA | **Vietata.** Si ferma a 3,29:1. Il testo corrente sta su lime 700. |
+| `#E4572E` | `#FFFFFF` | arancia 500 come **testo** su bianco | 3.68:1 | FAIL | **Vietata.** Per il testo brand su fondo chiaro si usa il 600 o il 700. Il 500 e un campo, non un inchiostro. |
+| `#FCD589` | `#FFFFFF` | miele 300 come **testo** su bianco | 1.40:1 | FAIL | **Vietata.** Il miele e l accento: bollino, badge, il punto di oggi. Mai come testo su fondo chiaro. |
+| `#A08B7E` | `#FFFFFF` | cacao 400 come **testo** su bianco | 3.24:1 | FAIL | **Vietata.** Non raggiunge 4,5:1: e il colore degli anelli da fare, non un inchiostro. text-muted parte dal 500. |
 
 <!-- CONTRAST:END -->
 

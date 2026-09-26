@@ -19,7 +19,7 @@ import { WEEK_TIMELINE } from '../lib/copy'
 
 export interface WeekTimelineProps {
   steps?: typeof WEEK_TIMELINE
-  tone?: 'default' | 'inverse'
+  tone?: 'default' | 'deep'
   /** Evidenzia una settimana. Utile nelle creativita' e nelle email. */
   highlight?: number
   className?: string
@@ -29,7 +29,7 @@ export interface WeekTimelineProps {
 const FILL = [0.15, 0.45, 1, 1]
 
 export function WeekTimeline({ steps = WEEK_TIMELINE, tone = 'default', highlight, className }: WeekTimelineProps) {
-  const inverse = tone === 'inverse'
+  const inverse = tone === 'deep'
 
   return (
     <ol className={cn('grid gap-6 sm:grid-cols-2 lg:grid-cols-4', className)}>

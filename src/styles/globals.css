@@ -50,11 +50,35 @@
 
   ::selection {
     background: var(--color-miele-300);
-    color: var(--color-neutral-900);
+    color: var(--color-cacao-900);
   }
 }
 
 @layer components {
+  /* La parola in corsivo dei titoli: Fraunces Italic. `?italic=0` la spegne. */
+  .peak-em {
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-weight: 500;
+  }
+  html[data-italic='0'] .peak-em {
+    font-family: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+  }
+
+  /* La grana dei campi colore: multiply al 4%, spenta dove pesa o disturba. */
+  .peak-grain {
+    mix-blend-mode: multiply;
+    opacity: var(--grain-opacity);
+    z-index: 0;
+  }
+  @media (prefers-reduced-transparency: reduce), (max-width: 479px) {
+    .peak-grain {
+      display: none;
+    }
+  }
+
   /* Contenuto per soli screen reader. Serve al Marquee, che altrimenti
      verrebbe letto come testo scorrevole e duplicato. */
   .sr-only {

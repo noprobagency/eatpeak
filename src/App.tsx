@@ -54,7 +54,7 @@ export function App() {
     <>
       <a
         href="#contenuto"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-bg-inverse focus:px-5 focus:py-3 focus:text-text-inverse"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-bg-brand-deep focus:px-5 focus:py-3 focus:text-text-inverse"
       >
         Salta al contenuto
       </a>

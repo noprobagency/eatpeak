@@ -42,14 +42,14 @@ export function MediaPlaceholder({ shot, compact = false, radius = 'lg', classNa
 
   const flavor = shot.flavor ? flavorById(shot.flavor) : null
   const onFlavor = shot.tone === 'flavor' && flavor
-  const onInk = shot.tone === 'ink'
+  const onInk = shot.tone === 'deep'
 
   return (
     <figure
       className={cn(
         'relative m-0 flex flex-col justify-between overflow-hidden p-5',
         RADIUS[radius],
-        onFlavor ? flavor.colorToken : onInk ? 'bg-bg-inverse' : 'border border-dashed border-border-strong bg-bg-raised',
+        onFlavor ? flavor.colorToken : onInk ? 'bg-bg-brand-deep' : 'border border-dashed border-border-strong bg-bg-raised',
         className,
       )}
       style={style}
@@ -61,7 +61,7 @@ export function MediaPlaceholder({ shot, compact = false, radius = 'lg', classNa
         rows={3}
         cols={10}
         direction="right"
-        color={onFlavor || onInk ? '#FFFFFF' : '#1B1A18'}
+        color={onFlavor || onInk ? '#FFFFFF' : '#3A2A22'}
         opacity={onFlavor || onInk ? [0.1, 0.28] : [0.05, 0.14]}
         stretch
         className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 w-full"
@@ -75,7 +75,7 @@ export function MediaPlaceholder({ shot, compact = false, radius = 'lg', classNa
       </div>
 
       <div className="relative flex flex-1 items-center justify-center py-4">
-        <Icon variant="free" color={onFlavor || onInk ? 'white' : 'ink'} size={compact ? 40 : 56} title="" />
+        <Icon variant="free" color={onFlavor || onInk ? 'white' : 'cacao'} size={compact ? 40 : 56} title="" />
       </div>
 
       <div className="relative flex flex-col gap-1">

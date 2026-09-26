@@ -38,8 +38,10 @@ export default {
       arancia: t.color.arancia,
       lime: t.color.lime,
       miele: t.color.miele,
+      cacao: t.color.cacao,
       errore: t.color.errore,
       neutral: t.color.neutral,
+      // print.ink resta fuori di proposito: l inchiostro non e una classe.
       success: t.color.state.success,
       warning: t.color.state.warning,
       error: t.color.state.error,
@@ -76,6 +78,10 @@ export default {
       },
       transitionTimingFunction: {
         standard: t.motion.easing.standard,
+      },
+      padding: {
+        section: t.section.desktop,
+        'section-mobile': t.section.mobile,
       },
       maxWidth: {
         container: t.layout.containerMax,

@@ -8,7 +8,7 @@
  *
  * Lo stack e' un live region: gli screen reader annunciano il messaggio senza
  * peak-compliance-ignore focus — focus da tastiera, non un claim
- * spostare il focus.
+ * spostare il focus. I fondi sono colore brand, mai neri.
  */
 
 import { useEffect, type ReactNode } from 'react'
@@ -27,9 +27,9 @@ export interface ToastProps {
 }
 
 const TONES: Record<ToastTone, string> = {
-  default: 'bg-bg-inverse text-text-inverse',
-  success: 'bg-success text-neutral-0',
-  warning: 'bg-miele-300 text-neutral-900',
+  default: 'bg-bg-brand-deep text-text-inverse',
+  success: 'bg-bg-lime-deep text-neutral-0',
+  warning: 'bg-miele-300 text-cacao-900',
   error: 'bg-error text-neutral-0',
 }
 
@@ -41,13 +41,7 @@ export function Toast({ children, tone = 'default', onDismiss, duration = 4000, 
   }, [duration, onDismiss])
 
   return (
-    <div
-      className={cn(
-        'flex items-start gap-4 rounded-lg px-5 py-4 shadow-lg animate-slide-up',
-        TONES[tone],
-        className,
-      )}
-    >
+    <div className={cn('flex items-start gap-4 rounded-lg px-5 py-4 shadow-lg animate-slide-up', TONES[tone], className)}>
       <div className="flex-1 text-body-sm">{children}</div>
       {onDismiss && (
         <button

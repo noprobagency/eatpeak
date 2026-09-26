@@ -9,8 +9,11 @@
  * generico ai sensi dell'articolo 10(3). Se lo usi come headline, la prop
  * `authorizedClaim` e' obbligatoria e il claim EFSA viene stampato nella stessa
  * schermata. La brand line "La creatina, evoluta." non lo e': e' descrittiva.
- * Vedi docs/06-compliance.md.
  * ─────────────────────────────────────────────────────────────────────────
+ *
+ * 3.0: due regimi di colore. `default` su carta e bianco (testo cacao), `deep`
+ * sui campi brand scuri (arancia 600, lime 700: testo bianco). L'occhiello e'
+ * nel font display, sentence case, mai in mono.
  */
 
 import type { ReactNode } from 'react'
@@ -18,18 +21,14 @@ import { cn } from '../lib/cn'
 import { authorizedClaimText, type AuthorizedClaimId, type Locale } from '../lib/compliance'
 
 interface HeroBase {
-  eyebrow?: string
+  eyebrow?: ReactNode
   /** Contenuto della colonna visiva: pack, foto, <BustaPack />. */
   visual?: ReactNode
   body?: ReactNode
   actions?: ReactNode
   /** Riga di prove sotto le azioni. In genere <TrustRow /> o un <Badge />. */
   proof?: ReactNode
-  /**
-   * Il tono del fondo. `flavor` e' un campo colore-gusto: il titolo va bianco
-   * (testo grande), il corpo resta inchiostro.
-   */
-  tone?: 'page' | 'warm' | 'flavor' | 'inverse'
+  tone?: 'default' | 'deep'
   locale?: Locale
   className?: string
 }
@@ -43,23 +42,23 @@ export type HeroProps = HeroBase &
 export function Hero(props: HeroProps) {
   const {
     eyebrow, headline, body, actions, proof, visual,
-    tone = 'page', locale = 'it', className, authorizedClaim,
+    tone = 'default', locale = 'it', className, authorizedClaim,
   } = props
 
-  const onFlavor = tone === 'flavor'
-  const inverse = tone === 'inverse'
-  const dim = onFlavor ? 'text-neutral-900/85' : inverse ? 'text-neutral-0/85' : 'text-text-secondary'
-  const faint = onFlavor ? 'text-neutral-900/75' : inverse ? 'text-neutral-0/70' : 'text-text-muted'
-  const strong = onFlavor ? 'text-text-on-flavor' : inverse ? 'text-text-inverse' : 'text-text-primary'
+  const deep = tone === 'deep'
+  const dim = deep ? 'text-neutral-0/90' : 'text-text-secondary'
+  const faint = deep ? 'text-neutral-0/80' : 'text-text-muted'
+  const strong = deep ? 'text-text-inverse' : 'text-text-primary'
+  const eyebrowColor = deep ? 'text-neutral-0/90' : 'text-text-brand'
 
   return (
     <div className={cn('grid items-center gap-12 lg:grid-cols-2 lg:gap-16', className)}>
       <div className="flex flex-col gap-6">
-        {eyebrow && <p className={cn('type-mono-md', faint)}>{eyebrow}</p>}
+        {eyebrow && <p className={cn('type-eyebrow', eyebrowColor)}>{eyebrow}</p>}
 
-        <h1 className={cn('type-display-lg xl:text-display-xl', strong)}>{headline}</h1>
+        <h1 className={cn('type-display-xl', strong)}>{headline}</h1>
 
-        {body && <div className={cn('max-w-prose text-body-lg', dim)}>{body}</div>}
+        {body && <div className={cn('max-w-prose text-body-lg md:text-heading-md md:font-normal', dim)}>{body}</div>}
 
         {authorizedClaim && (
           <p className={cn('max-w-prose text-body-sm', faint)} data-compliance="authorized-claim">

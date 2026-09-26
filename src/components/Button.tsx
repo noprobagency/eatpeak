@@ -8,15 +8,14 @@
  * Il raggio e' sempre `full`: nel sistema di peak i pulsanti sono pillole,
  * senza eccezioni. Non esiste una prop per cambiarlo, di proposito.
  *
- * Il primario e' arancia 500 con testo inchiostro (4,72:1): il bianco su
- * arancia si ferma a 3,68:1 e a questa misura non passa. Sui campi colore e su
- * inchiostro si usa `inverse`, la pillola bianca.
+ * 3.0: il primario e' arancia 600 con testo bianco (4,91:1). Sui campi colore
+ * si usa `inverse`, la pillola bianca con testo arancia 700. Niente nero.
  */
 
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
 import { cn } from '../lib/cn'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'link' | 'inverse' | 'ink'
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'link' | 'inverse'
 export type ButtonSize = 'sm' | 'md' | 'lg'
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
@@ -35,25 +34,21 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
 
 const VARIANTS: Record<ButtonVariant, string> = {
   primary:
-    'bg-bg-brand text-text-on-brand border border-transparent ' +
-    'hover:bg-arancia-400 active:bg-arancia-300',
+    'bg-bg-brand-deep text-text-on-brand border border-transparent ' +
+    'hover:bg-arancia-700 active:bg-arancia-800',
   secondary:
     'bg-transparent text-text-primary border border-border-strong ' +
-    'hover:border-neutral-900 active:bg-bg-raised',
+    'hover:border-arancia-600 hover:text-text-brand active:bg-bg-brand-soft',
   ghost:
     'bg-transparent text-text-primary border border-transparent ' +
     'hover:bg-bg-raised active:bg-neutral-200',
   link:
     'bg-transparent text-text-brand border border-transparent underline underline-offset-4 ' +
     'px-0 hover:text-arancia-700 active:text-arancia-800',
-  /** La pillola bianca: sui campi colore-gusto e su inchiostro. */
+  /** La pillola bianca: sui campi colore. Testo arancia 700 (6,69:1). */
   inverse:
-    'bg-neutral-0 text-neutral-900 border border-transparent ' +
-    'hover:bg-neutral-100 active:bg-neutral-200',
-  /** La pillola inchiostro: su bianco e carta, quando l arancia e gia ovunque. */
-  ink:
-    'bg-bg-inverse text-text-inverse border border-transparent ' +
-    'hover:bg-neutral-800 active:bg-neutral-700',
+    'bg-neutral-0 text-arancia-700 border border-transparent ' +
+    'hover:bg-arancia-50 active:bg-arancia-100',
 }
 
 const SIZES: Record<ButtonSize, string> = {
@@ -81,7 +76,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   const isDisabled = disabled || loading
 
   const classes = cn(
-    'inline-flex items-center justify-center font-text font-medium',
+    'inline-flex items-center justify-center font-display font-bold',
     'rounded-full transition-colors duration-base ease-standard',
     'disabled:cursor-not-allowed disabled:opacity-45',
     variant !== 'link' && SIZES[size],

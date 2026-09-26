@@ -62,7 +62,7 @@ export function PriceTiers({
                 'flex cursor-pointer items-start gap-4 rounded-lg border p-5',
                 'transition-colors duration-base ease-standard',
                 selected
-                  ? 'border-neutral-900 bg-bg-surface shadow-sm'
+                  ? 'border-arancia-600 bg-bg-surface shadow-sm'
                   : 'border-border-default bg-bg-surface hover:border-border-strong',
               )}
               data-preselected={tier.preselected || undefined}
@@ -81,7 +81,7 @@ export function PriceTiers({
                 aria-hidden="true"
                 className={cn(
                   'mt-1 flex h-5 w-5 shrink-0 rounded-full border transition-colors duration-fast',
-                  selected ? 'border-[6px] border-neutral-900' : 'border-border-strong bg-bg-surface',
+                  selected ? 'border-[6px] border-arancia-600' : 'border-border-strong bg-bg-surface',
                 )}
               />
 

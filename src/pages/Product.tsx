@@ -82,7 +82,7 @@ export function Product() {
                   className={cn(
                     'flex aspect-[4/5] items-center justify-center rounded-md border p-2 transition-colors duration-base',
                     f.tintToken,
-                    view === 'render' ? 'border-neutral-900' : 'border-border-subtle hover:border-border-strong',
+                    view === 'render' ? 'border-arancia-600' : 'border-border-subtle hover:border-border-strong',
                   )}
                 >
                   <BustaPack flavor={flavor} width={40} title={`Render della busta ${flavorLabel(f)}`} />
@@ -96,7 +96,7 @@ export function Product() {
                     onClick={() => setView(id)}
                     className={cn(
                       'overflow-hidden rounded-md border transition-colors duration-base',
-                      view === id ? 'border-neutral-900' : 'border-border-subtle hover:border-border-strong',
+                      view === id ? 'border-arancia-600' : 'border-border-subtle hover:border-border-strong',
                     )}
                   >
                     <MediaPlaceholder shot={shotById(id)} compact radius="none" className="!p-2" />

@@ -15,8 +15,8 @@
  * diventa una riga fissa che va a capo.
  * ─────────────────────────────────────────────────────────────────────────
  *
- * Il mono a 12px sui campi colore-gusto e' testo piccolo: quindi inchiostro,
- * non bianco. Il bianco sta sulla banda inchiostro.
+ * Il mono sui campi colore-gusto e' testo piccolo: quindi cacao, non bianco.
+ * Il bianco sta sulla banda `deep` (arancia 600).
  */
 
 import { useEffect, useState } from 'react'
@@ -25,7 +25,7 @@ import { MARQUEE_ITEMS } from '../lib/copy'
 
 export interface MarqueeProps {
   items?: readonly string[]
-  tone?: 'arancia' | 'lime' | 'ink' | 'miele'
+  tone?: 'arancia' | 'lime' | 'deep' | 'miele'
   /** Il separatore tra una voce e l'altra. */
   separator?: string
   /** Ferma lo scorrimento quando il puntatore entra nella banda. */
@@ -36,8 +36,8 @@ export interface MarqueeProps {
 const TONES = {
   arancia: 'bg-bg-flavor-arancia text-text-on-flavor-small',
   lime: 'bg-bg-flavor-lime text-text-on-flavor-small',
-  ink: 'bg-bg-inverse text-text-inverse',
-  miele: 'bg-miele-300 text-neutral-900',
+  deep: 'bg-bg-brand-deep text-text-inverse',
+  miele: 'bg-miele-300 text-cacao-900',
 } as const
 
 function usePrefersReducedMotion(): boolean {

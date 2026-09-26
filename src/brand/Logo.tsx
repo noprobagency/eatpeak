@@ -8,8 +8,9 @@
  *
  * E' un tracciato, non un testo: si vede uguale ovunque, senza font. Un solo
  * colore, pieno, senza contorno. Tre varianti: bianco (primaria, su ogni campo
- * colore-gusto e su inchiostro), inchiostro (su bianco e carta), colore-gusto
- * (raro, solo su chiaro e solo sopra i 48px di altezza).
+ * colore), `ink` che dalla 3.0 e' cacao 900 (su bianco e carta: l'inchiostro
+ * nero e' uscito dall'interfaccia), colore-gusto (raro, solo su chiaro e solo
+ * sopra i 48px di altezza).
  *
  * `background` sceglie la variante da solo: flavor/dark -> bianco, light ->
  * inchiostro. Vedi docs/03-logo.md.
@@ -87,7 +88,7 @@ export function Logo({
       )
     }
     if (resolvedVariant === 'white' && background === 'light') {
-      console.warn('[peak/Logo] Logo bianco su fondo chiaro: non si legge. Usa "ink".')
+      console.warn('[peak/Logo] Logo bianco su fondo chiaro: non si legge. Usa "ink" (cacao).')
     }
   }
 

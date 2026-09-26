@@ -21,16 +21,16 @@ export interface DoseSealProps {
   /** Riga aggiuntiva sotto l'unita'. Tienila corta. */
   caption?: string
   size?: number
-  tone?: 'miele' | 'arancia' | 'lime' | 'ink' | 'white'
+  tone?: 'miele' | 'arancia' | 'lime' | 'deep' | 'white'
   className?: string
 }
 
 const TONES = {
-  miele: 'bg-miele-300 text-neutral-900',
+  miele: 'bg-miele-300 text-cacao-900',
   arancia: 'bg-bg-flavor-arancia text-text-on-flavor',
   lime: 'bg-bg-flavor-lime text-text-on-flavor',
-  ink: 'bg-bg-inverse text-text-inverse',
-  white: 'bg-neutral-0 text-neutral-900',
+  deep: 'bg-bg-brand-deep text-text-inverse',
+  white: 'bg-neutral-0 text-cacao-900',
 } as const
 
 export function DoseSeal({ value, unit = 'g', caption, size = 128, tone = 'miele', className }: DoseSealProps) {

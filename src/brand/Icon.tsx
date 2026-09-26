@@ -11,7 +11,8 @@
  * marchio; se ti serve un pittogramma per "tre" o "ingredienti", disegnane un
  * altro — riusare il marchio come icona lo svaluta.
  *
- * Sotto i 24px resi i punti passano a r=13: a 12 si fondono.
+ * Sotto i 24px resi i punti passano a r=13: a 12 si fondono. La variante
+ * geometrica attiva e' SYMBOL_VARIANT in paths.ts (vedi #/lab/simbolo).
  */
 
 import type { CSSProperties } from 'react'
@@ -32,14 +33,14 @@ export interface IconProps {
   size?: number
   variant?: IconVariant
   /** Per la variante `free`: il colore dei punti. Un gusto, o inchiostro. */
-  color?: FlavorId | 'ink' | 'white'
+  color?: FlavorId | 'cacao' | 'white'
   /** Testo alternativo. Se vuoto l'icona diventa decorativa (aria-hidden). */
   title?: string
   className?: string
   style?: CSSProperties
 }
 
-const FREE_COLORS: Record<'ink' | 'white', string> = { ink: '#1B1A18', white: '#FFFFFF' }
+const FREE_COLORS: Record<'cacao' | 'white', string> = { cacao: '#3A2A22', white: '#FFFFFF' }
 
 export function Icon({
   size = 64,
@@ -57,7 +58,7 @@ export function Icon({
 
   const dots =
     spec.dots === 'flavor'
-      ? color === 'ink' || color === 'white'
+      ? color === 'cacao' || color === 'white'
         ? FREE_COLORS[color]
         : flavorHex(color)
       : spec.dots
