@@ -12,6 +12,7 @@
 
 import wordmark from './wordmark.json'
 import { FLAVORS, type FlavorId } from '../lib/copy'
+import { candidate, useFontLab } from '../lib/fontlab'
 
 // ---------------------------------------------------------------------------
 // Il wordmark
@@ -46,9 +47,48 @@ export const FLAVOR_VARIANT_MIN_HEIGHT_PX = 48
 export const HEADER_LOGO_WIDTH = { desktop: 96, mobile: 80 } as const
 
 /** Altezza resa per una larghezza data: il viewBox e' stretto sull'inchiostro. */
-export function wordmarkHeightFor(widthPx: number): number {
-  return (widthPx * WORDMARK_VIEWBOX.height) / WORDMARK_VIEWBOX.width
+export function wordmarkHeightFor(widthPx: number, viewBox: { width: number; height: number } = WORDMARK_VIEWBOX): number {
+  return (widthPx * viewBox.height) / viewBox.width
 }
+
+// ---------------------------------------------------------------------------
+// Il laboratorio font (3.0): un tracciato per candidato
+// ---------------------------------------------------------------------------
+
+export interface WordmarkSpec {
+  path: string
+  viewBox: { width: number; height: number }
+  clearspaceRatio: number
+  eHeight: number
+  fontId: string
+  font: string
+}
+
+const CANDIDATE_WORDMARKS = import.meta.glob<{ default: { path: string; viewBox: { width: number; height: number }; clearspaceRatio: number; eHeight: number; $meta: { font: string } } }>(
+  './wordmarks/*.json',
+  { eager: true },
+)
+
+/** Il tracciato di un candidato; senza corrispondenza torna quello ufficiale. */
+export function wordmarkFor(fontId: string): WordmarkSpec {
+  const hit = CANDIDATE_WORDMARKS[`./wordmarks/${fontId}.json`]?.default
+  if (!hit) {
+    return { path: WORDMARK_PATH, viewBox: WORDMARK_VIEWBOX, clearspaceRatio: CLEARSPACE_RATIO, eHeight: wordmark.eHeight, fontId: 'gabarito-900', font: wordmark.$meta.font }
+  }
+  return { path: hit.path, viewBox: hit.viewBox, clearspaceRatio: hit.clearspaceRatio, eHeight: hit.eHeight, fontId, font: hit.$meta.font }
+}
+
+/**
+ * Il wordmark del font attivo nel laboratorio (`?font=`). Reattivo.
+ * Con `override` si forza un candidato: serve alla pagina #/lab/font, che
+ * mostra tutti i font insieme.
+ */
+export function useWordmark(override?: string): WordmarkSpec {
+  const { font } = useFontLab()
+  return wordmarkFor(candidate(override ?? font).id)
+}
+
+export const WORDMARK_FONT_IDS = Object.keys(CANDIDATE_WORDMARKS).map((k) => k.replace('./wordmarks/', '').replace('.json', ''))
 
 // ---------------------------------------------------------------------------
 // Varianti colore del wordmark: tre, piene, senza contorno

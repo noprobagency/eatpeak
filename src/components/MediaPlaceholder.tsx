@@ -68,10 +68,10 @@ export function MediaPlaceholder({ shot, compact = false, radius = 'lg', classNa
       />
 
       <div className="relative flex items-start justify-between gap-3">
-        <span className={cn('type-mono-sm', onFlavor || onInk ? 'text-neutral-0/80' : 'text-text-muted')}>
-          prototipo in arrivo · higgsfield
+        <span className={cn('type-label', onFlavor || onInk ? 'text-neutral-0/80' : 'text-text-muted')}>
+          Prototipo in arrivo · Higgsfield
         </span>
-        <span className={cn('type-mono-sm', onFlavor || onInk ? 'text-neutral-0/80' : 'text-text-muted')}>{shot.ratio}</span>
+        <span className={cn('font-mono text-mono-sm', onFlavor || onInk ? 'text-neutral-0/80' : 'text-text-muted')}>{shot.ratio}</span>
       </div>
 
       <div className="relative flex flex-1 items-center justify-center py-4">
@@ -79,7 +79,7 @@ export function MediaPlaceholder({ shot, compact = false, radius = 'lg', classNa
       </div>
 
       <div className="relative flex flex-col gap-1">
-        <p className={cn('type-mono-md', onFlavor || onInk ? 'text-neutral-0' : 'text-text-primary')}>{shot.title}</p>
+        <p className={cn('text-body-sm font-display font-bold', onFlavor || onInk ? 'text-neutral-0' : 'text-text-primary')}>{shot.title}</p>
         {!compact && (
           <p className={cn('text-body-sm', onFlavor || onInk ? 'text-neutral-0/85' : 'text-text-secondary')}>{shot.brief}</p>
         )}

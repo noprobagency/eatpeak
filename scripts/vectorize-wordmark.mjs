@@ -5,6 +5,8 @@
  *   npm run brand:vectorize -- --download         lo scarica da Google Fonts se manca
  *   npm run brand:vectorize -- --tracking=-0.04   prova un tracking diverso
  *   npm run brand:vectorize -- --compare          stampa -0.03 / -0.04 / -0.05 affiancati
+ *   npm run brand:vectorize -- --font-id=nunito --download   un candidato del laboratorio font
+ *   npm run brand:vectorize -- --all              tutti i candidati, in src/brand/wordmarks/
  *
  * Perche' esiste. Nella 1.0 il logo era testo SVG e dipendeva da un font
  * installato: senza, si vedeva il fallback. Nella 2.0 il wordmark e' un
@@ -34,11 +36,41 @@ const WORD = 'peak'
 const FONT_SIZE = 100
 /** Tracking di default, in em. Vedi docs/03-logo.md per la scelta. */
 const TRACKING_EM = Number(flag('tracking', -0.04))
-const FONT_PATH = resolve(root, flag('font', 'assets/fonts/Gabarito-900.ttf'))
 
-// Google Fonts serve un TTF statico (istanza 900) a un browser che non
-// dichiara il supporto ai font variabili: e' quello che serve a opentype.js.
-const GOOGLE_CSS = 'https://fonts.googleapis.com/css2?family=Gabarito:wght@900'
+/**
+ * I candidati del laboratorio font (3.0): stessa tabella di src/lib/fontlab.ts.
+ * `--font-id=<id>` scarica il TTF statico del peso del wordmark e scrive
+ * src/brand/wordmarks/<id>.json. Senza flag si genera il wordmark ufficiale
+ * (Gabarito 900) in src/brand/wordmark.json, come nella 2.0.
+ */
+const CANDIDATES = {
+  gabarito: { family: 'Gabarito', weight: 800 },
+  nunito: { family: 'Nunito', weight: 900 },
+  mplus: { family: 'M PLUS Rounded 1c', weight: 800 },
+  fredoka: { family: 'Fredoka', weight: 600 },
+  baloo: { family: 'Baloo 2', weight: 800 },
+  rubik: { family: 'Rubik', weight: 800 },
+  varela: { family: 'Varela Round', weight: 400 },
+}
+const fontId = flag('font-id', null)
+if (fontId && !CANDIDATES[fontId]) {
+  console.error(`Font sconosciuto: "${fontId}". Candidati: ${Object.keys(CANDIDATES).join(', ')}`)
+  process.exit(1)
+}
+if (args.includes('--all')) {
+  const { execFileSync } = await import('node:child_process')
+  for (const id of Object.keys(CANDIDATES)) {
+    execFileSync(process.execPath, [fileURLToPath(import.meta.url), `--font-id=${id}`, '--download', `--tracking=${TRACKING_EM}`], { stdio: 'inherit' })
+  }
+  process.exit(0)
+}
+const chosen = fontId ? CANDIDATES[fontId] : { family: 'Gabarito', weight: 900 }
+const defaultFontFile = fontId ? `assets/fonts/${fontId}-${chosen.weight}.ttf` : 'assets/fonts/Gabarito-900.ttf'
+const FONT_PATH = resolve(root, flag('font', defaultFontFile))
+
+// Google Fonts serve un TTF statico (istanza del peso chiesto) a un browser che
+// non dichiara il supporto ai font variabili: e' quello che serve a opentype.js.
+const GOOGLE_CSS = `https://fonts.googleapis.com/css2?family=${chosen.family.replace(/ /g, '+')}:wght@${chosen.weight}`
 const LEGACY_UA = 'Mozilla/5.0 (Windows NT 5.1)'
 
 async function ensureFont() {
@@ -53,7 +85,7 @@ async function ensureFont() {
   }
   const css = await (await fetch(GOOGLE_CSS, { headers: { 'User-Agent': LEGACY_UA } })).text()
   const url = css.match(/url\((https:[^)]+\.ttf)\)/)?.[1]
-  if (!url) throw new Error('Google Fonts non ha restituito un TTF statico per Gabarito 900.')
+  if (!url) throw new Error(`Google Fonts non ha restituito un TTF statico per ${chosen.family} ${chosen.weight}.`)
   const buf = Buffer.from(await (await fetch(url)).arrayBuffer())
   mkdirSync(dirname(FONT_PATH), { recursive: true })
   writeFileSync(FONT_PATH, buf)
@@ -167,10 +199,14 @@ const out = {
   gaps: r.gaps,
 }
 
-const target = resolve(root, 'src/brand/wordmark.json')
+if (fontId) {
+  out.$meta.fontId = fontId
+  mkdirSync(resolve(root, 'src/brand/wordmarks'), { recursive: true })
+}
+const target = resolve(root, fontId ? `src/brand/wordmarks/${fontId}.json` : 'src/brand/wordmark.json')
 writeFileSync(target, JSON.stringify(out, null, 2) + '\n')
 
-console.log(`src/brand/wordmark.json generato`)
+console.log(`${target.replace(`${root}/`, '')} generato`)
 console.log(`  font        ${out.$meta.font}`)
 console.log(`  tracking    ${TRACKING_EM}em`)
 console.log(`  viewBox     ${r.width} x ${r.height}`)

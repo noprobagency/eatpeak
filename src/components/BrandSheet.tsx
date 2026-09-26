@@ -23,18 +23,18 @@ export function BrandSheet({ className }: BrandSheetProps) {
     <div className={cn('grid gap-px overflow-hidden rounded-xl border border-border-subtle bg-border-subtle lg:grid-cols-[1.1fr_1fr]', className)}>
       <div className="flex flex-col gap-4 bg-bg-surface p-6">
         <div className="flex flex-col gap-1">
-          <span className="type-mono-sm text-text-muted">brand line</span>
+          <span className="type-label text-text-brand">Brand line</span>
           <p className="type-display-sm normal-case text-text-primary">{CLAIMS.brand.it} <span className="text-body-sm font-normal normal-case text-text-muted">{CLAIMS.brand.en}</span></p>
         </div>
         <div className="flex flex-col gap-1">
-          <span className="type-mono-sm text-text-muted">product line</span>
+          <span className="type-label text-text-brand">Product line</span>
           <p className="text-heading-md text-text-primary">{CLAIMS.product.it}</p>
         </div>
 
         <dl className="m-0 flex flex-col gap-3 border-t border-border-subtle pt-4">
           {BRAND_SHEET.map((row) => (
             <div key={row.label} className="grid gap-1 sm:grid-cols-[140px_1fr]">
-              <dt className="type-mono-sm text-text-muted">{row.label}</dt>
+              <dt className="type-label text-text-muted">{row.label}</dt>
               <dd className="m-0 text-body-sm text-text-secondary">{row.text}</dd>
             </div>
           ))}
@@ -42,12 +42,12 @@ export function BrandSheet({ className }: BrandSheetProps) {
       </div>
 
       <div className="flex flex-col gap-3 bg-bg-page p-6">
-        <span className="type-mono-sm text-text-muted">gerarchia dei claim</span>
+        <span className="type-label text-text-brand">Gerarchia dei claim</span>
         <ol className="m-0 flex list-none flex-col gap-3 p-0">
           {CLAIM_HIERARCHY.map((c, i) => (
             <li key={c.key} className="grid gap-1 sm:grid-cols-[140px_1fr]">
-              <span className="type-mono-sm text-text-muted">
-                {String(i + 1).padStart(2, '0')} · {c.role}
+              <span className="type-label text-text-muted">
+                <span className="font-mono">{String(i + 1).padStart(2, '0')}</span> · {c.role}
               </span>
               <span className="flex flex-col gap-1">
                 <span className="text-body-md text-text-primary">{CLAIMS[c.key].it}</span>

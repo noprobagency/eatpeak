@@ -15,7 +15,7 @@
 import type { CSSProperties } from 'react'
 import { Icon } from './Icon'
 import { Logo } from './Logo'
-import { CLEARSPACE_RATIO, LOCKUP_GAP_RATIO, LOCKUP_WORDMARK_TO_ICON, wordmarkHeightFor } from './paths'
+import { LOCKUP_GAP_RATIO, LOCKUP_WORDMARK_TO_ICON, useWordmark, wordmarkHeightFor } from './paths'
 import type { FlavorId } from '../lib/copy'
 
 export interface LockupProps {
@@ -34,6 +34,8 @@ export interface LockupProps {
   title?: string
   className?: string
   style?: CSSProperties
+  /** Forza un candidato del laboratorio font (solo per #/lab/font). */
+  fontId?: string
 }
 
 export function Lockup({
@@ -45,10 +47,12 @@ export function Lockup({
   title = 'peak',
   className,
   style,
+  fontId,
 }: LockupProps) {
+  const wordmark = useWordmark(fontId)
   const gap = iconSize * LOCKUP_GAP_RATIO
   const logoWidth = iconSize * LOCKUP_WORDMARK_TO_ICON
-  const clearspace = withClearspace ? wordmarkHeightFor(logoWidth) * CLEARSPACE_RATIO : 0
+  const clearspace = withClearspace ? wordmarkHeightFor(logoWidth, wordmark.viewBox) * wordmark.clearspaceRatio : 0
   const onLight = background === 'light'
 
   return (
@@ -66,7 +70,7 @@ export function Lockup({
       }}
     >
       <Icon size={iconSize} variant="free" color={onLight ? flavor : 'white'} title="" />
-      <Logo size={logoWidth} variant={onLight ? 'ink' : 'white'} title="" />
+      <Logo size={logoWidth} variant={onLight ? 'ink' : 'white'} title="" fontId={fontId} />
     </div>
   )
 }

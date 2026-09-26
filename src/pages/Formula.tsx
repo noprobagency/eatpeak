@@ -42,7 +42,7 @@ export function Formula() {
             {INGREDIENTS.map((ing, i) => (
               <article key={ing.id} className="grid gap-6 border-t border-border-subtle pt-10 lg:grid-cols-[220px_1fr_1fr] lg:gap-12">
                 <div className="flex flex-col gap-3">
-                  <p className="font-mono text-mono-sm uppercase text-text-muted">0{i + 1}</p>
+                  <p className="font-mono text-mono-md text-text-brand">0{i + 1}</p>
                   <h2 className="type-display-sm text-text-primary">{ing.name.toLowerCase()}</h2>
                   <p className="font-mono text-heading-lg text-text-primary">
                     {isLabPlaceholder(ing.amount) ? <LabTag size="md" what={ing.name} /> : `${ing.amount} al giorno`}
@@ -53,8 +53,8 @@ export function Formula() {
                   <p className="text-body-md text-text-secondary">{ing.body}</p>
                 </div>
                 <div className="flex flex-col gap-3">
-                  <p className="font-mono text-mono-sm uppercase text-text-muted">
-                    {ing.claims.length > 0 ? `claim autorizzati · ${ing.claims.length}` : 'nessun claim autorizzato'}
+                  <p className="type-label text-text-muted">
+                    {ing.claims.length > 0 ? `Claim autorizzati · ${ing.claims.length}` : 'Nessun claim autorizzato'}
                   </p>
                   {ing.claims.length > 0 ? (
                     <ul className="flex flex-col gap-2">

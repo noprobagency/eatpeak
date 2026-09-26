@@ -42,7 +42,7 @@ export function PriceTiers({
 
   return (
     <fieldset className={cn('m-0 border-0 p-0', className)}>
-      <legend className="mb-3 text-heading-sm text-text-primary">Quante buste</legend>
+      <legend className="mb-3 type-eyebrow text-text-brand">Quanti giorni</legend>
 
       <div className="flex flex-col gap-3">
         {tiers.map((tier) => {
@@ -90,20 +90,20 @@ export function PriceTiers({
                   <span className="text-heading-md text-text-primary">{tier.name}</span>
                   {tier.badge && (
                     <span className={cn(
-                      'rounded-full px-3 py-1 font-mono text-mono-sm uppercase',
-                      tier.preselected ? 'bg-bg-brand text-text-on-brand' : 'bg-lime-50 text-lime-700',
+                      'rounded-full px-3 py-1 type-label',
+                      tier.preselected ? 'bg-bg-brand-deep text-neutral-0' : 'bg-lime-50 text-lime-700',
                     )}>
                       {tier.badge}
                     </span>
                   )}
                 </span>
 
-                <span className="font-mono text-mono-md uppercase text-text-muted">
+                <span className="text-body-sm font-display font-semibold text-text-muted">
                   {tier.units} {tier.units === 1 ? 'busta' : 'buste'} · {tier.days} giorni
                   {savedPct > 0 && <span className="text-lime-700"> · risparmi {savedPct}%</span>}
                 </span>
 
-                <span className="flex flex-col gap-1 font-mono text-mono-sm uppercase text-text-secondary">
+                <span className="flex flex-col gap-1 text-body-sm text-text-secondary">
                   {freeShipping ? (
                     <span>spedizione gratuita</span>
                   ) : (
@@ -121,8 +121,8 @@ export function PriceTiers({
                 <span className="font-mono text-heading-lg tabular-nums text-text-primary">
                   {pricePerDay(tier.priceEur, tier.days)}
                 </span>
-                <span className="font-mono text-mono-sm uppercase text-text-muted">al giorno</span>
-                <span className="font-mono text-mono-sm uppercase text-text-secondary">{formatEur(tier.priceEur)} totale</span>
+                <span className="type-label text-text-muted">al giorno</span>
+                <span className="text-body-sm text-text-secondary"><span className="font-mono">{formatEur(tier.priceEur)}</span> totale</span>
               </span>
             </label>
           )

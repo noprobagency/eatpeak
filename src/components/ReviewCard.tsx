@@ -54,9 +54,9 @@ export function ReviewCard({ stars, text, author, benefit, verified = false, cla
       <figcaption className="flex flex-wrap items-center justify-between gap-3 border-t border-border-subtle pt-4">
         <span className="text-body-sm text-text-secondary">
           {author}
-          {verified && <span className="ml-2 type-mono-sm text-lime-700">acquisto verificato</span>}
+          {verified && <span className="ml-2 type-label text-lime-700">acquisto verificato</span>}
         </span>
-        {benefit && <span className="type-mono-sm text-text-muted">{benefit}</span>}
+        {benefit && <span className="type-label text-text-muted">{benefit.toLowerCase()}</span>}
       </figcaption>
     </figure>
   )

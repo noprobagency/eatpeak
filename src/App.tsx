@@ -12,6 +12,10 @@ import Product from './pages/Product'
 import Formula from './pages/Formula'
 import DesignSystem from './pages/DesignSystem'
 import Prototypes from './pages/Prototypes'
+import FontLab from './pages/lab/FontLab'
+import SymbolLab from './pages/lab/SymbolLab'
+import BoxLab from './pages/lab/BoxLab'
+import PackLab from './pages/lab/PackLab'
 import { SiteHeader } from './site/SiteHeader'
 import { SiteFooter } from './site/SiteFooter'
 import { parseHash, routeSpec, type RoutePath } from './lib/routes'
@@ -22,6 +26,10 @@ const PAGES: Record<RoutePath, () => JSX.Element> = {
   '/formula': Formula,
   '/design-system': DesignSystem,
   '/prototipi': Prototypes,
+  '/lab/font': FontLab,
+  '/lab/simbolo': SymbolLab,
+  '/lab/box': BoxLab,
+  '/lab/pack': PackLab,
 }
 
 export function App() {

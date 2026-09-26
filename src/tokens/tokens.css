@@ -136,6 +136,9 @@
   --type-eyebrow-size: 15px;
   --type-eyebrow-lh: 1.3;
   --type-eyebrow-tracking: 0;
+  --type-label-size: 13px;
+  --type-label-lh: 1.4;
+  --type-label-tracking: 0;
   --type-body-lg-size: 18px;
   --type-body-lg-lh: 1.6;
   --type-body-lg-tracking: 0;
@@ -242,7 +245,7 @@
   font-size: var(--type-display-xl-size);
   line-height: var(--type-display-xl-lh);
   letter-spacing: var(--type-display-xl-tracking);
-  font-weight: 800;
+  font-weight: var(--display-weight, 800);
   text-transform: lowercase;
 }
 .type-display-lg {
@@ -250,7 +253,7 @@
   font-size: var(--type-display-lg-size);
   line-height: var(--type-display-lg-lh);
   letter-spacing: var(--type-display-lg-tracking);
-  font-weight: 800;
+  font-weight: var(--display-weight, 800);
   text-transform: lowercase;
 }
 .type-display-md {
@@ -258,7 +261,7 @@
   font-size: var(--type-display-md-size);
   line-height: var(--type-display-md-lh);
   letter-spacing: var(--type-display-md-tracking);
-  font-weight: 700;
+  font-weight: var(--display-weight, 700);
   text-transform: lowercase;
 }
 .type-display-sm {
@@ -266,7 +269,7 @@
   font-size: var(--type-display-sm-size);
   line-height: var(--type-display-sm-lh);
   letter-spacing: var(--type-display-sm-tracking);
-  font-weight: 700;
+  font-weight: var(--display-weight, 700);
   text-transform: lowercase;
 }
 .type-heading-lg {
@@ -274,27 +277,34 @@
   font-size: var(--type-heading-lg-size);
   line-height: var(--type-heading-lg-lh);
   letter-spacing: var(--type-heading-lg-tracking);
-  font-weight: 700;
+  font-weight: var(--display-weight, 700);
 }
 .type-heading-md {
   font-family: var(--font-display);
   font-size: var(--type-heading-md-size);
   line-height: var(--type-heading-md-lh);
   letter-spacing: var(--type-heading-md-tracking);
-  font-weight: 700;
+  font-weight: var(--display-weight, 700);
 }
 .type-heading-sm {
   font-family: var(--font-display);
   font-size: var(--type-heading-sm-size);
   line-height: var(--type-heading-sm-lh);
   letter-spacing: var(--type-heading-sm-tracking);
-  font-weight: 700;
+  font-weight: var(--display-weight, 700);
 }
 .type-eyebrow {
   font-family: var(--font-display);
   font-size: var(--type-eyebrow-size);
   line-height: var(--type-eyebrow-lh);
   letter-spacing: var(--type-eyebrow-tracking);
+  font-weight: 600;
+}
+.type-label {
+  font-family: var(--font-display);
+  font-size: var(--type-label-size);
+  line-height: var(--type-label-lh);
+  letter-spacing: var(--type-label-tracking);
   font-weight: 600;
 }
 .type-body-lg {

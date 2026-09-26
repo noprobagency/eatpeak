@@ -6,13 +6,13 @@
  * home e scorre alla sezione. Le rotte della 1.0 restano come alias.
  */
 
-export type RoutePath = '/' | '/prodotto' | '/formula' | '/design-system' | '/prototipi'
+export type RoutePath = '/' | '/prodotto' | '/formula' | '/design-system' | '/prototipi' | '/lab/font' | '/lab/simbolo' | '/lab/box' | '/lab/pack'
 
 export interface RouteSpec {
   path: RoutePath
   label: string
-  /** Il gruppo di navigazione: il sito, o lo studio (design system e prototipi). */
-  group: 'sito' | 'studio'
+  /** Il gruppo di navigazione: il sito, lo studio (design system e prototipi), o il laboratorio. */
+  group: 'sito' | 'studio' | 'lab'
   title: string
 }
 
@@ -22,7 +22,13 @@ export const ROUTES: readonly RouteSpec[] = [
   { path: '/formula', label: 'La formula', group: 'sito', title: 'peak — la formula CreaVida™' },
   { path: '/design-system', label: 'Design system', group: 'studio', title: 'peak — design system 2.0' },
   { path: '/prototipi', label: 'Prototipi', group: 'studio', title: 'peak — prototipi' },
+  { path: '/lab/font', label: 'Lab · font', group: 'lab', title: 'peak — laboratorio font' },
+  { path: '/lab/simbolo', label: 'Lab · simbolo', group: 'lab', title: 'peak — laboratorio simbolo' },
+  { path: '/lab/box', label: 'Lab · sezioni', group: 'lab', title: 'peak — laboratorio sezioni' },
+  { path: '/lab/pack', label: 'Lab · pack', group: 'lab', title: 'peak — laboratorio pack' },
 ]
+
+export const LAB_NAV = ROUTES.filter((r) => r.group === 'lab').map((r) => ({ href: to(r.path), label: r.label }))
 
 /** Le rotte della 1.0, per i link gia' in giro. */
 const ALIASES: Record<string, RoutePath> = {

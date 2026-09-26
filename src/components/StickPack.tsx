@@ -13,7 +13,7 @@
  * del gusto in corsivo, e il vertice libero bianco come sigillo.
  */
 
-import { VERTEX, WORDMARK_PATH, WORDMARK_VIEWBOX } from '../brand'
+import { VERTEX, useWordmark } from '../brand'
 import { cn } from '../lib/cn'
 import { PRODUCT, flavorById, type FlavorId } from '../lib/copy'
 
@@ -24,6 +24,8 @@ export interface StickPackProps {
   standalone?: boolean
   className?: string
   title?: string
+  /** Forza un candidato del laboratorio font. */
+  fontId?: string
 }
 
 /** ViewBox 1:5. */
@@ -36,16 +38,18 @@ export function StickPack({
   standalone = false,
   className,
   title,
+  fontId,
 }: StickPackProps) {
   const f = flavorById(flavor)
+  const wordmark = useWordmark(fontId)
   const width = height * (W / H)
   const label = title ?? `Stick peak ${f.number} ${f.shortName}`
 
   // Il wordmark corre lungo la lunghezza: la sua altezza e' l'80% della
   // larghezza dello stick, e la larghezza ne consegue.
   const wordmarkH = W * 0.8
-  const wordmarkW = (wordmarkH * WORDMARK_VIEWBOX.width) / WORDMARK_VIEWBOX.height
-  const scale = wordmarkH / WORDMARK_VIEWBOX.height
+  const wordmarkW = (wordmarkH * wordmark.viewBox.width) / wordmark.viewBox.height
+  const scale = wordmarkH / wordmark.viewBox.height
   const wordmarkTop = 56
 
   return (
@@ -84,7 +88,7 @@ export function StickPack({
 
       {/* Il wordmark bianco, ruotato di 90 gradi, lungo la lunghezza. */}
       <g transform={`translate(${(W + wordmarkH) / 2} ${wordmarkTop}) rotate(90) scale(${scale})`}>
-        <path d={WORDMARK_PATH} fill="#FFFFFF" />
+        <path d={wordmark.path} fill="#FFFFFF" />
       </g>
 
       {/* Verso il lato di strappo: 3 g e il nome corto del gusto. */}

@@ -12,7 +12,7 @@
 
 import { DotField } from '../brand'
 import { cn } from '../lib/cn'
-import { flavorLabel, type Flavor } from '../lib/copy'
+import type { Flavor } from '../lib/copy'
 import { StickPack } from './StickPack'
 import { renderWithPlaceholders } from './LabTag'
 
@@ -44,7 +44,7 @@ export function FlavorCard({ flavor, showSwatches = false, showAroma = false, cl
 
       <div className="flex flex-col gap-3 p-6">
         <h3 className="type-flavor text-text-primary">{flavor.name}</h3>
-        <p className="type-mono-sm text-text-muted">{flavorLabel(flavor, 'short')} · 30 stick · 3 g al giorno</p>
+        <p className="text-body-sm text-text-muted">{flavor.number} · 30 stick · 3 g al giorno</p>
 
         {showAroma && (
           <p className="text-body-sm text-text-secondary">Aroma: {renderWithPlaceholders(flavor.aroma, 'aroma')}</p>
@@ -59,8 +59,8 @@ export function FlavorCard({ flavor, showSwatches = false, showAroma = false, cl
             ] as const).map(([name, hex]) => (
               <li key={name} className="flex flex-col gap-2">
                 <span className="h-10 w-full rounded-sm border border-border-subtle" style={{ background: hex }} aria-hidden="true" />
-                <span className="type-mono-sm text-text-muted">{name}</span>
-                <span className="type-mono-sm text-text-primary">{hex}</span>
+                <span className="type-label text-text-muted">{name}</span>
+                <span className="font-mono text-mono-sm text-text-primary">{hex}</span>
               </li>
             ))}
           </ul>

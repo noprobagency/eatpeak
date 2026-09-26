@@ -22,9 +22,8 @@ import {
   FLAVOR_VARIANT_MIN_HEIGHT_PX,
   LOGO_VARIANTS,
   WORDMARK_MIN_WIDTH_PX,
-  WORDMARK_PATH,
-  WORDMARK_VIEWBOX,
   flavorHex,
+  useWordmark,
   wordmarkHeightFor,
   type LogoVariant,
 } from './paths'
@@ -51,6 +50,8 @@ export interface LogoProps {
   title?: string
   className?: string
   style?: CSSProperties
+  /** Forza un candidato del laboratorio font (solo per #/lab/font). */
+  fontId?: string
 }
 
 /** Per ogni fondo, la variante che ci si legge sopra. */
@@ -69,13 +70,17 @@ export function Logo({
   title = 'peak',
   className,
   style,
+  fontId,
 }: LogoProps) {
   const resolvedVariant: LogoVariant =
     variant ?? (background ? VARIANT_FOR_BACKGROUND[background] : DEFAULT_LOGO_VARIANT)
   const spec = LOGO_VARIANTS[resolvedVariant]
   const fill = spec.fill === 'flavor' ? flavorHex(flavor) : spec.fill
 
-  const height = wordmarkHeightFor(size)
+  // Il tracciato segue il font attivo nel laboratorio (`?font=`): e' cosi' che
+  // il wordmark cambia in tutto il sito, header compreso, senza toccarlo.
+  const wordmark = useWordmark(fontId)
+  const height = wordmarkHeightFor(size, wordmark.viewBox)
   const decorative = title.trim() === ''
 
   if (import.meta.env.DEV) {
@@ -94,7 +99,7 @@ export function Logo({
 
   return (
     <svg
-      viewBox={`0 0 ${WORDMARK_VIEWBOX.width} ${WORDMARK_VIEWBOX.height}`}
+      viewBox={`0 0 ${wordmark.viewBox.width} ${wordmark.viewBox.height}`}
       width={size}
       height={height}
       className={className}
@@ -104,9 +109,10 @@ export function Logo({
       aria-label={decorative ? undefined : title}
       focusable="false"
       data-variant={resolvedVariant}
+      data-font={wordmark.fontId}
     >
       {!decorative && <title>{title}</title>}
-      <path d={WORDMARK_PATH} fill={fill} />
+      <path d={wordmark.path} fill={fill} />
     </svg>
   )
 }

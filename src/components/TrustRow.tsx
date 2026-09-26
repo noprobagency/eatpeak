@@ -42,7 +42,7 @@ export function TrustRow({ items = TRUST_ITEMS, tone = 'default', variant = 'det
     return (
       <ul className={cn('flex flex-wrap items-center gap-x-6 gap-y-2', className)}>
         {items.map((item) => (
-          <li key={item.label} className={cn('flex items-center gap-2 type-mono-md', inverse ? 'text-neutral-0/75' : 'text-text-muted')}>
+          <li key={item.label} className={cn('flex items-center gap-2 text-body-sm font-display font-semibold', inverse ? 'text-neutral-0/85' : 'text-text-secondary')}>
             <span className="text-text-brand">{item.icon ?? <CheckIcon />}</span>
             {item.label}
           </li>
@@ -56,7 +56,7 @@ export function TrustRow({ items = TRUST_ITEMS, tone = 'default', variant = 'det
       {items.map((item) => (
         <li key={item.label} className="flex flex-col gap-2">
           <span className={cn(inverse ? 'text-neutral-0' : 'text-text-brand')}>{item.icon ?? <CheckIcon />}</span>
-          <p className={cn('type-mono-md', inverse ? 'text-neutral-0' : 'text-text-primary')}>{item.label}</p>
+          <p className={cn('text-heading-sm', inverse ? 'text-neutral-0' : 'text-text-primary')}>{item.label}</p>
           {item.detail && (
             <p className={cn('text-body-sm', inverse ? 'text-neutral-0/75' : 'text-text-secondary')}>{item.detail}</p>
           )}

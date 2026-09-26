@@ -29,8 +29,8 @@ export function LabTag({ children = 'dal laboratorio', what, size = 'sm', classN
     <span
       className={cn(
         'inline-flex items-center gap-1 rounded-full border border-dashed border-cacao-300 bg-cacao-50 text-cacao-600',
-        'font-mono uppercase',
-        size === 'sm' ? 'px-2 py-1 text-mono-sm' : 'px-3 py-1 text-mono-md',
+        'font-display font-semibold',
+        size === 'sm' ? 'px-2 py-1 text-[12px] leading-none' : 'px-3 py-1 text-body-sm leading-none',
         className,
       )}
       title={what ? `${what}: valore in attesa dal laboratorio` : 'Valore in attesa dal laboratorio'}

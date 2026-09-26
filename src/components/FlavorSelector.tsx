@@ -29,7 +29,7 @@ export function FlavorSelector({
 
   return (
     <fieldset className={cn('m-0 border-0 p-0', className)}>
-      <legend className="mb-3 text-heading-sm text-text-primary">{legend}</legend>
+      <legend className="mb-3 type-eyebrow text-text-brand">{legend}</legend>
 
       <div className="flex flex-wrap gap-3">
         {flavors.map((f) => {
@@ -61,7 +61,7 @@ export function FlavorSelector({
                 {selected && <span className="h-3 w-3 rounded-full bg-neutral-0" />}
               </span>
               <span className="flex flex-col">
-                <span className="type-mono-sm text-text-muted">{f.number}</span>
+                <span className="type-label text-text-muted">{f.number}</span>
                 <span className="type-flavor-sm text-text-primary">{f.name}</span>
               </span>
             </label>

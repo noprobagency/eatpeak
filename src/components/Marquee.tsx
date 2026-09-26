@@ -66,7 +66,7 @@ export function Marquee({
   const strip = (
     <span className="flex shrink-0 items-center gap-8 pr-8">
       {items.map((item, i) => (
-        <span key={i} className="flex items-center gap-8 whitespace-nowrap type-mono-md">
+        <span key={i} className="flex items-center gap-8 whitespace-nowrap text-body-sm font-display font-bold">
           {item}
           <span aria-hidden="true" className="opacity-50">{separator}</span>
         </span>
@@ -86,7 +86,7 @@ export function Marquee({
       {reduced ? (
         <div aria-hidden="true" className="mx-auto flex max-w-container flex-wrap justify-center gap-x-8 gap-y-2 px-6">
           {items.map((item, i) => (
-            <span key={i} className="type-mono-md">{item}</span>
+            <span key={i} className="text-body-sm font-display font-bold">{item}</span>
           ))}
         </div>
       ) : (

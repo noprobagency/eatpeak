@@ -45,8 +45,8 @@ export function WeekTimeline({ steps = WEEK_TIMELINE, tone = 'default', highligh
               active && (inverse ? 'border-white/40' : 'border-border-brand'),
             )}
           >
-            <p className={cn('type-mono-md', inverse ? 'text-neutral-0/60' : 'text-text-muted')}>
-              settimana {step.week}
+            <p className={cn('type-label', inverse ? 'text-neutral-0/70' : 'text-text-brand')}>
+              Settimana <span className="font-mono">{step.week}</span>
             </p>
 
             <h3 className={cn('type-display-sm', inverse ? 'text-text-inverse' : 'text-text-primary')}>

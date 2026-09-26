@@ -44,13 +44,13 @@ export function DoseSeal({ value, unit = 'g', caption, size = 128, tone = 'miele
       <span className="font-display leading-none" style={{ fontSize: size * 0.4, fontWeight: 900, letterSpacing: '-0.04em' }} aria-hidden="true">
         {value}
       </span>
-      <span className="font-mono uppercase" style={{ fontSize: Math.max(9, size * 0.09), letterSpacing: '0.14em' }} aria-hidden="true">
+      <span className="font-display font-bold" style={{ fontSize: Math.max(10, size * 0.1) }} aria-hidden="true">
         {unit}
       </span>
       {caption && (
         <span
-          className="mt-1 max-w-[80%] font-mono uppercase opacity-75"
-          style={{ fontSize: Math.max(8, size * 0.07), letterSpacing: '0.16em', lineHeight: 1.4 }}
+          className="mt-1 max-w-[80%] font-display font-semibold opacity-75"
+          style={{ fontSize: Math.max(9, size * 0.08), lineHeight: 1.3 }}
           aria-hidden="true"
         >
           {caption}

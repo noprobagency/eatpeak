@@ -62,11 +62,11 @@ export function ProductCard({
           )}
         </h3>
         <p className="type-flavor-sm text-text-primary">{flavorLabel(f)}</p>
-        <p className="font-mono text-mono-md uppercase text-text-muted">{format}</p>
+        <p className="text-body-sm text-text-muted">{format}</p>
 
         <div className="mt-auto flex flex-wrap items-baseline gap-x-3 gap-y-1 pt-3">
           <span className="font-mono text-heading-lg tabular-nums text-text-primary">{pricePerDay(priceEur, days)}</span>
-          <span className="font-mono text-mono-sm uppercase text-text-muted">al giorno · {formatEur(priceEur)}</span>
+          <span className="text-body-sm text-text-muted">al giorno · <span className="font-mono">{formatEur(priceEur)}</span></span>
         </div>
 
         {onAddToCart && (

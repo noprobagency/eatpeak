@@ -21,7 +21,7 @@
  * tint. Vedi docs/08-packaging.md.
  */
 
-import { DotFieldGroup, WORDMARK_PATH, WORDMARK_VIEWBOX } from '../brand'
+import { DotFieldGroup, useWordmark } from '../brand'
 import { cn } from '../lib/cn'
 import { PRODUCT, flavorById, flavorLabel, serialLabel, type FlavorId } from '../lib/copy'
 import { packTokens } from '../tokens/tokens'
@@ -45,6 +45,8 @@ export interface BustaPackProps {
   standalone?: boolean
   title?: string
   className?: string
+  /** Forza un candidato del laboratorio font (solo per #/lab/font e #/lab/pack). */
+  fontId?: string
 }
 
 /** Il viewBox nominale: 400 di larghezza, l'altezza segue il ratio. */
@@ -60,16 +62,18 @@ export function BustaPack({
   standalone = false,
   title,
   className,
+  fontId,
 }: BustaPackProps) {
   const f = flavorById(flavor)
+  const wordmark = useWordmark(fontId)
   const H = Math.round(W / ratio)
   const height = Math.round(width / ratio)
 
   const safe = Math.round(Math.min(W, H) * packTokens.safe)
   const seal = Math.round(H * packTokens.sealBand)
   const wordmarkW = Math.round(W * packTokens.wordmarkWidth)
-  const wordmarkH = (wordmarkW * WORDMARK_VIEWBOX.height) / WORDMARK_VIEWBOX.width
-  const scale = wordmarkW / WORDMARK_VIEWBOX.width
+  const wordmarkH = (wordmarkW * wordmark.viewBox.height) / wordmark.viewBox.width
+  const scale = wordmarkW / wordmark.viewBox.width
 
   // La gerarchia, in unita' di viewBox. Le distanze sono proporzionali all'altezza.
   const y = {
@@ -112,7 +116,7 @@ export function BustaPack({
 
       {/* 1. Il wordmark bianco, 82% della larghezza, a sinistra. */}
       <g transform={`translate(${safe} ${y.wordmark}) scale(${scale})`}>
-        <path d={WORDMARK_PATH} fill="#FFFFFF" />
+        <path d={wordmark.path} fill="#FFFFFF" />
       </g>
 
       {/* 2. Il descrittore. */}

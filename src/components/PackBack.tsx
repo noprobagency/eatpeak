@@ -39,13 +39,13 @@ export function PackBack({ flavor = 'arancia', className }: PackBackProps) {
   return (
     <div className={cn('overflow-hidden rounded-xl border border-border-subtle bg-bg-surface', className)}>
       <div className={cn('flex items-center justify-between gap-4 px-6 py-4', f.tintToken)}>
-        <p className="type-mono-md text-text-primary">retro · contenuti obbligatori</p>
+        <p className="type-eyebrow text-text-primary">Retro · contenuti obbligatori</p>
         <LabTag what="fustella e valori">provvisorio</LabTag>
       </div>
       <dl className="m-0 divide-y divide-border-subtle">
         {REQUIRED.map((row) => (
           <div key={row.label} className="grid gap-2 px-6 py-4 sm:grid-cols-[180px_1fr]">
-            <dt className="type-mono-sm text-text-muted">{row.label}</dt>
+            <dt className="type-label text-text-muted">{row.label}</dt>
             <dd className="m-0 flex flex-wrap items-center gap-2 text-body-sm text-text-secondary">
               <span>{row.value}</span>
               {row.lab && <LabTag what={row.label} />}

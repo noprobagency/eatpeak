@@ -101,7 +101,8 @@ for (const [name, s] of Object.entries(t.type)) {
   push(`  font-size: var(--type-${name}-size);`)
   push(`  line-height: var(--type-${name}-lh);`)
   push(`  letter-spacing: var(--type-${name}-tracking);`)
-  push(`  font-weight: ${s.weight};`)
+  // I display seguono il peso del font attivo nel laboratorio (`--display-weight`).
+  push(s.family === 'display' && Number(s.weight) >= 700 ? `  font-weight: var(--display-weight, ${s.weight});` : `  font-weight: ${s.weight};`)
   if (s.style) push(`  font-style: ${s.style};`)
   if (s.case !== 'none') push(`  text-transform: ${s.case};`)
   push('}')

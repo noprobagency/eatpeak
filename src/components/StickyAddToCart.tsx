@@ -72,7 +72,7 @@ export function StickyAddToCart({
       <div className="mx-auto flex max-w-container items-center gap-4 px-6 py-3 md:px-[28px]">
         <div className="min-w-0 flex-1">
           <p className="truncate text-heading-sm text-text-primary">{name}</p>
-          {detail && <p className="truncate font-mono text-mono-sm uppercase text-text-muted">{detail}</p>}
+          {detail && <p className="truncate text-body-sm text-text-muted">{detail}</p>}
         </div>
 
         <span className="shrink-0 text-heading-md text-text-primary">{formatEur(priceEur)}</span>
