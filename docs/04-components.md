@@ -4,17 +4,18 @@ Un file per componente in [`src/components/`](../src/components), esportati da
 [`src/components/index.ts`](../src/components/index.ts).
 
 ```tsx
-import { Button, Card, PriceTiers } from '@/components'
-import { Logo, Icon, Lockup } from '@/brand'
+import { Button, Card, PriceTiers, BustaPack } from '@/components'
+import { Logo, Icon, Lockup, DotField } from '@/brand'
 ```
 
 Ogni file si apre con un commento che dice **quando usarlo e quando no**. Quella
 seconda parte è la più utile: un design system si degrada quando i componenti
 vengono usati fuori dal loro scopo, non quando ne mancano.
 
-Tutti i componenti compaiono nello [Showcase](../src/pages/Showcase.tsx) in ogni
-stato. **Se aggiungi un componente e non lo aggiungi lì, per il sistema non
-esiste.**
+Tutti i componenti compaiono nella pagina [Design system](../src/pages/DesignSystem.tsx):
+i cinque chiave nella sezione 07, gli altri nel blocco **Dettagli tecnici**, in
+fondo, chiuso di default. **Se aggiungi un componente e non lo aggiungi lì —
+anche dentro i dettagli — per il sistema non esiste.**
 
 ---
 
@@ -26,11 +27,15 @@ Valgono per tutto e non hanno prop per essere disattivate.
 |---|---|
 | Solo token semantici, mai colori grezzi | tutti i componenti |
 <!-- peak-compliance-ignore focus — focus da tastiera, non un claim -->
-| Anello di focus terracotta 700, offset 2px | `globals.css`, `:focus-visible` |
+| Anello di focus arancia 700, offset 2px | `globals.css`, `:focus-visible` |
 | `outline: none` senza sostituto è un bug | — |
 | I pulsanti hanno sempre raggio `full` | `<Button>` non espone `radius` |
-| Ogni dato oggettivo passa dal mono | dosaggi, prezzi, lotti, conteggi |
+| Ogni dato oggettivo passa dal mono | dosaggi, prezzi al giorno, lotti, conteggi |
 | I `display-*` sono sempre minuscoli | classi `.type-display-*` |
+| Il corsivo è solo per i nomi dei gusti | classi `.type-flavor*` |
+| Sui campi colore il testo corrente è inchiostro | `Section`, `Card`, `Marquee` con toni `arancia`/`lime` |
+| I gusti si leggono da `FLAVORS` | `FlavorCard`, `FlavorSelector`, `BustaPack`, `StickPack`, `ProductCard` |
+| I valori mancanti sono `[dal laboratorio]` | `LabTag`, `IngredientPanel`, `PackBack` |
 | Ogni animazione rispetta reduced-motion | `tokens.css` + `<Marquee>` |
 | SVG decorativo `aria-hidden`, informativo con `<title>` | `<Logo>`, `<Icon>`, ogni icona inline |
 
@@ -40,18 +45,16 @@ Valgono per tutto e non hanno prop per essere disattivate.
 
 | Componente | Quando | Quando no |
 |---|---|---|
-| `<Container>` | Dentro ogni `<Section>`, per riportare il contenuto alla colonna di lettura. | Per le bande a tutta larghezza. Quelle escono di proposito. |
-| `<Section>` | Contenitore di primo livello di ogni blocco di pagina. La prop `tone` imposta fondo **e** colori di testo corretti. | Per raggruppare elementi dentro un blocco. Lì basta `<Stack>`. |
+| `<Container>` | Dentro ogni `<Section>`, per riportare il contenuto alla colonna di lettura. | Per le bande a tutta larghezza. |
+| `<Section>` | Contenitore di primo livello di ogni blocco. La prop `tone` imposta fondo **e** colori di testo. | Per raggruppare elementi dentro un blocco. Lì basta `<Stack>`. |
 | `<Stack>` | Ogni volta che stai per scrivere `margin-bottom` su una serie di elementi. | Per layout a due dimensioni. Quello è `<Grid>`. |
-| `<Grid>` | Cataloghi, elenchi di prove, timeline. | Quando le colonne devono avere larghezze diverse. Scrivila a mano. |
-| `<Divider>` | Tra due sezioni dello stesso tono, dentro liste lunghe. | Come decorazione. Se non separa niente, togli il divider e aumenta lo spazio. |
+| `<Grid>` | Cataloghi, elenchi di prove, timeline. | Colonne di larghezze diverse. Scrivila a mano. |
+| `<Divider>` | Tra due sezioni dello stesso tono, dentro liste lunghe. | Come decorazione. |
 
-`<Section tone>` accetta `page | surface | warm | brand | forest | inverse`.
-**Ogni tono porta con sé il colore di testo che ci si legge sopra**: è il punto
-in cui il sistema garantisce il contrasto invece di sperarci.
-
-Due sezioni con lo stesso tono, una sotto l'altra, senza `<Divider>`: il confine
-sparisce. È l'errore più comune.
+`<Section tone>` accetta `page | surface | warm | inverse | arancia | lime |
+arancia-tint | lime-tint`. Sui toni pieni il testo di default è inchiostro; il
+bianco lo si sceglie a mano per titoli e numeri grandi. **Un solo colore-gusto
+per composizione.**
 
 ---
 
@@ -59,208 +62,148 @@ sparisce. È l'errore più comune.
 
 ### `<Button>`
 
-Quattro varianti — `primary` terracotta pieno, `secondary` contornato, `ghost`,
-`link` — e tre dimensioni. Stati: default, hover, active, focus-visible,
-disabled, loading.
+Sei varianti: `primary` (arancia 500, testo inchiostro), `secondary`
+(contornato), `ghost`, `link`, `inverse` (la pillola bianca, sui campi colore e
+su inchiostro), `ink` (la pillola inchiostro). Tre dimensioni. Stati: default,
+hover, active, focus-visible, disabled, loading.
 
-`as="a"` rende un `<a>` vero, che resta navigabile da tastiera e col tasto
-destro. **Un pulsante fa qualcosa; un link porta da qualche parte.**
-
-Il raggio è sempre `full` e non c'è una prop per cambiarlo.
+`as="a"` rende un `<a>` vero. **Un pulsante fa qualcosa; un link porta da
+qualche parte.** Il raggio è sempre `full`.
 
 ### `<Input>`, `<Select>`, `<Checkbox>`, `<RadioGroup>`
 
-L'etichetta è **obbligatoria per tipo**. Un placeholder non è un'etichetta:
-sparisce appena scrivi e non viene letto in modo affidabile. Se non deve
-vedersi, `hideLabel` la tiene per gli screen reader.
-
-`<Select>` è un `<select>` nativo di proposito: tastiera, mobile e screen reader
-funzionano già, e nessuna reimplementazione li batte. Sopra le cinque opzioni, o
-quando le opzioni sono note e noiose. Sotto le cinque con un peso reale nella
-decisione, `<RadioGroup>` mostra tutto senza un click e converte meglio.
-
-`<RadioGroup>` è un `<fieldset>` con `<legend>`: è così che uno screen reader
-capisce che le opzioni appartengono alla stessa domanda.
+L'etichetta è **obbligatoria per tipo**. `<Select>` è un `<select>` nativo di
+proposito. `<RadioGroup>` è un `<fieldset>` con `<legend>`.
 
 ### `<QuantityStepper>`
 
 Per la quantità che si aggiusta di uno alla volta. **Non** per scegliere il
-formato d'acquisto: lì il numero non è una quantità neutra, è un'offerta, e
-serve `<PriceTiers>`.
+formato: lì serve `<PriceTiers>`.
 
-### `<Badge>` e `<Tag>`
+### `<Badge>`, `<Tag>`, `<LabTag>`
 
-La differenza è **chi decide**. Il badge è un'etichetta che il sistema mette
-addosso a qualcosa — "spedizione gratuita", "esaurito". Il tag appartiene
-all'utente: si seleziona, si toglie.
+Il badge è un'etichetta che il sistema mette addosso a qualcosa; il tag
+appartiene all'utente. **`<LabTag>`** è il terzo: il segnaposto grigio di un
+valore che aspetta il laboratorio. `renderWithPlaceholders(testo)` sostituisce
+ogni `[dal laboratorio]` in una stringa col tag.
 
-Nessuna combinazione di `<Badge>` usa miele 300 o terracotta 400 come colore di
-testo su fondo chiaro.
+Toni del badge: `brand | lime | miele | neutral | success | warning | error`.
+Nessuna combinazione usa un 500 o il miele 300 come testo su chiaro.
 
 ### `<Card>`
 
-Quando un gruppo di elementi va letto come una cosa sola. **Non** per dare
-soltanto un fondo a una sezione: se non c'è un confine concettuale la card è una
-scatola vuota, e serve `<Section tone>`.
+Quando un gruppo di elementi va letto come una cosa sola. Toni: gli stessi di
+`<Section>`. Raggio `lg` o `xl`, ombre minime.
 
-Raggio `lg` o `xl`, ombre minime.
-
-### `<Accordion>`, `<Tabs>`, `<Tooltip>`
-
-`<Accordion>` è costruito su `<details>`/`<summary>`: apre e chiude senza
-JavaScript e la tastiera funziona da sola. Non metterci dentro informazioni che
-servono a decidere — se il prezzo o il dosaggio stanno in un accordion, li stai
-nascondendo, non ordinando.
-
-`<Tabs>` ha la navigazione da tastiera completa: frecce, Home, End. Le tab
-suggeriscono che l'ordine non conta; se conta, servono passi numerati.
+### `<Accordion>`, `<Tabs>`, `<Tooltip>`, `<Modal>`, `<Toast>`
 
 <!-- peak-compliance-ignore focus — focus da tastiera, non un claim -->
-<!-- peak-compliance-ignore focus — focus da tastiera, non un claim -->
-`<Tooltip>` si apre anche col focus da tastiera e si chiude con Escape. Ma non
-esiste su touch, non si copia e sparisce: **se l'informazione conta, scrivila in
-pagina.**
-
-### `<Modal>`
-
-<!-- peak-compliance-ignore focus — focus da tastiera, non un claim -->
-Interrompe tutto e chiede una cosa sola. Chiude con Escape e col click fuori; il
-focus entra nel dialogo, resta dentro finché è aperto e torna dove stava alla
-chiusura.
-
-Usala quando togliere il controllo è il punto. Per contenuti lunghi, no.
-
-### `<Toast>` e `<ToastStack>`
-
-<!-- peak-compliance-ignore focus — focus da tastiera, non un claim -->
-Conferma breve, non bloccante. Lo stack è un live region: gli screen reader
-annunciano senza spostare il focus.
-
-**Non** per errori che richiedono un'azione: un toast sparisce.
+Invariati dalla 1.0: `<details>` nativo, tastiera completa, focus trap, live
+region. Il toast `success` è lime 700 con bianco (6,15:1), non lime 500.
 
 ---
 
 ## Specifici del brand
 
-### `<BrandOverview>` e `<BrandPrinciples>`
+### `<BrandSheet>`
 
-L'apertura e il posizionamento, letti dalla stessa sorgente
-(`src/lib/brand-overview.ts`) che genera anche
-[00 — Scheda del brand](00-brand-overview.md).
-
-`<BrandOverview>` sono le tre righe in cima: nome, cosa vendiamo, il claim.
-`<BrandPrinciples>` sono i sei punti — posizionamento, target, perché peak,
-prodotto, tono, cosa non siamo — con l'etichetta sopra e il testo sotto, in una
-colonna sola. Il label a sinistra sembra ordinato finché i blocchi non hanno
-lunghezze diverse: poi le righe si disallineano.
-
-Il claim corto è un beneficio generico, quindi `authorizedClaim` è obbligatoria.
-L'unico modo per ometterla è dichiarare `internalUseOnly`, che vale per lo
-Showcase e per i documenti di lavoro — non è una scorciatoia, è una riga che
-qualcuno deve scrivere di proposito e che si vede in code review.
+La scheda del brand in una card: brand line, product line, posizionamento,
+target, tono, cosa non siamo, la gerarchia dei claim. Legge da
+`src/lib/brand-overview.ts` e `src/lib/copy.ts`. È la sezione 00 del design
+system e sostituisce `BrandOverview` e `BrandPrinciples` della 1.0, il cui testo
+esteso resta in [00 — Scheda del brand](00-brand-overview.md).
 
 ### `<SectionHeader>` e `<Hero>`
 
-Occhiello mono + titolo display minuscolo.
-
-Portano il **vincolo di compliance nei tipi**: passando `genericBenefit` (o
-`usesShortClaim` sull'hero), la prop `authorizedClaim` diventa obbligatoria e il
-claim EFSA viene stampato nello stesso blocco. Vedi
-[06 — Compliance](06-compliance.md).
-
-Entrambi distinguono tre regimi di colore — chiaro, `brand`, `inverse` — perché
-su terracotta 400 il bianco arriva solo a 3:1: va bene per il titolo, non per il
-corpo.
+Occhiello mono + titolo display minuscolo. Portano il **vincolo di compliance
+nei tipi**: con `genericBenefit` (o `usesShortClaim` sull'hero) la prop
+`authorizedClaim` diventa obbligatoria. Tre toni: `default`, `inverse`, `flavor`
+(titolo bianco, corpo inchiostro).
 
 ### `<Marquee>`
 
-Banda scorrevole a tutta larghezza, fondo terracotta o bosco, testo mono
-maiuscolo, pausa su hover. Una volta per pagina.
-
-Il testo visibile è duplicato per chiudere il ciclo, quindi è `aria-hidden`: la
-versione per gli screen reader è un elenco statico in `.sr-only`, letto una
-volta sola. Con `prefers-reduced-motion: reduce` l'animazione si ferma e la
-banda diventa una riga fissa che va a capo — non una riga ferma a metà.
+Banda scorrevole, toni `arancia | lime | ink | miele`. Sui campi colore il mono
+è inchiostro. Una volta per pagina. Contenuto di default: le prove del prodotto,
+compreso "SPEDIZIONE GRATUITA DA 2 BUSTE".
 
 ### `<DoseSeal>`
 
-Il bollino del dosaggio: numero in Rund Display, unità in mono sotto. È il segno
-che porta il numero.
-
-Non usarlo per numeri che non sono dosaggi: un bollino "-30%" con questa forma
-confonde un dato di prodotto con una promozione.
+Il bollino del dosaggio: numero in Gabarito, unità in mono. Il miele è il tono
+di default; poi `arancia`, `lime`, `ink`, `white`.
 
 ### `<WeekTimeline>`
 
-**Il componente narrativo centrale del brand.** Racconta la saturazione
-progressiva e, con essa, il posizionamento: il prodotto non funziona perché è
-potente, funziona perché lo prendi tutti i giorni.
-
-I testi descrivono il gesto e il tempo, **mai un effetto**. La barra di
-riempimento è decorativa e non dichiara una percentuale di efficacia: è
-l'immagine del serbatoio che si riempie.
-
-### `<StickPack>`
-
-Rappresentazione SVG dello stickpack, con banda colore parametrica. Per i
-mockup. **Non** nella galleria della pagina prodotto, dove serve la foto vera: un
-disegno al posto di una foto sul prodotto in vendita è un problema di fiducia,
-non di stile.
-
-### `<ProductCard>`
-
-Il prezzo per giorno è obbligatorio ed è in mono: è il numero che rende
-confrontabile uno stickpack con un barattolo.
-
-### `<PriceTiers>`
-
-Il selettore delle confezioni. **Il risparmio è calcolato sul prezzo unitario del
-primo livello, non dichiarato a mano: così non può mentire.** La soglia di
-spedizione gratuita è segnalata sul livello, non in una nota a fondo pagina.
-
-Non metterlo insieme a un `<QuantityStepper>` per lo stesso prodotto: due
-comandi che fanno la stessa cosa fanno perdere l'acquisto.
-
-### `<ReviewCard>`
-
-L'etichetta del beneficio è in mono e nomina **un fatto del prodotto** — il
-formato, la costanza, l'assenza di grumi — non un effetto sul corpo.
-
-### `<FaqAccordion>`
-
-`<Accordion>` con i contenuti approvati e i dati strutturati `FAQPage`: le stesse
-risposte diventano un risultato ricco sui motori senza doverle riscrivere.
-`structuredData` una volta sola per pagina.
-
-### `<StickyAddToCart>`
-
-Compare quando l'elemento osservato esce dallo schermo — non a una soglia di
-pixel, così resta corretta a qualunque altezza di viewport.
-
-Pagina prodotto su mobile, sì. Landing, no: una barra fissa prima che l'utente
-sappia cosa sta comprando è solo un ostacolo.
+**Il componente narrativo centrale del brand.** I testi descrivono il gesto e il
+tempo, mai un effetto. Invariato nel principio.
 
 ### `<TrustRow>`
 
-Solo **fatti controllabili**: dove si produce, quanti grammi, quali analisi. Un
-beneficio in questa riga sembra un fatto, ed è esattamente il tipo di errore che
-la compliance punisce.
+Solo **fatti controllabili**: Made in Italy, 3 g, la formula, senza fase di
+carico.
+
+### `<FlavorCard>` e `<FlavorSelector>`
+
+La card presenta un gusto (campo colore, numero grande, stick, nome in
+corsivo, con `showSwatches` i tre valori di colore). Il selettore lo fa
+scegliere: un `<fieldset>` di radio a pillola. Entrambi leggono da `FLAVORS`.
+
+### `<BustaPack>` e `<StickPack>`
+
+Il fronte della busta da 30 stick e lo stick, parametrici. Leggono il gusto da
+`FLAVORS` e le proporzioni dai token `pack.*`. **Provvisori** finché non arriva
+la fustella. Con `standalone` dichiarano i font dentro l'SVG, per l'export. Vedi
+[08 — Packaging](08-packaging.md).
+
+**Non** nella galleria del PDP al posto della foto vera: un disegno sul prodotto
+in vendita è un problema di fiducia. Nel sito dimostrativo il render vale finché
+la foto non c'è, e lo dice.
+
+### `<PackBack>`
+
+Il segnaposto del retro: l'elenco dei contenuti obbligatori con i valori dal
+laboratorio. Non è l'etichetta.
+
+### `<MediaPlaceholder>`
+
+Dove andrà una fotografia. Legge uno `Shot` da `src/lib/media.ts`: se `src` c'è
+mostra l'immagine, altrimenti un campo colore con il vertice e il brief dello
+scatto. È il ponte verso i prototipi finali con Higgsfield: quando il file
+arriva, si scrive il percorso e la pagina si aggiorna.
+
+### `<ProductCard>`
+
+Il prodotto in una griglia. Il gusto decide il colore del riquadro; il prezzo
+per giorno è in mono ed è obbligatorio.
+
+### `<PriceTiers>`
+
+Il selettore delle confezioni. **Prezzo al giorno in grande** (mono), totale in
+piccolo. **Il risparmio è calcolato sul prezzo unitario del primo livello, non
+scritto a mano.** Il livello `preselected` parte selezionato; il primo, senza
+spedizione gratuita, mostra anche il costo al giorno spedizione inclusa. Le
+righe `extras` portano Duo, kit e garanzia.
+
+### `<ReviewCard>`, `<FaqAccordion>`, `<StickyAddToCart>`
+
+Invariati nel principio. La barra sticky, nel design system, è montata **solo
+quando i dettagli tecnici sono aperti e l'ancora è nella viewport**: nella 1.0
+compariva fissa in cima alla pagina e copriva la scheda.
 
 ### `<IngredientPanel>`
 
-Tabella nutrizionale, tutta in mono, intestazioni comprese. È la versione
-leggibile: **l'etichetta di legge sta sul pack e non si riscrive.**
+La tabella nutrizionale, tutta in mono, con la colonna %VNR. Le celle in attesa
+del laboratorio sono `<LabTag>`: **non si inventa un numero per far tornare una
+tabella.**
 
 ---
 
 ## Aggiungere un componente
 
 1. Un file in `src/components/`, con il commento **quando sì / quando no** in
-   cima. Se non riesci a scrivere il "quando no", il componente probabilmente
-   non serve.
-2. Props tipizzate, tutti gli stati: `default, hover, active, focus-visible,
-   disabled, loading`.
-3. Solo token semantici.
+   cima.
+2. Props tipizzate, tutti gli stati.
+3. Solo token semantici. Se mostra un gusto, legge da `FLAVORS`.
 4. Export in `src/components/index.ts`.
-5. **Una sezione nello Showcase**, con tutte le varianti e tutti gli stati.
-6. `npm test` — typecheck, compliance, contrasto.
+5. **Una sezione nella pagina Design system**, nei dettagli tecnici se non è uno
+   dei cinque chiave.
+6. `npm test`.

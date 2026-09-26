@@ -14,110 +14,99 @@ Nei componenti si usano **solo i token semantici**, mai i colori grezzi:
 ```tsx
 // sì
 <div className="bg-bg-surface text-text-primary border-border-subtle" />
+<div className="bg-bg-flavor-arancia text-text-on-flavor" />
 
 // no
 <div className="bg-neutral-0 text-neutral-900 border-neutral-200" />
+<div className="bg-arancia-500" />
 ```
 
-Il motivo è banale e concreto: il giorno in cui il terracotta cambia sfumatura,
-nel primo caso si tocca una riga di `tokens.json`, nel secondo si aprono
-trecento file.
+Il motivo è banale e concreto: il giorno in cui l'arancia cambia sfumatura, nel
+primo caso si tocca una riga di `tokens.json`, nel secondo si aprono trecento
+file.
 
 ---
 
 ## Colore
 
-Quattro scale a dieci step. I valori **base** sono fissi; gli altri step sono
-derivati per luminosità mantenendo la temperatura calda.
+La regola della 2.0: **3 neutri + 2 colori-gusto + 1 accento**. Tutto il resto è
+uscito (terracotta, bosco, plum, amber, cream, honey) o è finito nei dettagli
+tecnici (il rosso di stato).
 
-### Terracotta — primario
+| | Nome | Hex | Quando |
+|---|---|---|---|
+| neutro | **bianco** | `#FFFFFF` | superfici, pieni, il logo su colore |
+| neutro | **carta** | `#FAF7F2` | il fondo del sito e della stampa (`neutral.50`) |
+| neutro | **inchiostro** | `#1B1A18` | testo, il logo su chiaro, pulsanti scuri (`neutral.900`) |
+| colore-gusto 01 | **arancia** | `#E4572E` | campi pieni, pulsanti; è anche il **primario del brand** |
+| colore-gusto 02 | **lime** | `#5E9E1F` | campi pieni delle comunicazioni del gusto 02 |
+| accento | **miele** | `#FCD589` | DoseSeal, badge, evidenziazioni. Mai testo su chiaro |
 
-Bordi, pulsanti, accenti. Base: **400 `#E9724C`**.
+### Arancia — colore-gusto 01 e primario
+
+Base **500 `#E4572E`**.
 
 | Step | Hex | Uso tipico |
 |---|---|---|
-| 50 | `#FDF1EC` | `bg-brand-soft`, fondo dei badge |
-| 100 | `#FADCD1` | stato active dei pulsanti secondari |
-| 200 | `#F5BCA8` | — |
-| 300 | `#F09A7F` | — |
-| **400** | **`#E9724C`** | `bg-brand`, `border-brand`, `logo-stroke` |
-| 500 | `#D45E39` | hover del pulsante primario |
-| 600 | `#B54A2A` | `text-brand` — il primo step leggibile su fondo chiaro |
+| 50 | `#FDF2EE` | `bg-brand-soft`, `bg-flavor-arancia-tint`, fondo dei badge |
+| 100 | `#FAE1D9` | — |
+| 200 | `#F5C3B4` | — |
+| 300 | `#F0A18A` | stato active del pulsante primario |
+| 400 | `#E97958` | hover del pulsante primario |
+| **500** | **`#E4572E`** | `bg-brand`, `bg-flavor-arancia`, `border-brand`, il campo pieno |
+| 600 | `#C24926` | `text-brand` — 4,91:1 su bianco |
 <!-- peak-compliance-ignore focus — anello di focus da tastiera, non un claim -->
-| 700 | `#8F3A20` | `logo-stroke-deep`, anello di focus da tastiera |
-| 800 | `#6B2B18` | — |
-| 900 | `#47190E` | testo su fondo terracotta 400 |
+| 700 | `#A03B1E` | anello di focus da tastiera, badge brand soft |
+| 800 | `#7E2E16` | — |
+| 900 | `#5C200E` | — |
 
-### Miele — secondario
+### Lime — colore-gusto 02
 
-Pieno del logo, superfici calde. Base: **300 `#FCD589`**.
-
-| Step | Hex | Uso tipico |
-|---|---|---|
-| 50 | `#FEFAF0` | `bg-warm` |
-| 100 | `#FDF2DC` | fondo dei badge warning |
-| 200 | `#FCE7BE` | — |
-| **300** | **`#FCD589`** | `logo-fill`, `DoseSeal`, banda dello stickpack |
-| 400 | `#F7C463` | — |
-| 500 | `#EFAE3D` | — |
-| 600 | `#D9922A` | colore di stato `warning` |
-| 700 | `#B0741F` | — |
-| 800 | `#855717` | testo sui badge warning |
-| 900 | `#5A3A0F` | — |
-
-### Bosco — contrasto freddo
-
-Sezioni, secondo prodotto. Base: **500 `#2F6E5E`**, profondo: **700 `#174036`**.
+Base **500 `#5E9E1F`**.
 
 | Step | Hex | Uso tipico |
 |---|---|---|
-| 50 | `#EFF5F3` | fondo dei badge success |
-| 100 | `#D6E5E0` | — |
-| 200 | `#ADCBC2` | — |
-| 300 | `#7FAEA1` | — |
-| 400 | `#4F8B7B` | — |
-| **500** | **`#2F6E5E`** | `bg-forest`, colore di stato `success` |
-| 600 | `#26594C` | testo verde su fondo chiaro |
-| **700** | **`#174036`** | contorno del logo su fondo bosco |
-| 800 | `#102D26` | — |
-| 900 | `#081915` | — |
+| 50 | `#F2F7ED` | `bg-flavor-lime-tint`, fondo dei badge lime |
+| 100 | `#E2EED7` | — |
+| 200 | `#C5DCAE` | — |
+| 300 | `#A5C982` | — |
+| 400 | `#7EB14C` | — |
+| **500** | **`#5E9E1F`** | `bg-flavor-lime`, il campo pieno |
+| 600 | `#4F861A` | — |
+| 700 | `#406D15` | `state.success`, testo verde su chiaro — 6,15:1 |
+| 800 | `#315511` | — |
+| 900 | `#223C0C` | — |
 
-### Rosso — avvisi
+### Miele — l'accento
 
-Warm anche questo: un rosso freddo qui stonerebbe quanto un grigio freddo
-altrove. Il **500 è lo stesso hex di `error`**.
-
-| Step | Hex | Uso tipico |
-|---|---|---|
-| 50 | `#FDECEA` | `bg-danger`, fondo dei blocchi di avviso |
-| 500 | `#C0392B` | `border-danger`, colore di stato `error` |
-| 700 | `#7F2418` | `text-danger` — il primo step leggibile su fondo chiaro |
-
-Gli step intermedi (100–400, 600, 800–900) esistono in `tokens.json` per
-completezza della scala, ma nel sistema oggi non sono usati.
+Base **300 `#FCD589`**. È l'unico accento. Vive come riempimento (DoseSeal,
+badge solid) e fondo (`bg-warm` è il 50). **Mai come colore di testo su fondo
+chiaro.**
 
 ### Neutri caldi
 
 | Step | Hex | | Step | Hex |
 |---|---|---|---|---|
 | 0 | `#FFFFFF` | | 500 | `#928C84` |
-| 50 | `#FAF9F7` | | 600 | `#6E6862` |
+| **50** | **`#FAF7F2`** carta | | 600 | `#6E6862` |
 | 100 | `#F5F4F2` | | 700 | `#4A443E` |
 | 200 | `#E8E5E0` | | 800 | `#33312E` |
-| 300 | `#DFDCD7` | | 900 | `#1B1A18` |
+| 300 | `#DFDCD7` | | **900** | **`#1B1A18`** inchiostro |
 | 400 | `#BDB8B0` | | 1000 | `#0F0E0D` |
 
 I neutri sono **caldi di proposito**. Non usare mai grigi neutri puri o freddi:
-un solo `#888888` in mezzo a questi spezza la temperatura di tutto il resto, e
-la cosa si nota prima di riuscire a spiegarsela.
+un solo `#888888` in mezzo a questi spezza la temperatura di tutto il resto.
+`tailwind.config.js` **sostituisce** la palette di default invece di estenderla:
+i grigi di Tailwind non sono raggiungibili per sbaglio.
 
-Per la stessa ragione `tailwind.config.js` **sostituisce** la palette di
-default invece di estenderla: i grigi di Tailwind non sono raggiungibili per
-sbaglio.
+### Errore
+
+Solo il rosso che serve a `state.error`: `errore.50 #FDECEA`, `errore.500
+#C0392B`, `errore.700 #7F2418`. Non è un colore brand.
 
 ### Stato
 
-`success #2F6E5E` (riusa Bosco) · `warning #D9922A` · `error #C0392B` · `info #4A443E`
+`success #406D15` (lime 700) · `warning #D9922A` (miele 600) · `error #C0392B` · `info #4A443E`
 
 ---
 
@@ -125,63 +114,46 @@ sbaglio.
 
 Gli unici che i componenti devono conoscere.
 
-| Token | Riferimento |
-|---|---|
-| `--bg-page` | neutral 50 |
-| `--bg-surface` | neutral 0 |
-| `--bg-raised` | neutral 100 |
-| `--bg-warm` | miele 50 |
-| `--bg-inverse` | neutral 900 |
-| `--bg-brand` | terracotta 400 |
-| `--bg-brand-soft` | terracotta 50 |
-| `--bg-forest` | bosco 500 |
-| `--text-primary` | neutral 900 |
-| `--text-secondary` | neutral 700 ⚠ |
-| `--text-muted` | neutral 600 ⚠ |
-| `--text-inverse` | neutral 0 |
-| `--text-brand` | terracotta 600 |
-| `--text-on-brand` | terracotta 900 ⚠ |
-| `--text-on-brand-large` | neutral 0 — solo ≥24px ⚠ |
-| `--border-subtle` | neutral 200 |
-| `--border-default` | neutral 300 |
-| `--border-strong` | neutral 400 |
-| `--border-brand` | terracotta 400 |
-| `--bg-danger` | rosso 50 |
-| `--border-danger` | rosso 500 |
-| `--text-danger` | rosso 700 |
-| `--logo-fill` | miele 300 |
-| `--logo-stroke` | terracotta 400 |
-| `--logo-stroke-deep` | terracotta 700 |
-| `--focus-ring` | terracotta 700 |
+| Token | Riferimento | Note |
+|---|---|---|
+| `--bg-page` | neutral 50 | carta |
+| `--bg-surface` | neutral 0 | |
+| `--bg-raised` | neutral 100 | |
+| `--bg-warm` | miele 50 | |
+| `--bg-inverse` | neutral 900 | |
+| `--bg-brand` | arancia 500 | |
+| `--bg-brand-soft` | arancia 50 | |
+| `--bg-flavor-arancia` | arancia 500 | il campo pieno del gusto 01 |
+| `--bg-flavor-arancia-tint` | arancia 50 | |
+| `--bg-flavor-lime` | lime 500 | il campo pieno del gusto 02 |
+| `--bg-flavor-lime-tint` | lime 50 | |
+| `--bg-danger` | errore 50 | |
+| `--text-primary` | neutral 900 | |
+| `--text-secondary` | neutral 700 | |
+| `--text-muted` | neutral 600 | il 500 non arriva a 4,5:1 |
+| `--text-inverse` | neutral 0 | |
+| `--text-brand` | arancia 600 | 4,91:1 su bianco |
+| `--text-on-brand` | neutral 900 | inchiostro sui pulsanti arancia: 4,72:1 |
+| `--text-on-flavor` | neutral 0 | **solo testo grande** sui campi colore |
+| `--text-on-flavor-small` | neutral 900 | il testo piccolo, sul tint |
+| `--text-danger` | errore 700 | |
+| `--border-subtle` / `-default` / `-strong` | neutral 200 / 300 / 400 | |
+| `--border-brand` | arancia 500 | |
+| `--border-danger` | errore 500 | |
+| `--logo-on-flavor` | neutral 0 | |
+| `--logo-on-light` | neutral 900 | |
+| `--focus-ring` | arancia 700 | |
 
-### ⚠ Le tre deviazioni dal brief
+**Rimossi dalla 1.0:** `logo-fill`, `logo-stroke`, `logo-stroke-deep`,
+`bg-forest`, `text-on-brand-large` e ogni token `bosco`.
 
-Il brief chiedeva due cose che, insieme, non stanno in piedi. `npm run tokens:contrast`
-le ha fatte emergere con i numeri. Sono documentate qui invece di essere risolte
-in silenzio, perché la scelta è reversibile e va vista.
+### Perché i pulsanti hanno il testo inchiostro
 
-**1. `--text-muted` punta a neutral 600, non a neutral 500.**
-Neutral 500 (`#928C84`) su bianco dà **3.33:1**. Il brief chiede almeno 4.5:1 per
-ogni testo sotto i 18px, e `text-muted` è proprio il colore delle micro-etichette
-in mono da 10px — il caso peggiore. Ha vinto la regola di contrasto.
-
-**2. `--text-secondary` è slittato a neutral 700** per non collassare sul muted e
-mantenere tre livelli di gerarchia distinti.
-
-**3. `--text-on-brand` è terracotta 900, non bianco.**
-Il bianco su terracotta 400 dà **3.01:1**: sotto la soglia per qualunque testo di
-interfaccia, pulsanti compresi. Il brief autorizzava esplicitamente due colori su
-terracotta 400 — `neutral-0` o `terracotta-900` — e solo il secondo passa. Il
-colore del brand resta identico: cambia l'inchiostro sopra, non il fondo.
-
-Il bianco resta disponibile come **`--text-on-brand-large`**, per il solo testo
-grande (≥24px, o ≥18.66px in grassetto), dove WCAG AA si accontenta di 3:1. È il
-token che usano `<Hero>` e `<SectionHeader>` per il titolo su fondo terracotta,
-mentre il corpo scende su terracotta 900.
-
-Se il brand preferisce il bianco sui pulsanti, la strada pulita è portare il
-fondo del pulsante a **terracotta 600** (bianco a 5.28:1) lasciando il 400 a
-bordi, riempimenti e logo. È una decisione di marchio, non di codice.
+Il bianco su arancia 500 dà **3,68:1**: passa per il testo grande (≥ 24px in
+grassetto), non per l'etichetta di un pulsante. L'inchiostro sullo stesso
+fondo dà **4,72:1**. Il colore del brand resta identico: cambia l'inchiostro
+sopra, non il fondo. Sui campi colore e su inchiostro il pulsante è la pillola
+bianca (`variant="inverse"`).
 
 ---
 
@@ -189,19 +161,21 @@ bordi, riempimenti e logo. È una decisione di marchio, non di codice.
 
 Non sono consigli. Un componente che le viola è un bug.
 
-1. **Miele 300 e Terracotta 400 non sono mai colore di testo su fondo chiaro.**
-   Contrasto insufficiente. Vivono come riempimento, fondo o bordo.
-2. Il testo su fondo **Terracotta 400** deve essere `neutral-0` o `terracotta-900`,
-   **mai miele**.
-3. Il testo su fondo **Miele 300** deve essere `neutral-900` o `terracotta-700`.
-4. Per il testo di colore brand su fondo chiaro si usa **Terracotta 600 o 700**,
-   mai il 400.
-5. Ogni testo sotto i 18px deve raggiungere almeno **4.5:1**.
+1. **Su un campo colore-gusto (arancia 500, lime 500) sono ammessi solo il logo
+   e il testo grande** — ≥ 24px in grassetto o ≥ 32px regular. Bianco su
+   arancia 500 = 3,68:1, bianco su lime 500 = 3,29:1.
+2. **Il testo corrente su un campo colore è vietato:** si usa inchiostro sul
+   `tint` del gusto (`bg-flavor-*-tint` + `text-on-flavor-small`).
+3. **Il testo piccolo sui pieni arancia** — pulsanti, badge — è inchiostro
+   (`text-on-brand`), mai bianco.
+4. **Arancia 500, lime 500 e miele 300 non sono mai colore di testo su fondo
+   chiaro.** Per il testo brand su chiaro si usa arancia 600 o 700; per il
+   verde, lime 700.
+5. Ogni testo sotto i 18px deve raggiungere almeno **4,5:1**.
 
-> Nota sul wordmark. La regola 2 vale per il **testo**, non per il marchio: il
-> logo è miele su terracotta e funziona perché il contorno esterno lo stacca dal
-> fondo. È una soluzione grafica, non un'eccezione alla regola di leggibilità —
-> e non si estende a nessun testo.
+> Sul **pack** il testo piccolo è bianco sul campo colore: è stampa, non
+> interfaccia, e la leggibilità si verifica sulla prova colore con il
+> laboratorio. Vedi [08 — Packaging](08-packaging.md).
 
 ### La tabella dei rapporti
 
@@ -251,8 +225,10 @@ _Tabella generata da `npm run tokens:contrast`. Non modificarla a mano._
 Le ultime righe sono le combinazioni **vietate**. Stanno nella tabella apposta:
 un divieto senza il numero accanto non viene rispettato.
 
-Lo script è anche un test — se una coppia dichiarata valida scende sotto 4.5:1,
-`npm run tokens:contrast` esce con errore.
+Lo script è anche un test — se una coppia dichiarata valida scende sotto la sua
+soglia (4,5:1, o 3:1 se marcata solo-grande), `npm run tokens:contrast` esce con
+errore. Il logo bianco sui due campi colore-gusto è nel report per criterio di
+accettazione.
 
 ---
 
@@ -260,32 +236,35 @@ Lo script è anche un test — se una coppia dichiarata valida scende sotto 4.5:
 
 ### Famiglie
 
-| Ruolo | Font | Fallback |
-|---|---|---|
-| Display | Rund Display | `Gabarito`, `system-ui`, sans-serif |
-| Testo | Rund Text | `Inter`, `system-ui`, sans-serif |
-| Utility / numeri | DM Mono | `ui-monospace`, monospace |
+| Ruolo | Font | Pesi | Note |
+|---|---|---|---|
+| Display + wordmark | **Gabarito** | 900 (700/800 dove serve) | sempre minuscolo. Rund è uscito dal sistema. |
+| Testo | **Inter** | 400 / 500 / 600 | |
+| Numeri e dati | **DM Mono** | 400 / 500 | tutti i numeri, maiuscolo, tracking 0.14em |
+| **Accento** | **Fraunces Italic** | 500 | **solo i nomi dei gusti**: pack, card gusto, selettore. Mai titoli, mai testo. |
 
-I file dei font **non stanno nel repo**: vedi [`assets/fonts/README.md`](../assets/fonts/README.md).
-Se mancano, il sistema scende sui fallback gratuiti e non si rompe: cambia la
-voce tipografica, non il funzionamento.
+Tutte e quattro sono su Google Fonts con licenza SIL OFL: nessun file locale,
+nessuna licenza da comprare. Vedi [`assets/fonts/README.md`](../assets/fonts/README.md).
 
 ### Il ruolo del mono
 
 Il mono **non è decorativo**. Porta tutti i dati oggettivi: dosaggi, grammi,
-numero di stick, lotti, prezzi unitari, conteggi giorni. È il contrappeso che
-impedisce al rounded di diventare infantile.
+numero di stick, lotti, prezzi al giorno, conteggi. È il contrappeso che
+impedisce al rounded di diventare infantile. Sempre maiuscolo, `letter-spacing:
+0.14em`, mai sotto i 10px.
 
-Si usa sempre maiuscolo, con `letter-spacing: 0.14em`, mai sotto i 10px.
+### Il ruolo del corsivo
+
+Fraunces Italic è il tocco "italiano" del sistema, ed esiste per una cosa sola:
+il nome del gusto. `Nº01 Arancia Rossa`. Se compare in un titolo o in un
+paragrafo, è un errore.
 
 ### La scala
 
-Base 16px, rapporto 1.25 arrotondato.
-
 | Token | Size | Line-height | Tracking | Uso |
 |---|---|---|---|---|
-| `display-xl` | 76px | 0.95 | -0.05em | Hero desktop |
-| `display-lg` | 58px | 0.98 | -0.045em | Hero mobile, titoli sezione grandi |
+| `display-xl` | 84px | 0.92 | -0.05em | Hero desktop |
+| `display-lg` | 60px | 0.96 | -0.045em | Hero mobile, titoli sezione grandi |
 | `display-md` | 42px | 1.0 | -0.04em | Titoli sezione |
 | `display-sm` | 32px | 1.05 | -0.035em | Sottotitoli forti |
 | `heading-lg` | 26px | 1.15 | -0.03em | Titoli card |
@@ -296,13 +275,14 @@ Base 16px, rapporto 1.25 arrotondato.
 | `body-sm` | 14px | 1.55 | 0 | Note, didascalie |
 | `mono-md` | 12px | 1.4 | 0.14em | Dati |
 | `mono-sm` | 10px | 1.4 | 0.16em | Micro-etichette |
+| `flavor-lg` | 32px | 1.15 | -0.01em | Il nome del gusto, sul pack e nelle hero |
+| `flavor` | 24px | 1.2 | -0.01em | Il nome del gusto, nelle card |
+| `flavor-sm` | 20px | 1.25 | 0 | Il nome del gusto, nei selettori |
 
-I `display-*` usano sempre **Rund Display peso 900** e sono sempre in
-**minuscolo**. Mai maiuscolo, mai capitalizzato titolo per titolo: il minuscolo
-è parte dell'identità, non uno stile applicato dopo.
-
-Le classi `.type-display-xl`, `.type-mono-md` e simili sono generate in
-`tokens.css` e portano già famiglia, peso e `text-transform` corretti.
+I `display-*` usano sempre **Gabarito 900** e sono sempre in **minuscolo**. I
+`flavor-*` sono sempre **Fraunces Italic 500**. Le classi `.type-display-xl`,
+`.type-flavor` e simili sono generate in `tokens.css` e portano già famiglia,
+peso, stile e `text-transform`.
 
 ---
 
@@ -319,77 +299,57 @@ Lo spazio appartiene al contenitore, non ai figli: usa `<Stack gap="6">`, non
 ### ⚠ La scala sostituisce quella di Tailwind, non la estende
 
 `tailwind.config.js` imposta `spacing` con questi valori **al posto** di quelli
-di default. È voluto: `p-7` o `gap-1.5` non esistono, e non si possono scrivere
-per distrazione.
+di default. È voluto: `p-7` o `p-14` non esistono. Ma Tailwind non protesta: una
+classe fuori scala non genera CSS e la pagina resta in piedi lo stesso. Per
+questo esiste `npm run check:utilities`, che gira dentro `npm test` dopo la
+build e fallisce sulla differenza.
 
-Il rovescio è che **Tailwind non protesta**. Una classe fuori scala non genera
-CSS e la pagina resta in piedi lo stesso: un pulsante senza altezza si regge sul
-padding, e il difetto passa inosservato per settimane. È già successo in questo
-repo — `h-11`, `h-9` e `h-14` non hanno mai prodotto una riga di CSS.
-
-Per questo esiste `npm run check:utilities`: confronta ogni utility di
-dimensione usata nel sorgente con il CSS costruito e fallisce sulla differenza.
-Gira dentro `npm test`, dopo la build.
-
-Quando serve una misura che non sta nella scala e non è uno spazio — la
-larghezza di una barra laterale, l'altezza di un segnaposto — si usa un valore
-arbitrario, `w-[208px]`, che compila sempre ed è visibilmente un'eccezione.
+Quando serve una misura fuori scala si usa un valore arbitrario, `w-[208px]`,
+che compila sempre ed è visibilmente un'eccezione.
 
 ---
 
 ## Altezze dei controlli
 
-Non sono spazi e non stanno nella scala di spaziatura: sono decisioni sulla
-dimensione dei bersagli.
-
-| Token | Valore | Uso |
-|---|---|---|
-| `control-sm` | 36px | Pulsanti piccoli, chiudi di una modale |
-| `control-md` | 44px | Pulsanti, campi, select. **Il minimo per un bersaglio touch.** |
-| `control-lg` | 56px | La chiamata all'azione principale |
-
-Disponibili come `h-control-md`, `w-control-sm`, `min-h-control-md`.
+`control-sm` 36px · `control-md` 44px (il minimo per un bersaglio touch) ·
+`control-lg` 56px. Disponibili come `h-control-md`, `w-control-sm`.
 
 ---
 
 ## Forma
 
-**Raggi** — generosi, è un brand morbido.
+**Raggi** — `sm` 8px · `md` 14px · `lg` 22px · `xl` 30px · `2xl` 44px · `full`.
+I pulsanti usano **sempre** `full`. Le card `lg` o `xl`. Spigoli vivi solo nelle
+bande a tutta larghezza.
 
-`sm` 8px · `md` 14px · `lg` 22px · `xl` 30px · `2xl` 44px · `full` 9999px
-
-I pulsanti usano **sempre** `full`: nel sistema di peak sono pillole, senza
-eccezioni. `<Button>` non espone una prop per cambiarlo, di proposito. Le card
-usano `lg` o `xl`. Spigoli vivi solo nelle bande a tutta larghezza.
-
-**Ombre** — minime, il brand è piatto.
-
-`sm` `0 1px 2px rgba(27,26,24,.06)` · `md` `0 4px 12px rgba(27,26,24,.08)` ·
-`lg` `0 12px 32px rgba(27,26,24,.10)`
-
-Mai ombre colorate, mai glow. L'ombra dice solo cosa sta sopra cosa.
+**Ombre** — `sm` · `md` · `lg`, tutte inchiostro a bassa opacità. Mai ombre
+colorate, mai glow.
 
 ---
 
 ## Movimento
 
-`fast` 120ms · `base` 200ms · `slow` 360ms · `marquee` 24s linear infinite
+`fast` 120ms · `base` 200ms · `slow` 360ms · `marquee` 24s. Easing
+`cubic-bezier(.2,.8,.2,1)`. **Ogni animazione rispetta
+`prefers-reduced-motion: reduce`.** Il pattern a pallini è statico per scelta.
 
-Easing standard: `cubic-bezier(.2,.8,.2,1)`.
+---
 
-**Ogni animazione rispetta `prefers-reduced-motion: reduce`.** Il blocco è già in
-`tokens.css` e azzera le durate a livello globale; il `<Marquee>` fa un passo in
-più e diventa una riga fissa che va a capo, invece di restare fermo a metà.
+## Packaging
+
+Nuovo gruppo `pack` in `tokens.json`, provvisorio finché non arriva la fustella:
+
+| Token | Valore | Cosa |
+|---|---|---|
+| `pack.safe` | 0.08 | margine di sicurezza: l'8% del lato corto |
+| `pack.sealBand` | 0.08 | la banda di saldatura in alto: l'8% dell'altezza |
+| `pack.wordmarkWidth` | 0.82 | il wordmark sul fronte: l'82% della larghezza |
+| `pack.bustaRatio` | 2:3 | segnaposto della fustella della busta |
+| `pack.stickRatio` | 1:5 | segnaposto dello stick |
 
 ---
 
 ## Breakpoint
 
-`sm` 640 · `md` 768 · `lg` 1024 · `xl` 1280 · `2xl` 1536
-
-Container: larghezza massima 1200px, padding 28px.
-
-`<Container width>` offre quattro colonne: `narrow` 760px per il testo lungo,
-`default` 1200px, `media` **1100px** per le pagine fatte di immagini — così una
-fotografia a piena colonna non diventa smisurata — e `wide` 1440px per le
-griglie prodotto.
+`sm` 640 · `md` 768 · `lg` 1024 · `xl` 1280 · `2xl` 1536. Container 1200px,
+padding 28px; `<Container width>` offre `narrow` 760, `media` 1100 e `wide` 1440.

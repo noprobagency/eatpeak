@@ -192,7 +192,8 @@ export const FORBIDDEN_TERMS: readonly ForbiddenTerm[] = [
   // --- altre aree fisiologiche senza claim ---
   { term: 'immunita', reason: 'Ammesso solo dentro il claim letterale della vitamina D.', group: 'salute' },
   { term: 'immunity', reason: 'Ammesso solo dentro il claim letterale della vitamina D.', group: 'salute' },
-  { term: 'immune', reason: 'Ammesso solo dentro il claim letterale della vitamina D.', group: 'salute' },
+  // `immune` e' anche dentro l'id tecnico del claim, `vitd-immune`: incollato a `-` e' un identificatore.
+  { term: 'immune', reason: 'Ammesso solo dentro il claim letterale della vitamina D.', group: 'salute', technicalCollision: true },
   { term: 'sonno', reason: 'Claim non autorizzato.', group: 'salute' },
   { term: 'sleep', reason: 'Claim non autorizzato.', group: 'salute' },
   { term: 'capelli', reason: 'Claim non autorizzato.', group: 'salute' },

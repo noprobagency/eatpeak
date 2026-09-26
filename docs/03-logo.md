@@ -1,156 +1,154 @@
-# 03 — Logo e icone
+# 03 — Logo e simbolo
 
 Tutte le geometrie e le varianti stanno in
-[`src/brand/paths.ts`](../src/brand/paths.ts). I componenti `<Logo>`, `<Icon>` e
-`<Lockup>` si limitano a disegnarle, e il generatore in
-`scripts/generate-assets.mjs` legge lo **stesso** file: gli SVG statici non
+[`src/brand/paths.ts`](../src/brand/paths.ts) e nel tracciato generato
+[`src/brand/wordmark.json`](../src/brand/wordmark.json). I componenti `<Logo>`,
+`<Icon>`, `<Lockup>` e `<DotField>` si limitano a disegnarli, e il generatore in
+`scripts/generate-assets.mjs` legge gli **stessi** file: gli SVG statici non
 possono andare fuori sincrono col codice.
 
 ```bash
-npm run assets:generate
+npm run brand:vectorize      # rigenera il tracciato del wordmark (serve il TTF di Gabarito)
+npm run assets:generate      # rigenera logo, lockup, favicon, PNG, ICO, manifest
 ```
 
 ---
 
 ## Il wordmark
 
-La parola è **`peak`**, sempre minuscola, Rund Display peso 900, tracking
-`-0.033em` (cioè `-2` su un font-size di 60).
+La parola è **`peak`**, sempre minuscola, **Gabarito 900**, **vettorializzata in
+tracciati**. Il logo non dipende più da nessun font: si apre ovunque, si stampa
+ovunque, si vede uguale ovunque.
 
-Il trattamento è **pieno miele con contorno terracotta**, dove il contorno sta
-**all'esterno** del disegno della lettera — in SVG: `paint-order="stroke"` con
-`stroke-linejoin="round"`. Questo è il dettaglio che conta: se il contorno fosse
-centrato sul tracciato, la lettera si assottiglierebbe e il peso Black andrebbe
-sprecato.
+**Un solo colore, pieno, senza contorno.** Via il riempimento miele con il
+contorno terracotta, via i tre spessori, via le undici varianti della 1.0.
 
-### La regola critica sullo spessore
+### Il tracciato
 
-**Il filo non scala proporzionalmente al logo.**
+Generato da `scripts/vectorize-wordmark.mjs` con opentype.js, a partire dal TTF
+statico di Gabarito 900 (SIL OFL, scaricato da Google Fonts). Il file del font
+non si committa; il tracciato sì.
 
-Se rimpicciolisci tutto insieme, sotto una certa soglia il contorno entra nelle
-contro-forme di "e" e "a" e il nome diventa una macchia. Non è una questione di
-gusto: è il limite fisico del disegno.
+| | |
+|---|---|
+| Font | Gabarito Black 900 |
+| Tracking | **-0.04em** |
+| viewBox | 201.8 × 87.1 |
+| Altezza della "e" | 51.3 (il 59% del blocco) |
 
-Servono **tre versioni disegnate**, non una scalata:
+### La scelta del tracking
 
-| Versione | Uso | Rapporto stroke / font-size | Spessore su 60px |
-|---|---|---|---|
-| `lg` | oltre 120px di larghezza | 0.117 | 7.02 |
-| `md` | 60–120px | 0.100 | 6.00 |
-| `sm` | sotto 60px | 0.067 | 4.02 |
+Il generatore misura le distanze fra i tracciati delle lettere per i tre valori
+in prova (`npm run brand:vectorize -- --compare`):
 
-`<Logo>` sceglie la versione da solo in base a `size`. La prop `strokeSize` la
-forza, e serve praticamente solo per le esportazioni di stampa.
-
-```tsx
-<Logo size={200} />                    // usa lg
-<Logo size={90} />                     // usa md
-<Logo size={40} />                     // usa sm
-<Logo size={200} strokeSize="sm" />    // forzata, sai quello che fai
-```
-
-### Il peso della lettera conta più del filo
-
-Con un contorno spesso serve il peso pieno sotto. Il Black regge, il Bold è al
-limite, il Semibold si impasta. È il motivo per cui il wordmark è bloccato sul
-900 e non espone una prop per cambiarlo.
-
-### Allineamento
-
-Il viewBox del wordmark è più largo dell'inchiostro, quindi di default la parola
-risulta **rientrata** rispetto al testo che le sta accanto o sotto. Quando il
-logo apre una colonna, serve `align="left"`:
-
-```tsx
-<Logo size={420} align="left" />
-```
-
-L'origine del testo va a `x=0`: il filo esce di metà spessore verso sinistra e
-copre quasi esattamente l'avvicinamento sinistro della "p", così il bordo
-visibile del marchio cade sulla colonna al pixel. L'SVG ha `overflow="visible"`,
-quindi con un font di ripiego dalle metriche diverse sborda invece di perdere un
-pezzo di lettera.
-
-### Le undici varianti colore
-
-| # | Nome | Pieno | Contorno | Quando |
+| Tracking | Larghezza | p-e | e-a | a-k |
 |---|---|---|---|---|
-| 1 | `honey-terracotta` | `#FCD589` | `#E9724C` | **Primaria.** Ovunque, di default. |
-| 2 | `honey-terracotta-deep` | `#FCD589` | `#8F3A20` | Sopra un fondo terracotta 400. |
-| 3 | `honey-forest` | `#FCD589` | `#2F6E5E` | Sezioni bosco, secondo prodotto. |
-| 4 | `honey-forest-deep` | `#FCD589` | `#174036` | Sopra un fondo bosco 500. |
-| 5 | `honey-plum` | `#FFCF7A` | `#8A3D6B` | Fuori palette. Riserva per edizioni limitate. |
-| 6 | `cream-terracotta` | `#FDE3B0` | `#E9724C` | Stampa e packaging. La più elegante, la meno visibile in un feed. |
-| 7 | `amber-deep` | `#F7B733` | `#B4491F` | Fondi molto chiari. |
-| 8 | `outline-only` | — | `#E9724C` sp. 2.4 | Filigrane, watermark. **Mai sotto i 120px.** |
-| 9 | `solid-terracotta` | `#E9724C` | — | Stampa a un colore. |
-| 10 | `solid-ink` | `#1B1A18` | — | Incisioni, timbri, documenti legali. |
-| 11 | `solid-white` | `#FFFFFF` | — | Negativo su fondi scuri. |
+| -0.03em | 204.8 | 0.00 | -0.10 | 4.60 |
+| **-0.04em** | **201.8** | **-1.00** | **-1.10** | **3.60** |
+| -0.05em | 198.8 | -2.00 | -2.10 | 2.60 |
 
-Ogni variante è esportata in `assets/logo/` nelle tre versioni di filo — tranne
-quelle senza contorno e la `outline-only`, che a spessore fisso sono identiche
-in tutti gli step e vengono scritte una volta sola.
+A -0.03 la "k" galleggia. A -0.05 le pance di "e" e "a" si toccano fino a
+fondersi. **-0.04** tiene "p", "e" e "a" quasi a contatto — com'è nella
+direzione — e lascia alla "k" l'aria che le serve per le sue aste. È il default
+ed è quello nel tracciato.
 
-### Su fondo colorato
+### Le tre varianti
 
-Il contorno risolve un problema pratico: **il logo resta leggibile su qualsiasi
-fondo senza bisogno di una versione in negativo**. Basta cambiare il colore del
-filo, non il disegno.
+| Variante | Colore | Quando |
+|---|---|---|
+| `white` | `#FFFFFF` | **Primaria.** Su ogni campo colore-gusto (arancia, lime) e su inchiostro. È il logo del packaging. |
+| `ink` | `#1B1A18` | Su bianco e carta: header del sito, documenti, stampa a un colore. |
+| `flavor` | arancia 500 o lime 500 | Solo su bianco o carta, solo sopra i 48px di altezza. Uso raro: pubblicità su fondo chiaro. |
 
-`<Logo>` accetta una prop `background` (`light | warm | brand | forest | dark`) e
-sceglie da sé la variante che ci si legge sopra.
+`<Logo>` accetta `size` (larghezza in px), `variant`, `flavor` e `align`.
+`background` (`light | flavor | dark`) sceglie la variante da solo:
+`flavor`/`dark` → bianco, `light` → inchiostro. In sviluppo avvisa se il logo
+bianco finisce su un fondo chiaro, se la variante colore-gusto scende sotto i
+48px o se la misura è sotto la minima.
+
+```tsx
+<Logo size={420} background="flavor" />     // bianco
+<Logo size={96} variant="ink" />            // header
+<Logo size={300} variant="flavor" flavor="lime" />
+```
+
+### Le regole di scala
+
+| Dove | Quanto |
+|---|---|
+| Fronte della busta | **80–85% della larghezza**, allineato a sinistra, in alto |
+| Stick | Lungo la lunghezza, **ruotato di 90°**, alto l'80% della larghezza dello stick |
+| Header del sito | Minimo **96px** di larghezza su desktop, **80px** su mobile |
+| Hero | XL |
+
+**Misura minima:** 48px di larghezza sullo schermo, 12mm in stampa.
+
+**Area di rispetto:** l'altezza della "e" minuscola su tutti i lati.
+`CLEARSPACE_RATIO = 0.59`, calcolato sul tracciato.
+
+### Il contrasto del bianco sui campi colore
+
+| | Rapporto |
+|---|---|
+| Bianco su arancia 500 | **3,68:1** |
+| Bianco su lime 500 | **3,29:1** |
+
+Sopra 3:1: ammesso per il logo e per il testo grande. Il testo corrente sui campi
+colore è vietato — si usa inchiostro sul tint. La tabella completa è in
+[02 — Token](02-tokens.md).
 
 ---
 
-## L'icona
+## Il vertice
 
-Il simbolo è una **saetta che punta verso l'alto** — orientata all'insù invece
-che all'ingiù, così legge come ascesa e non come scarica elettrica, e lega il
-segno al significato di "peak" senza disegnare una montagna.
+Il simbolo è il **vertice**: tre cerchi pieni e uguali disposti a triangolo, uno
+sopra e due sotto. La saetta della 1.0 è uscita dal sistema.
 
+Cosa significa:
+
+- **il picco** — "peak", senza disegnare una montagna;
+- **3 ingredienti** — creatina, glicina, vitamina D3;
+- **3 g** — la dose;
+- un segno a **particella**, che porta il lato scientifico della direzione senza
+  disegnare molecole.
+
+### Geometria
+
+viewBox 100 × 100.
+
+| Versione | Cerchi |
+|---|---|
+| **Nel contenitore** (`rect x=2 y=2 w=96 h=96 rx=26`) | r = 12, centri (50,33), (33,64), (67,64) |
+| **Libero**, senza contenitore | r = 14, centri (50,30), (30,66), (70,66) |
+| **Sotto i 24px resi** | r = 13 nel contenitore, per non far fondere i punti |
+
+Il raggio 26 del contenitore non scende mai sotto i 4px assoluti una volta reso.
+
+### Le quattro varianti
+
+| # | Contenitore | Punti | Quando |
+|---|---|---|---|
+| 1 | arancia 500 | bianchi | **Primaria:** favicon, app icon, avatar social |
+| 2 | lime 500 | bianchi | Comunicazioni del gusto 02 |
+| 3 | inchiostro | bianchi | Documenti, stampa a un colore, dark mode |
+| 4 | nessuno | colore-gusto o inchiostro | Lockup, sigillo sul retro dello stick |
+
+```tsx
+<Icon size={64} />                            // arancia
+<Icon size={64} variant="lime" />
+<Icon size={40} variant="free" color="ink" />
 ```
-BOLT_UP   = "M 55 95 L 20 45 L 42 45 L 35 5 L 72 58 L 50 58 Z"
-BOLT_PEAK = "M 50 6 L 84 62 L 62 62 L 68 94 L 30 94 L 38 62 L 16 62 Z"
-```
 
-`BOLT_PEAK` è la variante a base allargata: la saetta è anche una vetta. Più
-stabile e più leggibile alle dimensioni minime, meno dinamica.
+Ogni variante è esportata in `assets/favicon/` come SVG a **512, 192, 96, 64,
+48, 32 e 16px**; le tre nel contenitore anche in PNG. Il rasterizzatore in
+`scripts/lib/raster.mjs` disegna i cerchi con lo stesso supercampionamento 4×4
+dei poligoni.
 
-**Contenitore:** `<rect x="2" y="2" width="96" height="96" rx="26"/>` per la
-versione squadrata, `<circle cx="50" cy="50" r="48"/>` per la tonda.
+### Usi del vertice
 
-Il raggio 26 non deve mai scendere sotto i **4px assoluti** una volta reso. A
-16px il raggio nominale vale 4.16px, quindi la clamp non morde quasi mai: esiste
-per proteggere i rendering più piccoli del previsto.
-
-### Le dodici varianti
-
-| # | Fondo | Saetta | Contorno | Forma | Path |
-|---|---|---|---|---|---|
-| 1 | `#E9724C` | `#FCD589` | — | rect | BOLT_UP |
-| 2 | `#E9724C` | `#FCD589` | `#8F3A20` sp. 5 | rect | BOLT_UP |
-| 3 | `#2F6E5E` | `#FCD589` | — | rect | BOLT_UP |
-| 4 | `#2F6E5E` | `#E9724C` | `#174036` sp. 5 | rect | BOLT_UP |
-| 5 | `#FCD589` | `#E9724C` | `#8F3A20` sp. 4 | rect | BOLT_UP |
-| 6 | `#E9724C` | `#FCD589` | — | circle | BOLT_UP |
-| 7 | `#2F6E5E` | `#FCD589` | — | circle | BOLT_UP |
-| 8 | `#E9724C` | `#FCD589` | — | rect | BOLT_PEAK |
-| 9 | `#2F6E5E` | `#FCD589` | — | rect | BOLT_PEAK |
-| 10 | `#FCD589` | `#E9724C` | — | rect | BOLT_PEAK |
-| 11 | `#1B1A18` | `#FCD589` | — | rect | BOLT_UP |
-| 12 | trasparente | `#E9724C` | — | — | BOLT_UP |
-
-Ognuna è esportata in `assets/favicon/` come SVG a **512, 192, 96, 64, 48, 32 e
-16px**.
-
-### La regola del contorno
-
-**Il contorno esiste solo sopra i 48px.** Sotto, il filo scuro si mangia la
-saetta e l'icona diventa una macchia.
-
-`<Icon>` lo toglie da solo: non serve ricordarselo. La prop `forceOutline` esiste
-unicamente perché lo Showcase possa mostrare il difetto affiancato al
-comportamento corretto — non usarla in produzione.
+Favicon, app icon, avatar social, sigillo sullo stick, seme del pattern. **Mai
+come icona funzionale nell'interfaccia:** il vertice è il marchio, e riusarlo
+come pittogramma per "tre" o "ingredienti" lo svaluta.
 
 ### I file per il deploy
 
@@ -158,91 +156,92 @@ comportamento corretto — non usarla in produzione.
 
 | File | Cosa |
 |---|---|
-| `favicon.ico` | multi-risoluzione, con 16, 32 e 48 dentro, dalla variante 1 |
+| `favicon.ico` | multi-risoluzione, con 16, 32 e 48 dentro, dalla variante arancia |
 | `favicon.svg` | la versione vettoriale, preferita dai browser moderni |
 | `apple-touch-icon.png` | 180×180, senza raggio: iOS arrotonda da sé |
 | `icon-192.png`, `icon-512.png` | icone PWA |
-| `site.webmanifest` | manifest con i colori del brand |
-
-Il rasterizzatore in `scripts/lib/raster.mjs` è scritto a mano e non ha
-dipendenze: disegna le forme con supercampionamento 4×4 e codifica PNG e ICO
-direttamente. Non è un motore SVG generico e non prova a esserlo — i path del
-marchio usano solo `M`, `L` e `Z` con coordinate assolute, e quello basta.
+| `site.webmanifest` | manifest con `theme_color #E4572E` |
 
 ---
 
 ## Il lockup
 
-Icona e wordmark affiancati. **Lo spazio tra i due è pari alla metà dell'altezza
-dell'icona.** È l'unica regola di lockup necessaria.
+Vertice libero e wordmark. **Lo spazio tra i due è pari alla metà dell'altezza
+del simbolo.** È l'unica regola di lockup necessaria. Esiste anche la versione
+verticale: simbolo sopra, parola sotto, stesso spazio.
 
-Esiste anche la versione verticale — icona sopra, wordmark sotto, stesso spazio.
+Su bianco e carta il lockup è wordmark inchiostro + vertice nel colore-gusto;
+su un campo colore o su inchiostro è tutto bianco.
 
 ```tsx
 <Lockup iconSize={64} />
-<Lockup iconSize={64} orientation="vertical" />
+<Lockup iconSize={64} orientation="vertical" flavor="lime" />
+<Lockup iconSize={56} background="dark" />
 <Lockup iconSize={56} withClearspace />
 ```
 
-**Area di rispetto:** attorno al lockup, un margine libero pari all'altezza della
-"p" minuscola su tutti i lati. Nel componente è `CLEARSPACE_RATIO = 0.46`, cioè
-il 46% dell'altezza del blocco del wordmark.
+Gli SVG sono in `assets/logo/peak-lockup-*.svg`, tutti in tracciati.
+
+---
+
+## Il pattern a pallini — `<DotField>`
+
+Una griglia di punti che deriva dal vertice, con **raggio crescente lungo una
+direzione**: densità a gradiente, effetto retino.
+
+| Prop | Cosa |
+|---|---|
+| `rows`, `cols` | la griglia |
+| `direction` | `up | down | left | right`: il verso in cui il raggio cresce |
+| `color` | il colore dei punti |
+| `opacity` | da / a |
+| `radius` | da / a, in unità di cella |
+| `stagger` | righe sfalsate di mezza cella |
+| `stretch` | riempie il contenitore deformando la griglia |
+
+**Default da pack:** punti bianchi con opacità dal 18% al 40%, raggio da 1 a 7,
+righe sfalsate.
+
+**Uso:** terzo inferiore del fronte busta e bande hero. **Mai sotto il testo:** il
+pattern sta sotto il blocco dati, non lo attraversa. **Statico:** nessuna
+animazione.
+
+`dotFieldPoints()` è la geometria pura e `<DotFieldGroup>` la stessa griglia come
+`<g>` da mettere dentro un altro SVG: è così che il fronte della busta la disegna
+senza `<foreignObject>`, che contaminerebbe la tela nell'export.
 
 ---
 
 ## Usi vietati
 
-Lo Showcase li mostra barrati, alla sezione **06 — wordmark**. Qui l'elenco.
+Lo Showcase li mostra barrati nei dettagli tecnici. Qui l'elenco.
 
 | ✗ | Perché |
 |---|---|
-| **Ruotare** il logo | Il minuscolo e l'orizzontalità sono l'identità. Un logo inclinato è un logo diverso. |
-| **Inclinare** o applicare skew | Deforma il disegno delle lettere, che è la cosa che stai proteggendo. |
-| **Aggiungere ombre o glow** | Il brand è piatto. Un glow lo sposta nell'estetica supplement-tech da cui vuole stare lontano. |
-| **Cambiare il tracking** | È fissato a `-0.033em`. Aprirlo o chiuderlo rompe il rapporto fra le contro-forme e il filo. |
-| **Usare un contorno chiaro sfumato** | Il contorno serve a staccare dal fondo: sfumato non stacca e basta. |
-| **Riempire con gradienti** | Il pieno è un colore solido. Sempre. |
-| **Mettere il wordmark su fotografia** senza un campo di colore pieno sotto | Il contorno tiene su tinte piatte, non su una texture. |
-| **Scalare il filo insieme al logo** | Vedi la regola critica sopra: sotto la soglia le contro-forme si chiudono. |
-| **Usare `outline-only` sotto i 120px** | Il filo da 2.4 sparisce. Il componente lo segnala in console in sviluppo. |
-| **Usare la saetta come icona funzionale** nell'interfaccia | La saetta è il marchio. Riusarla come pittogramma per "veloce" o "energia" la svaluta. |
+| **Contorni** | Il wordmark 2.0 è pieno. Un filo lo riporta alla 1.0. |
+| **Doppio colore** | Un solo colore, sempre: bianco, inchiostro o colore-gusto. |
+| **Gradienti** | Il brand è piatto. Il pieno è un colore solido. |
+| **Ombre o glow** | Lo spostano nell'estetica supplement-tech da cui vuole stare lontano. |
+| **Rotazioni** | Tranne i 90° sullo stick, dove il logo corre lungo la lunghezza. |
+| **Tracking modificato** | È fissato a -0.04em nel tracciato. Non esiste una prop per cambiarlo. |
+| **Logo su foto senza campo di colore pieno** | Il bianco pieno tiene su una tinta piatta, non su una texture. |
+| **Logo bianco su fondi chiari** | Non si legge. Su bianco e carta il logo è inchiostro. |
+| **Il vertice come icona funzionale** | Il vertice è il marchio. |
 
 ---
 
-## Esportare il wordmark in PNG
+## Esportare il wordmark
 
 ```bash
-npm run export:logo -- honey-terracotta --size=2400
+npm run export:logo -- white --size=2400            # bianco su campo arancia, con area di rispetto
+npm run export:logo -- ink --size=1200              # inchiostro su trasparente, ritagliato
+npm run export:logo -- lime --bg=#FFFFFF
 npm run export:logo -- --list
 ```
 
-Esce in `assets/export/`, fondo trasparente, ritagliato al pixel. La cartella è
-fuori dal versionamento: gli export si rigenerano, e sono prodotti con un font
-in licenza trial.
+Esce in `assets/export/`, fuori dal versionamento. Passa da Chrome, che disegna
+il tracciato con `Path2D` su una tela e ritaglia sull'alfa: nessun font
+richiesto.
 
-Perché passa da Chrome e non dal rasterizzatore di casa: il wordmark è **testo**,
-non un tracciato. Per rasterizzarlo serve un motore tipografico che sappia cosa
-fare di Rund Display, del tracking negativo e del contorno esterno.
-`scripts/lib/raster.mjs` disegna poligoni — va benissimo per la saetta, di testo
-non sa niente.
-
-Il ritaglio non è calcolato: si disegna su una tela abbondante, si legge il
-canale alfa e si taglia sull'ultimo pixel non trasparente. Nessun margine
-residuo, nessuna lettera tagliata.
-
-**Il PNG non è il formato di consegna del logo.** È comodo per una slide o per
-mandarlo a qualcuno al volo. Per stampa, packaging e web serve l'SVG con il
-testo vettorializzato — vedi qui sotto.
-
----
-
-## Il font, prima della produzione
-
-Gli SVG in `assets/logo/` contengono **testo non vettorializzato**: senza Rund
-Display installato si vede il fallback.
-
-Una volta comprata la licenza desktop, il wordmark va **vettorializzato una volta
-sola** — testo convertito in tracciati — e quei file sostituiscono questi. Da
-quel momento il logo non dipende più da nessun font.
-
-Vedi [`assets/fonts/README.md`](../assets/fonts/README.md).
+**Il PNG non è il formato di consegna del logo.** Per stampa, packaging e web
+serve l'SVG in tracciati di `assets/logo/`, che è già quello definitivo.
