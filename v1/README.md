@@ -1,3 +1,10 @@
+> **Archivio — design system 1.0 (agosto 2026).**
+> Questa cartella è la versione 1.0 così com'era prima della 2.0, spostata qui
+> intera e non più mantenuta. Il sistema attuale sta alla radice del repo.
+> Per farla girare da sola: `cd v1 && npm install && npm run dev`.
+> Logo con contorno, saetta, palette terracotta/bosco, gusti mela e ciliegia,
+> prezzi 29/52/72: tutto superato dalla 2.0, tenuto qui per la storia.
+
 # peak — design system
 
 Il sistema di design di **peak**, brand DTC di integratori. Primo prodotto:
