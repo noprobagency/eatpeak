@@ -38,6 +38,8 @@ export { IngredientPanel, type IngredientPanelProps, type IngredientRow } from '
 export { SectionHeader, Em, type SectionHeaderProps } from './SectionHeader'
 export { BrandSheet, type BrandSheetProps } from './BrandSheet'
 export { MediaPlaceholder, type MediaPlaceholderProps } from './MediaPlaceholder'
+export { Glass, type GlassProps } from './Glass'
+export { StockCounter, type StockCounterProps } from './StockCounter'
 export { Hero, type HeroProps } from './Hero'
 
 // --- layout ---

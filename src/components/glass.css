@@ -1,0 +1,71 @@
+/* ---------------------------------------------------------------------------
+ * Il vetro (3.0): la ricetta dell'header messa in token, piu' la versione
+ * "liquida" con il riflesso in alto, l'ombra interna e la saturazione.
+ * Solo sopra colore o immagine: su carta piatta non si vede.
+ * ------------------------------------------------------------------------ */
+
+.peak-glass {
+  position: relative;
+  border-radius: var(--glass-radius);
+  border: 1px solid var(--glass-border);
+  background: linear-gradient(to bottom right, var(--glass-from), var(--glass-mid) 55%, transparent);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow);
+  color: var(--text-primary);
+}
+
+/* Il velo interno: garantisce il cacao a 4,5:1 anche sopra l'arancia. */
+.peak-glass--light {
+  background:
+    linear-gradient(to bottom right, var(--glass-from), var(--glass-mid) 55%, transparent),
+    var(--glass-veil);
+}
+
+/* Sopra un campo colore, con testo bianco: il velo e' del colore stesso. */
+.peak-glass--on-color {
+  color: var(--text-inverse);
+  background:
+    linear-gradient(to bottom right, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.04) 55%, transparent),
+    rgba(58, 42, 34, 0.18);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Liquida: riflesso speculare sul primo 40%, ombra interna, saturazione. */
+.peak-glass--liquid {
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  box-shadow: var(--glass-shadow), var(--glass-inner-shadow);
+}
+.peak-glass--liquid::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 60% 0;
+  border-radius: inherit;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background: linear-gradient(to bottom, var(--glass-highlight), transparent);
+  pointer-events: none;
+}
+
+/* Senza backdrop-filter: fondo bianco all'85% (o colore pieno sopra colore). */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .peak-glass--light { background: var(--glass-fallback); }
+  .peak-glass--on-color { background: rgba(58, 42, 34, 0.55); }
+}
+
+/* Chi non vuole trasparenze ha il fondo pieno. */
+@media (prefers-reduced-transparency: reduce) {
+  .peak-glass,
+  .peak-glass--light {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--bg-surface);
+  }
+  .peak-glass--on-color {
+    background: var(--bg-brand-deep);
+  }
+  .peak-glass--liquid::before {
+    display: none;
+  }
+}
