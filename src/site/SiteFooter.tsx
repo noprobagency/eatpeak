@@ -1,66 +1,71 @@
 /**
- * <SiteFooter /> — il piede del sito.
+ * <SiteFooter /> — il piede del sito (H15, archetipo A).
  *
- * Su inchiostro, con il lockup bianco. Porta il sign-off del brand — che e'
- * un beneficio generico — e quindi porta anche i claim autorizzati nello
- * stesso blocco: l'articolo 10(3) chiede che la copertura sia nelle immediate
- * vicinanze, non una volta per dominio. In fondo, le quinte: design system e
- * prototipi, e l'archivio della 1.0.
+ * Fondo arancia 600 con la grana, il wordmark bianco a tutta larghezza che
+ * si scompone in retino al passaggio (H3, solo desktop), il sign-off del
+ * brand con i claim autorizzati nello stesso blocco (articolo 10(3)), i
+ * link, le note legali. Niente nero, da nessuna parte.
  */
 
-import { Lockup } from '../brand'
-import { Badge } from '../components'
+import { Grain, VertexBreath, WordmarkHalftone } from '../brand'
 import { authorizedClaimText } from '../lib/compliance'
 import { CLAIMS, PRODUCT } from '../lib/copy'
-import { SITE_NAV, STUDIO_NAV, to } from '../lib/routes'
+import { LAB_NAV, SITE_NAV, STUDIO_NAV, to } from '../lib/routes'
 
 export function SiteFooter() {
   return (
-    <footer className="bg-bg-brand-deep text-text-inverse">
-      <div className="mx-auto flex max-w-container flex-col gap-10 px-6 py-16 md:px-[28px]">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
-          <div className="flex flex-col gap-5">
-            <Lockup iconSize={40} background="dark" />
-            <p className="type-display-sm normal-case text-text-inverse">{CLAIMS.signOff.it}</p>
-            <p className="max-w-prose text-body-sm text-neutral-0/70">{CLAIMS.audience.it}</p>
+    <footer className="relative overflow-hidden bg-bg-brand-deep text-text-inverse" data-ref="Dosys · footer">
+      <Grain />
+      <div className="relative mx-auto flex max-w-container flex-col gap-12 px-6 pb-12 pt-20 md:px-[28px]">
+        {/* Il wordmark enorme, in chiusura. Desktop: il retino al passaggio. */}
+        <div className="hidden md:block">
+          <WordmarkHalftone color="#FFFFFF" />
+        </div>
+        <div className="md:hidden">
+          <VertexBreath size={48} variant="free" color="white" title="peak" />
+        </div>
+
+        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+          <div className="flex flex-col gap-4">
+            <p className="type-display-sm normal-case text-neutral-0">{CLAIMS.signOff.it}</p>
+            <p className="max-w-prose text-body-sm text-neutral-0/85" data-compliance="authorized-claim">
+              {authorizedClaimText('physical-performance')} {authorizedClaimText('muscle-strength-55plus')}
+            </p>
+            <p className="max-w-prose text-body-sm text-neutral-0/85">{CLAIMS.audience.it}</p>
           </div>
 
           <div className="flex flex-col gap-3">
-            <p className="type-mono-sm text-neutral-0/50">Il sito</p>
+            <p className="type-label text-neutral-0/70">Il sito</p>
             {SITE_NAV.map((l) => (
-              <a key={l.href} href={l.href} className="text-body-sm text-neutral-0/80 transition-colors duration-fast hover:text-neutral-0">
+              <a key={l.href} href={l.href} className="peak-link w-fit text-body-sm font-display font-bold text-neutral-0">
                 {l.label}
               </a>
+            ))}
+            <a href={to('/', 'garanzia')} className="peak-link w-fit text-body-sm font-display font-bold text-neutral-0">Garanzia Rituale Completo</a>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <p className="type-label text-neutral-0/70">Aiuto</p>
+            {['Spedizioni', 'Assistenza su WhatsApp', 'Il mio account'].map((l) => (
+              <a key={l} href={to('/prodotto')} className="peak-link w-fit text-body-sm font-display font-bold text-neutral-0">{l}</a>
             ))}
           </div>
 
           <div className="flex flex-col gap-3">
-            <p className="type-mono-sm text-neutral-0/50">Lo studio</p>
+            <p className="type-label text-neutral-0/70">Lo studio</p>
             {STUDIO_NAV.map((l) => (
-              <a key={l.href} href={l.href} className="text-body-sm text-neutral-0/80 transition-colors duration-fast hover:text-neutral-0">
-                {l.label}
-              </a>
+              <a key={l.href} href={l.href} className="peak-link w-fit text-body-sm font-display font-bold text-neutral-0">{l.label}</a>
             ))}
-            <a href={to('/prototipi', 'archivio-v1')} className="type-mono-sm text-neutral-0/50 transition-colors duration-fast hover:text-neutral-0/80">
-              archivio 1.0 · agosto 2026
-            </a>
+            {LAB_NAV.map((l) => (
+              <a key={l.href} href={l.href} className="w-fit text-body-sm text-neutral-0/80 hover:text-neutral-0">{l.label}</a>
+            ))}
+            <a href={to('/prototipi', 'archivio-v1')} className="w-fit text-body-sm text-neutral-0/70 hover:text-neutral-0">Archivio 1.0 · agosto 2026</a>
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-white/15 pt-8">
-          <div className="flex flex-wrap gap-2">
-            <Badge tone="neutral" variant="soft">integratore alimentare</Badge>
-            <Badge tone="neutral" variant="soft">{PRODUCT.formulaLine}</Badge>
-            <Badge tone="neutral" variant="soft">vegan</Badge>
-          </div>
-          <p className="max-w-prose text-body-sm text-neutral-0/60" data-compliance="authorized-claim">
-            {authorizedClaimText('physical-performance')} {authorizedClaimText('muscle-strength-55plus')}
-          </p>
-          <p className="max-w-prose text-body-sm text-neutral-0/50">
-            Gli integratori non vanno intesi come sostituti di una dieta variata ed equilibrata e di uno
-            stile di vita sano. Non superare la dose giornaliera consigliata.
-          </p>
-          <p className="type-mono-sm text-neutral-0/40">peak · design system 2.0 · sito dimostrativo, nessun ordine viene evaso</p>
+        <div className="flex flex-col gap-2 border-t border-white/25 pt-8 text-body-sm text-neutral-0/85">
+          <p>Integratore alimentare · {PRODUCT.formulaLine} · vegan. Gli integratori non vanno intesi come sostituti di una dieta variata ed equilibrata e di uno stile di vita sano. Non superare la dose giornaliera consigliata.</p>
+          <p className="text-neutral-0/70">[Ragione sociale] · P. IVA [numero] · integratore alimentare notificato al Ministero della Salute · sito dimostrativo, nessun ordine viene evaso.</p>
         </div>
       </div>
     </footer>

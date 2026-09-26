@@ -41,6 +41,8 @@ export interface FontLabState {
   font: string
   italic: boolean
   bodyDisplay: boolean
+  /** `?ref=1`: mostra l'etichetta del reference in ogni sezione. */
+  refs: boolean
 }
 
 const STORAGE_KEY = 'peak-fontlab'
@@ -55,6 +57,8 @@ function readParams(): Partial<FontLabState> {
   if (italic !== null) out.italic = italic !== '0'
   const body = params.get('body')
   if (body !== null) out.bodyDisplay = body === 'display'
+  const refs = params.get('ref')
+  if (refs !== null) out.refs = refs === '1'
   return out
 }
 
@@ -67,7 +71,7 @@ function readStored(): Partial<FontLabState> {
   }
 }
 
-let state: FontLabState = { font: DEFAULT_FONT_ID, italic: true, bodyDisplay: false }
+let state: FontLabState = { font: DEFAULT_FONT_ID, italic: true, bodyDisplay: false, refs: false }
 const listeners = new Set<() => void>()
 
 export function candidate(id: string = state.font): FontCandidate {
@@ -85,6 +89,7 @@ function apply() {
   root.dataset.font = f.id
   root.dataset.italic = state.italic ? '1' : '0'
   root.dataset.body = state.bodyDisplay ? 'display' : 'inter'
+  root.dataset.refs = state.refs ? '1' : '0'
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
   } catch {
@@ -132,5 +137,6 @@ export function fontLabHref(patch: Partial<FontLabState>, hash: string = window.
   params.set('font', next.font)
   if (!next.italic) params.set('italic', '0')
   if (next.bodyDisplay) params.set('body', 'display')
+  if (next.refs) params.set('ref', '1')
   return `${window.location.pathname}?${params.toString()}${hash}`
 }

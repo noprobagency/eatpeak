@@ -272,7 +272,7 @@ export const PRICE_TIERS: readonly PriceTier[] = [
     shippingEur: 0,
     badge: 'il più scelto',
     preselected: true,
-    extras: ['Kit Rituale in omaggio', 'Garanzia 90 giorni'],
+    extras: ['Garanzia 90 giorni'],
   },
 ]
 
@@ -385,10 +385,17 @@ export const EXPERT = {
 // Recensioni
 // ---------------------------------------------------------------------------
 
+/**
+ * Recensioni DI ESEMPIO, con nome, eta', citta' e abitudine (stile HIIT e TLS,
+ * vedi docs/10), scelte per obiezione. Finche' non ci sono recensioni vere
+ * portano il tag "esempio": mai numeri finti in pubblico. Nessuna parla del
+ * corpo: parlano del formato, dell'abitudine, del gusto.
+ */
 export const REVIEWS = [
-  { stars: 5, text: 'Il barattolo lo saltavo un giorno su tre. Lo stick no: sta in tasca e lo apro sul tram.', author: 'Giulia R.', benefit: 'COSTANZA' },
-  { stars: 5, text: 'Nessun grumo sul fondo del bicchiere, e l’arancia si beve volentieri. È il motivo per cui ho smesso col misurino.', author: 'Marco T.', benefit: 'GUSTO' },
-  { stars: 4, text: 'Trenta giorni, trenta stick. Sai sempre a che punto sei e quando riordinare.', author: 'Anna P.', benefit: 'FORMATO' },
+  { stars: 5, text: 'Il barattolo lo saltavo un giorno su tre. Lo stick no: sta in tasca e lo apro sul tram.', author: 'Giulia', age: 47, city: 'Bologna', habit: 'pilates 2×/sett.', benefit: 'costanza', flavor: 'arancia', example: true },
+  { stars: 5, text: 'Nessun grumo sul fondo del bicchiere, e l’arancia si beve volentieri. È il motivo per cui ho smesso col misurino.', author: 'Marco', age: 34, city: 'Torino', habit: 'corsa la mattina', benefit: 'gusto', flavor: 'arancia', example: true },
+  { stars: 4, text: 'Trenta giorni, trenta stick. Sai sempre a che punto sei e quando riordinare.', author: 'Anna', age: 58, city: 'Padova', habit: 'pesi 3×/sett.', benefit: 'formato', flavor: 'lime', example: true },
+  { stars: 5, text: 'Niente fase di carico: uno stick, dal primo giorno. Era l’unica cosa che mi fermava.', author: 'Luca', age: 41, city: 'Roma', habit: 'trenta secondi la mattina', benefit: 'barattolo', flavor: 'lime', example: true },
 ] as const
 
 // ---------------------------------------------------------------------------
@@ -406,7 +413,7 @@ export const FAQ = [
   },
   {
     q: 'Quando la prendo?',
-    a: 'Quando ti viene comodo. Conta la costanza, non l’orario: la creatina si accumula nel tempo.',
+    a: 'Scegli un momento che hai già: il primo bicchiere d’acqua della mattina. Conta la costanza, non l’orario: la creatina si accumula nel tempo.',
   },
   {
     q: 'Che gusti ci sono?',
@@ -423,6 +430,99 @@ export const FAQ = [
   {
     q: 'È vegana?',
     a: 'Sì. La vitamina D3 è da lichene, non di origine animale. Nessun ingrediente animale nella formula.',
+  },
+] as const
+
+// ---------------------------------------------------------------------------
+// Le bozze di copy della home e del PDP 3.0 (dai reference; da riscrivere)
+// ---------------------------------------------------------------------------
+
+/** H4 · il gesto in tre passi. */
+export const STEPS = [
+  { title: 'Apri lo stick del giorno', body: 'È numerato: sai sempre a che punto sei.' },
+  { title: 'Versa in 300 ml d’acqua', body: 'Fredda. Agita e bevi subito: sa di spremuta.' },
+  { title: 'Bevi. Segna il punto.', body: 'Oggi è fatto. Domani, il prossimo numero.' },
+] as const
+
+/** H6 · le didascalie del rituale dei 30 punti, sul gesto e mai sugli effetti. */
+export const RITUAL_CAPTIONS = [
+  { day: 7, label: 'il gesto' },
+  { day: 14, label: 'l’abitudine' },
+  { day: 21, label: 'non ci pensi più' },
+  { day: 30, label: 'la busta è finita, il rituale no' },
+] as const
+
+/** H8 · il confronto. Mai "superiore", mai nomi di concorrenti. */
+export const COMPARISON = {
+  columns: ['peak', 'creatina in barattolo', 'gummies'],
+  rows: [
+    { label: 'Dose esatta in ogni stick', values: [true, false, false] },
+    { label: 'Niente misurino', values: [true, false, true] },
+    { label: 'Si porta in tasca', values: [true, false, true] },
+    { label: 'Vitamina D3 inclusa', values: [true, false, false] },
+    { label: 'Gusto da spremuta', values: [true, false, false] },
+    { label: 'Senza fase di carico', values: [true, false, true] },
+  ],
+  /** La riga del costo al giorno, in mono. Esempi di mercato, non prezzi di terzi. */
+  costPerDay: ['0,94 €', 'da 0,30 €', 'da 1,50 €'],
+} as const
+
+/** H9 · i tre video della co-fondatrice: mito, dato, gesto. */
+export const EXPERT_VIDEOS = [
+  { id: 'video-carico', title: 'Serve la fase di carico?', kind: 'mito → dato', brief: 'La co-fondatrice risponde in 40 secondi, in cucina, con la busta in mano.' },
+  { id: 'video-3g', title: 'Perché 3 g e non 5?', kind: 'dato', brief: 'La quantità su cui si basano le indicazioni autorizzate in UE. Costante vale più di tanto.' },
+  { id: 'video-quando', title: 'Quando la prendo?', kind: 'gesto', brief: 'Un momento che hai già: il primo bicchiere d’acqua della mattina.' },
+] as const
+
+/** H11 · i nostri standard. Tono sobrio. */
+export const STANDARDS = {
+  title: 'Pubblichiamo il certificato di analisi di ogni lotto.',
+  body: 'Ogni lotto viene analizzato da un laboratorio terzo. Il certificato è pubblico, con il numero di lotto: lo trovi qui e sul retro della busta, con un codice.',
+  facts: ['Made in Italy', 'Vegan', 'Analisi su ogni lotto'],
+} as const
+
+/** H13 · la garanzia Rituale Completo, in tre passi e tre condizioni. */
+export const GUARANTEE = {
+  title: 'Garanzia Rituale Completo',
+  intro: 'Vale solo sul formato da 90 giorni: è l’unico in cui la costanza ha il tempo di fare il suo lavoro. Se a fine ciclo non vuoi continuare, ti rimborsiamo.',
+  steps: [
+    { title: 'Prendi almeno 75 stick su 90', body: 'Uno al giorno. Non serve altro.' },
+    { title: 'Fotografa il retro delle 3 buste con i punti segnati', body: 'I trenta cerchi a penna sono la prova. Non serve un kit.' },
+    { title: 'Scrivici tra il giorno 75 e il 110', body: 'Rimborso entro 5 giorni lavorativi, sullo stesso metodo di pagamento.' },
+  ],
+  conditions: [
+    'Un rimborso per persona, sul primo Rituale Completo.',
+    'Le buste restano tue: non chiediamo resi.',
+    'Se non abbiamo ricevuto la foto entro il giorno 110, la garanzia scade.',
+  ],
+} as const
+
+/** H12 · le micro-rassicurazioni sotto la CTA. */
+export const OFFER_NOTES = [
+  'Nessun abbonamento. Ti scriviamo noi quando ti restano 10 stick.',
+  'Spedito dall’Italia in 24/48 h.',
+  'PayPal, Satispay, Scalapay.',
+] as const
+
+/** P4 · "È per me?": tre profili, la stessa dose, il claim giusto per ciascuno. */
+export const PROFILES = [
+  {
+    id: 'allenamento',
+    title: 'Mi alleno 3+ volte a settimana',
+    body: 'Uno stick al giorno, tutti i giorni, anche nei giorni in cui non ti alleni: la creatina lavora per accumulo.',
+    claim: 'physical-performance',
+  },
+  {
+    id: 'over55',
+    title: 'Ho più di 55 anni e faccio pesi',
+    body: 'La stessa dose, con l’allenamento di resistenza. Il claim autorizzato è questo, letterale.',
+    claim: 'muscle-strength-55plus',
+  },
+  {
+    id: 'inizio',
+    title: 'Voglio iniziare, ma odio i barattoli',
+    body: 'È il motivo per cui esiste lo stick: niente misurino, niente fase di carico, e la vitamina D3 è già dentro.',
+    claim: 'vitd-muscle',
   },
 ] as const
 

@@ -12,6 +12,7 @@
 
 import { useId, type ReactNode } from 'react'
 import { cn } from '../lib/cn'
+import { DayDot } from '../brand'
 
 export interface AccordionItem {
   id?: string
@@ -48,14 +49,11 @@ export function Accordion({ items, single = false, defaultOpen, className }: Acc
             )}
           >
             <span>{item.title}</span>
-            <svg
-              className="h-4 w-4 shrink-0 text-text-secondary transition-transform duration-base ease-standard group-open:rotate-45"
-              viewBox="0 0 16 16"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
-            </svg>
+            {/* Il pallino: vuoto da chiuso, pieno da aperto. */}
+            <span className="shrink-0" aria-hidden="true">
+              <span className="block group-open:hidden"><DayDot state="todo" size={16} /></span>
+              <span className="hidden group-open:block"><DayDot state="done" size={16} /></span>
+            </span>
           </summary>
 
           <div className="max-w-prose pb-6 text-body-md text-text-secondary">{item.content}</div>

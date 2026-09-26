@@ -67,6 +67,21 @@
     font-weight: inherit;
   }
 
+  /* Le etichette dei reference: con ?ref=1 ogni sezione dice da dove viene. */
+  html[data-refs='1'] [data-ref]::after {
+    content: 'rif. ' attr(data-ref);
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 30;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--color-cacao-900);
+    color: var(--color-neutral-0);
+    font: 600 11px/1.4 var(--font-display);
+    pointer-events: none;
+  }
+
   /* La grana dei campi colore: multiply al 4%, spenta dove pesa o disturba. */
   .peak-grain {
     mix-blend-mode: multiply;
