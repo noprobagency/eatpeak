@@ -15,6 +15,7 @@
  * Tutti i numeri passano dal mono.
  */
 
+import type { ReactNode } from 'react'
 import { cn } from '../lib/cn'
 import { PRICE_TIERS, PRODUCT, formatEur, pricePerDay, pricePerDayShipped, type PriceTier } from '../lib/copy'
 
@@ -38,6 +39,8 @@ export interface PriceTiersProps {
   onChange: (units: number) => void
   /** Numero di buste da cui la spedizione e' gratuita. */
   freeShippingFrom?: number
+  /** Il titolo del gruppo: nel buy box e' il passo "2. Quanti giorni". */
+  legend?: ReactNode
   className?: string
 }
 
@@ -46,6 +49,7 @@ export function PriceTiers({
   value,
   onChange,
   freeShippingFrom = PRODUCT.freeShippingFromUnits,
+  legend = 'Quanti giorni',
   className,
 }: PriceTiersProps) {
   const reference = tiers[0]
@@ -53,7 +57,7 @@ export function PriceTiers({
 
   return (
     <fieldset className={cn('m-0 border-0 p-0', className)}>
-      <legend className="mb-3 type-eyebrow text-text-brand">Quanti giorni</legend>
+      <legend className="mb-3 type-eyebrow text-text-brand">{legend}</legend>
 
       <div className="flex flex-col gap-3">
         {tiers.map((tier) => {

@@ -6,7 +6,8 @@
  * conta; se conta, servono passi numerati.
  *
  * Navigazione da tastiera completa: frecce per spostarsi, Home e End per gli
- * estremi, come da pattern ARIA.
+ * estremi, come da pattern ARIA. La tab attiva ha la sottolineatura a
+ * pallini (3.0): niente mono, niente maiuscolo.
  */
 
 import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
@@ -68,11 +69,11 @@ export function Tabs({ items, defaultId, className }: TabsProps) {
               onClick={() => setActive(t.id)}
               onKeyDown={onKeyDown}
               className={cn(
-                '-mb-px border-b-2 px-4 py-3 text-heading-sm transition-colors duration-fast ease-standard',
+                '-mb-px border-b-[3px] border-dotted px-4 py-3 text-heading-sm transition-colors duration-fast ease-standard',
                 'disabled:cursor-not-allowed disabled:opacity-40',
                 selected
                   ? 'border-border-brand text-text-brand'
-                  : 'border-transparent text-text-secondary hover:text-text-primary',
+                  : 'border-transparent text-text-secondary hover:border-border-default hover:text-text-primary',
               )}
             >
               {t.label}
