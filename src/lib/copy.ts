@@ -58,6 +58,10 @@ export interface Flavor {
   tintHex: string
   /** Gli aromi. Valore [dal laboratorio] finche' la ricetta non e' chiusa. */
   aroma: string
+  /** Il descrittore sensoriale, una riga (stile Create: "Nostalgic, tangy, juicy"). Bozza. */
+  taste: string
+  /** Il brief della frutta sul pack, per la generazione dei prototipi. Oggi e' un placeholder SVG piatto. */
+  fruitBrief: string
 }
 
 /**
@@ -85,6 +89,8 @@ export const FLAVORS: readonly Flavor[] = [
     deepHex: '#C24926',
     tintHex: '#FDF2EE',
     aroma: LAB_PLACEHOLDER,
+    taste: 'Quella siciliana di febbraio: dolce, poi amara quanto basta.',
+    fruitBrief: 'Mezze arance rosse e fette, sovradimensionate, dietro e sopra il wordmark; due o tre elementi tagliati dai bordi, come i lamponi di Cure. Polpa rosso sangue, buccia opaca, nessun riflesso lucido.',
   },
   {
     id: 'lime',
@@ -98,6 +104,8 @@ export const FLAVORS: readonly Flavor[] = [
     deepHex: '#406D15',
     tintHex: '#F2F7ED',
     aroma: LAB_PLACEHOLDER,
+    taste: 'Acida al punto giusto, poi la menta pulisce.',
+    fruitBrief: 'Lime tagliati a metà e a fette con due foglie di menta, sovradimensionati, tagliati dai bordi. Polpa verde chiara, buccia opaca, foglie con la nervatura in vista.',
   },
 ]
 

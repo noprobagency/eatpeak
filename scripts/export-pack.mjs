@@ -2,8 +2,10 @@
  * Esporta il fronte della busta o lo stick per il designer: SVG piatto e PNG
  * trasparente, in assets/export/pack/.
  *
- *   npm run export:pack -- arancia|lime [--busta|--stick] [--size=3000] [--lot=01] [--serial=137]
+ *   npm run export:pack -- arancia|lime [--busta|--stick|--retro] [--neutro] [--size=3000] [--lot=01] [--serial=137] [--font=nunito]
  *   npm run export:pack -- lime --stick --size=2000
+ *   npm run export:pack -- arancia --neutro
+ *   npm run export:pack -- arancia --retro --marked=12
  *
  * Come funziona. I componenti <BustaPack /> e <StickPack /> sono React: lo
  * script li carica con il server di Vite in modalita' SSR (nessuna dipendenza
@@ -41,14 +43,17 @@ if (!['arancia', 'lime'].includes(flavor)) {
   console.error(`Gusto sconosciuto: "${flavor}". Usa arancia o lime.`)
   process.exit(1)
 }
-const kind = args.includes('--stick') ? 'stick' : 'busta'
+const kind = args.includes('--stick') ? 'stick' : args.includes('--retro') ? 'retro' : 'busta'
+const neutro = args.includes('--neutro')
 const size = Number(flag('size', 3000))
 const lot = flag('lot', '01')
 const serial = Number(flag('serial', 137))
+const marked = Number(flag('marked', 0))
+const font = flag('font', null)
 
 const outDir = resolve(root, 'assets/export/pack')
 mkdirSync(outDir, { recursive: true })
-const base = resolve(outDir, `peak-${kind}-${flavor}-fronte`)
+const base = resolve(outDir, `peak-${kind}-${neutro ? 'neutro' : flavor}-${kind === 'retro' ? 'retro' : 'fronte'}${font ? `-${font}` : ''}`)
 
 // ---------------------------------------------------------------------------
 // 1. L'SVG, dai componenti React via Vite SSR
@@ -64,10 +69,14 @@ const server = await createServer({
 let svg
 try {
   const components = await server.ssrLoadModule('/src/components/index.ts')
-  const Component = kind === 'busta' ? components.BustaPack : components.StickPack
-  const props = kind === 'busta'
-    ? { flavor, lot, serial, width: size, standalone: true }
-    : { flavor, height: size, standalone: true }
+  if (font) {
+    const fontlab = await server.ssrLoadModule('/src/lib/fontlab.ts')
+    fontlab.setFontLab({ font })
+  }
+  const Component = kind === 'busta' ? components.BustaPack : kind === 'retro' ? components.BustaBack : components.StickPack
+  const props = kind === 'stick'
+    ? { flavor, height: size, standalone: true }
+    : { flavor, lot, serial, width: size, standalone: true, variant: neutro ? 'neutro' : 'gusto', marked }
   svg = renderToStaticMarkup(createElement(Component, props))
 } finally {
   await server.close()
@@ -88,8 +97,8 @@ if (!existsSync(CHROME)) {
   process.exit(0)
 }
 
-const width = kind === 'busta' ? size : Math.round(size / 5)
-const height = kind === 'busta' ? Math.round(size * 1.5) : size
+const width = kind === 'stick' ? Math.round(size / 5) : size
+const height = kind === 'stick' ? size : Math.round(size * 1.5)
 
 const html = `<!doctype html>
 <meta charset="utf-8">
@@ -151,7 +160,7 @@ writeFileSync(`${base}.png`, png)
 
 console.log(`${base.replace(`${root}/`, '')}.svg`)
 console.log(`${base.replace(`${root}/`, '')}.png`)
-console.log(`  ${kind} · ${flavor} · fronte`)
+console.log(`  ${kind} · ${neutro ? 'neutro' : flavor}${font ? ` · font ${font}` : ''}`)
 console.log(`  misura     ${w} x ${h} px, fondo trasparente`)
 console.log(`  peso       ${(png.length / 1024).toFixed(0)} kB`)
 console.log('  proporzioni provvisorie: segnaposto della fustella (docs/08-packaging.md)')
