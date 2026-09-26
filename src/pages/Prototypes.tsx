@@ -1,38 +1,26 @@
 /**
- * Prototypes — la galleria dei prototipi.
+ * Prototypes — i prototipi.
  *
- * Una pagina da scorrere e guardare: nessun filtro, nessuna ricerca, nessuna
- * tab. Le immagini sono statiche e l'ordine e' il discorso — dal piatto al
- * fotografato, dal prodotto solo al prodotto in mano.
- *
- * L'elenco dei file NON e' scritto a mano: sono i nomi reali dei file in
- * public/prototypes/, riportati tali e quali. Servono a capire di quale
- * immagine si sta parlando quando qualcuno commenta, quindi rinominarli
- * romperebbe proprio la cosa per cui esistono — spazi e doppie estensioni
- * compresi.
+ * In cima la direzione 2.0, resa dai componenti e non da PNG: busta e stick
+ * dei due gusti, con le guide di sicurezza. Poi la shot list per i prototipi
+ * finali (Higgsfield), un segnaposto per scatto con il brief. In fondo,
+ * l'archivio della 1.0: la galleria dell'agosto 2026, con logo e gusti
+ * superati, tenuta per la storia sotto un banner grigio.
  */
 
 import { useCallback, useEffect, useState } from 'react'
-import { Container, Section } from '../components'
+import { Badge, BustaPack, Container, LabTag, MediaPlaceholder, PackBack, Section, SectionHeader, StickPack } from '../components'
+import { FLAVORS } from '../lib/copy'
+import { SHOTS, missingShots } from '../lib/media'
 import { cn } from '../lib/cn'
 
 // ---------------------------------------------------------------------------
-// L'avviso
+// L'archivio v1
 // ---------------------------------------------------------------------------
 
-const NOTICE = {
-  title: 'NOTA BENE',
-  text:
-    'Prototipi generati rapidamente, senza rifiniture. Servono solo a vedere che forma sta prendendo il brand. Testi, colori, proporzioni e materiali sono provvisori e verranno rifatti da zero, e alcuni dettagli sono volutamente sbagliati. È il 2% del lavoro finito.',
-} as const
+const V1_NOTICE =
+  'Archivio v1 (agosto 2026) — logo e gusti superati. Prototipi generati rapidamente per vedere che forma stava prendendo il brand: logo con contorno, saetta, tre gusti con mela e ciliegia, palette terracotta e bosco. Niente di questo è nel sistema 2.0.'
 
-const PAGE_DATE = '25 agosto 2026'
-
-// ---------------------------------------------------------------------------
-// Le sezioni
-// ---------------------------------------------------------------------------
-
-/** Quante colonne, da mobile in su. Due sempre: cosi' resta incolonnato. */
 type Cols = 'due' | 'tre' | 'quattro'
 
 interface GallerySection {
@@ -42,24 +30,18 @@ interface GallerySection {
   title: string
   caption: string
   cols: Cols
-  /**
-   * Proporzione del riquadro. Tutte le immagini della sezione la condividono e
-   * ci stanno dentro con `object-contain`: e' cosi' che il flat dello stick,
-   * che e' 1:5, finisce alla stessa altezza di quello della busta invece di
-   * allungare la riga.
-   */
   ratio: string
   files: readonly string[]
 }
 
-const SECTIONS: readonly GallerySection[] = [
+/** I nomi dei file sono quelli reali in public/prototypes/v1/, tali e quali. */
+const V1_SECTIONS: readonly GallerySection[] = [
   {
-    id: 'flat',
+    id: 'v1-flat',
     number: '01',
     label: 'FLAT DI PACKAGING',
     title: 'le grafiche distese',
-    caption:
-      'Le grafiche stese in piano, senza volume: prima le tre buste da 30 stick, poi i tre stickpack. Arancia, mela, ciliegia.',
+    caption: 'Tre buste e tre stick della 1.0: arancia, mela, ciliegia. Il logo con contorno e la saetta.',
     cols: 'tre',
     ratio: 'aspect-[3/4]',
     files: [
@@ -72,12 +54,11 @@ const SECTIONS: readonly GallerySection[] = [
     ],
   },
   {
-    id: 'render',
+    id: 'v1-render',
     number: '02',
     label: 'RENDER NEUTRI',
     title: 'i tre gusti su fondo pulito',
-    caption:
-      'Gli stessi sei pezzi resi in tre dimensioni su fondo neutro, affiancati per gusto: è qui che si vede se i tre colori reggono come famiglia.',
+    caption: 'Gli stessi pezzi resi in tre dimensioni su fondo neutro.',
     cols: 'tre',
     ratio: 'aspect-[4/5]',
     files: [
@@ -90,62 +71,50 @@ const SECTIONS: readonly GallerySection[] = [
     ],
   },
   {
-    id: 'ambient-busta',
+    id: 'v1-ambient-busta',
     number: '03',
     label: 'AMBIENTATE — BUSTA',
     title: 'la busta dove vive',
-    caption:
-      'La confezione da 30 in situazioni quotidiane: cucine, luce naturale, un bicchiere d’acqua. Nessuna palestra.',
+    caption: 'Cucine, luce naturale, un bicchiere d’acqua. L’ambientazione resta valida: cambia il pack.',
     cols: 'quattro',
     ratio: 'aspect-[4/5]',
     files: ['ambient 1.png', 'ambient 2.png', 'ambient 3.png', 'ambient 4.png'],
   },
   {
-    id: 'ambient-stick',
+    id: 'v1-ambient-stick',
     number: '04',
-    label: 'AMBIENTATE — STICKPACK',
+    label: 'AMBIENTATE — STICK',
     title: 'il gesto',
-    caption:
-      'Lo stick che si apre e si versa: è il momento che il brand deve rendere facile, e quindi quello che va mostrato per primo.',
+    caption: 'Lo stick che si apre e si versa. È il momento che il brand deve rendere facile.',
     cols: 'tre',
     ratio: 'aspect-[4/5]',
     files: ['ambient bustina 1.png.png', 'ambient bustina 2.png', 'ambient bustina 3.png'],
   },
   {
-    id: 'meta',
+    id: 'v1-meta',
     number: '05',
     label: 'CREATIVITÀ META',
     title: 'due quadrati per il feed',
-    caption:
-      'Formato quadrato con il pack accanto all’elenco dei benefici, per capire quanto regge il marchio a dimensioni da telefono.',
+    caption: 'Formato quadrato con il pack e un elenco di prove.',
     cols: 'due',
     ratio: 'aspect-square',
     files: ['meta adv 1.png', 'meta adv 2.png'],
   },
 ]
 
-/** Due colonne sempre, di piu' quando c'e' spazio. */
 const COLS: Record<Cols, string> = {
   due: 'grid-cols-2',
   tre: 'grid-cols-2 md:grid-cols-3',
   quattro: 'grid-cols-2 md:grid-cols-4',
 }
 
-/** I nomi contengono spazi e doppie estensioni: vanno codificati per l'URL. */
 function srcFor(file: string): string {
-  return `/prototypes/${encodeURIComponent(file)}`
+  return `/prototypes/v1/${encodeURIComponent(file)}`
 }
 
-// ---------------------------------------------------------------------------
-// Ingrandimento
-// ---------------------------------------------------------------------------
-
 /**
- * Volutamente locale a questa pagina e non esportato in src/components.
- * Serve a guardare una fotografia a schermo pieno, non e' un pezzo del design
- * system: non ha varianti, non ha stati, e nello Showcase non ci starebbe.
- * Se un domani servisse altrove, quello e' il momento di promuoverlo — non
- * prima.
+ * Locale a questa pagina e non esportato in src/components: serve a guardare
+ * una fotografia a schermo pieno, non e' un pezzo del design system.
  */
 function Lightbox({ file, onClose }: { file: string; onClose: () => void }) {
   useEffect(() => {
@@ -175,10 +144,7 @@ function Lightbox({ file, onClose }: { file: string; onClose: () => void }) {
         type="button"
         onClick={onClose}
         aria-label="Chiudi"
-        className={cn(
-          'absolute right-4 top-4 flex h-control-sm w-control-sm items-center justify-center rounded-full',
-          'bg-neutral-0/10 text-neutral-0 transition-colors duration-fast hover:bg-neutral-0/20',
-        )}
+        className="absolute right-4 top-4 flex h-control-sm w-control-sm items-center justify-center rounded-full bg-neutral-0/10 text-neutral-0 transition-colors duration-fast hover:bg-neutral-0/20"
       >
         <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
@@ -186,20 +152,12 @@ function Lightbox({ file, onClose }: { file: string; onClose: () => void }) {
       </button>
 
       <figure className="m-0 flex max-h-full flex-col items-center gap-4">
-        <img
-          src={srcFor(file)}
-          alt={file}
-          className="max-h-[80vh] w-auto max-w-full rounded-md object-contain"
-        />
-        <figcaption className="type-mono-sm text-neutral-0/60">{file}</figcaption>
+        <img src={srcFor(file)} alt={file} className="max-h-[80vh] w-auto max-w-full rounded-md object-contain" />
+        <figcaption className="type-mono-sm text-neutral-0/60">archivio v1 · {file}</figcaption>
       </figure>
     </div>
   )
 }
-
-// ---------------------------------------------------------------------------
-// La griglia
-// ---------------------------------------------------------------------------
 
 function Shot({ file, ratio, onOpen }: { file: string; ratio: string; onOpen: (file: string) => void }) {
   return (
@@ -207,27 +165,11 @@ function Shot({ file, ratio, onOpen }: { file: string; ratio: string; onOpen: (f
       <button
         type="button"
         onClick={() => onOpen(file)}
-        className={cn(
-          'block w-full overflow-hidden rounded-lg bg-bg-raised shadow-sm',
-          'transition-shadow duration-base ease-standard hover:shadow-md',
-          ratio,
-        )}
+        className={cn('block w-full overflow-hidden rounded-lg bg-bg-raised grayscale transition-all duration-base ease-standard hover:grayscale-0', ratio)}
         aria-label={`Ingrandisci ${file}`}
       >
-        {/*
-          `contain` e non `cover`: qui non si può ritagliare niente. Un flat
-          tagliato perde metà della grafica, ed è proprio la grafica la cosa
-          da guardare.
-        */}
-        <img
-          src={srcFor(file)}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          className="h-full w-full object-contain"
-        />
+        <img src={srcFor(file)} alt="" loading="lazy" decoding="async" className="h-full w-full object-contain" />
       </button>
-
       <figcaption className="type-mono-sm break-words text-text-muted">{file}</figcaption>
     </figure>
   )
@@ -239,59 +181,114 @@ function Shot({ file, ratio, onOpen }: { file: string; ratio: string; onOpen: (f
 
 export function Prototypes() {
   const [zoomed, setZoomed] = useState<string | null>(null)
+  const [guides, setGuides] = useState(false)
   const close = useCallback(() => setZoomed(null), [])
+  const missing = missingShots()
 
   return (
     <>
-      <div>
-      {/*
-        L'avviso prima di ogni altra cosa, titolo della pagina compreso. Chi
-        apre questo link deve sapere cosa sta per vedere prima di vederlo,
-        altrimenti giudica un prototipo come se fosse un lavoro finito.
+      <Section tone="page" spacing="tight">
+        <Container width="media">
+          <header className="flex flex-col gap-3">
+            <h1 className="type-display-lg text-text-primary">prototipi</h1>
+            <p className="type-mono-md text-text-muted">v2 · direzione · {SHOTS.length} scatti previsti, {missing} da produrre con higgsfield</p>
+          </header>
+        </Container>
+      </Section>
 
-        Sta sotto la barra e ci resta. La barra e' `fixed` e non occupa spazio,
-        quindi appena compare si posa sopra le prime righe: il margine lo tiene
-        scoperto da fermo, `sticky` lo tiene scoperto anche mentre si scorre.
-        Un avviso mezzo coperto vale come un avviso assente.
+      {/* --- v2: la direzione, resa dai componenti ------------------------ */}
+      <Section tone="page" spacing="flush" id="v2">
+        <Container width="media">
+          <div className="flex flex-col gap-6 pb-16">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <SectionHeader
+                eyebrow="v2 — direzione"
+                title="busta e stick, dai componenti"
+                body="Non sono PNG: sono <BustaPack /> e <StickPack /> che leggono i gusti da FLAVORS. Cambiando il nome del gusto 02 in una riga, cambia qui e ovunque. Le proporzioni sono un segnaposto della fustella."
+              />
+              <label className="flex items-center gap-3 text-body-sm text-text-secondary">
+                <input type="checkbox" checked={guides} onChange={(e) => setGuides(e.target.checked)} className="h-4 w-4" />
+                mostra le guide (margini di sicurezza e saldatura)
+              </label>
+            </div>
 
-        Si stacca quando finisce il blocco di apertura: da li' in poi si e' gia'
-        letto, e restare inchiodato darebbe solo fastidio.
-      */}
-      <aside
-        aria-labelledby="nota-bene"
-        className={cn(
-          'sticky top-[var(--header-height)] z-20 mt-[var(--header-height)]',
-          'border-y border-l-8 border-border-danger bg-bg-danger px-6 py-5 md:px-[28px]',
-        )}
-      >
-        <h2 id="nota-bene" className="type-mono-md text-text-danger">
-          {NOTICE.title}
-        </h2>
-        {/* Niente max-width: qui la larghezza piena e' il punto, si deve vedere. */}
-        <p className="mt-2 text-body-sm text-text-danger">{NOTICE.text}</p>
-      </aside>
+            <div className="flex flex-wrap items-start gap-3">
+              <LabTag size="md" what="fustella">provvisorio: in attesa della fustella del laboratorio</LabTag>
+              <Badge tone="neutral">busta 2:3 · stick 1:5 · margini 8%</Badge>
+            </div>
 
-        <Section tone="page" spacing="tight">
-          <Container width="media">
-            <header className="flex flex-col gap-3">
-              <h1 className="type-display-lg text-text-primary">prototipi</h1>
-              <p className="type-mono-md text-text-muted">v1 · {PAGE_DATE}</p>
-            </header>
-          </Container>
-        </Section>
-      </div>
+            <div className="grid gap-6 md:grid-cols-[1fr_1fr_auto_auto] md:items-end">
+              {FLAVORS.map((f) => (
+                <figure key={`busta-${f.id}`} className="m-0 flex flex-col items-center gap-3 rounded-xl bg-bg-raised p-6">
+                  <BustaPack flavor={f.id} width={300} showGuides={guides} className="max-w-full" />
+                  <figcaption className="type-mono-sm text-text-muted">busta 30 stick · {f.number} {f.name} · fronte</figcaption>
+                </figure>
+              ))}
+              {FLAVORS.map((f) => (
+                <figure key={`stick-${f.id}`} className="m-0 flex flex-col items-center gap-3 rounded-xl bg-bg-raised p-6">
+                  <StickPack flavor={f.id} height={450} />
+                  <figcaption className="type-mono-sm text-text-muted">stick · {f.number}</figcaption>
+                </figure>
+              ))}
+            </div>
+
+            <PackBack />
+          </div>
+        </Container>
+      </Section>
+
+      {/* --- la shot list per Higgsfield ---------------------------------- */}
+      <Section tone="surface" id="shot-list">
+        <Container width="media">
+          <SectionHeader
+            eyebrow="shot list · prossimo passo"
+            title="i prototipi finali, uno per uno"
+            body="Ogni riquadro è uno scatto che il sito già usa. Il brief dice luce, ambiente e gesto; il colore dice il fondo. Quando il file arriva, si scrive il percorso in src/lib/media.ts e il segnaposto diventa la foto."
+          />
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {SHOTS.map((shot) => (
+              <div key={shot.id} className="flex flex-col gap-3">
+                <MediaPlaceholder shot={shot} />
+                <dl className="m-0 grid grid-cols-[72px_1fr] gap-x-3 gap-y-1 type-mono-sm text-text-muted">
+                  <dt>id</dt><dd className="m-0 text-text-primary">{shot.id}</dd>
+                  <dt>uso</dt><dd className="m-0">{shot.use}</dd>
+                  <dt>fondo</dt><dd className="m-0">{shot.tone}{shot.flavor ? ` · ${shot.flavor}` : ''}</dd>
+                </dl>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* --- l'archivio v1 ------------------------------------------------ */}
+      <Section tone="page" spacing="tight" id="archivio-v1">
+        <Container width="media">
+          <aside
+            aria-labelledby="archivio-v1-nota"
+            className="rounded-lg border border-border-strong bg-bg-raised px-6 py-5"
+          >
+            <h2 id="archivio-v1-nota" className="type-mono-md text-text-secondary">
+              archivio v1 (agosto 2026) — logo e gusti superati
+            </h2>
+            <p className="mt-2 text-body-sm text-text-secondary">{V1_NOTICE}</p>
+            <p className="mt-2 type-mono-sm text-text-muted">
+              il progetto 1.0 intero è in <code>v1/</code> del repo e gira da solo.
+            </p>
+          </aside>
+        </Container>
+      </Section>
 
       <Section tone="page" spacing="flush">
         <Container width="media">
           <div className="flex flex-col gap-16 pb-24 md:gap-20">
-            {SECTIONS.map((section) => (
+            {V1_SECTIONS.map((section) => (
               <section key={section.id} id={section.id} className="scroll-mt-24">
                 <header className="flex flex-col gap-3">
                   <p className="type-mono-md text-text-muted">
-                    {section.number} — {section.label}
+                    v1 · {section.number} — {section.label}
                   </p>
-                  <h2 className="type-display-md text-text-primary">{section.title}</h2>
-                  <p className="max-w-prose text-body-md text-text-secondary">{section.caption}</p>
+                  <h2 className="type-display-sm text-text-secondary">{section.title}</h2>
+                  <p className="max-w-prose text-body-sm text-text-muted">{section.caption}</p>
                 </header>
 
                 <div className={cn('mt-6 grid gap-4 md:gap-6', COLS[section.cols])}>
