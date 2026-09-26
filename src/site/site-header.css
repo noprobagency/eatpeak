@@ -3,8 +3,9 @@
  *
  * La struttura e le misure vengono dall'header di Farmacia Nazzi (margine 8px,
  * annunci 32px, barra 56px, vetro con gradiente bianco 40% -> 5% e blur 21px);
- * i colori e i testi sono quelli di peak. Al centro il vertice arancione, che
- * ruota di un terzo di giro e rivela il wordmark al passaggio del puntatore.
+ * i colori e i testi sono quelli di peak. Al centro i quattro punti, che al
+ * passaggio salgono in diagonale e rivelano il wordmark (3.1: la salita sta in
+ * src/brand/salita.css; qui solo la misura).
  * ------------------------------------------------------------------------ */
 
 :root {
@@ -37,9 +38,9 @@
   height: var(--peak-announcement-h);
   overflow: hidden;
   border-radius: var(--peak-header-radius) var(--peak-header-radius) 0 0;
-  /* Arancia 600, non 500: il bianco a 11px chiede almeno 4,5:1 (4,91). */
-  background-color: color-mix(in srgb, var(--color-arancia-600) 90%, transparent);
-  color: var(--color-neutral-0);
+  /* 3.1: ambra 400 con testo cacao (7,4:1). Su ambra mai il bianco (1,85:1). */
+  background-color: color-mix(in srgb, var(--bg-brand) 90%, transparent);
+  color: var(--text-on-brand);
 }
 
 .peak-header__marquee {
@@ -142,55 +143,21 @@
   font-weight: 700;
 }
 
-/* --- il logo: il vertice, e il wordmark che compare ---------------------- */
+/* --- il logo: i quattro punti, e il wordmark che compare ------------------ */
 
 .peak-header__logo {
   display: inline-flex;
   align-items: center;
-  gap: 0;
   height: 40px;
   padding: 0 4px;
   border-radius: 999px;
-  color: var(--color-arancia-500);
   text-decoration: none;
 }
 
+/* La salita e' tutta in em: il corpo da' la misura. A 28px il simbolo a
+   riposo e' 30 x 24px, in salita 43 x 34px; il wordmark e' alto 24px. */
 .peak-header__mark {
-  display: block;
-  width: 30px;
-  height: 30px;
-  flex-shrink: 0;
-  transition: transform 480ms var(--easing-standard);
-}
-
-.peak-header__wordmark {
-  display: block;
-  width: 0;
-  height: 26px;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateX(-6px);
-  transition: width 320ms var(--easing-standard), opacity 240ms ease, transform 320ms var(--easing-standard), margin 320ms var(--easing-standard);
-}
-
-.peak-header__wordmark svg {
-  display: block;
-  height: 100%;
-  width: auto;
-}
-
-.peak-header__logo:hover .peak-header__mark,
-.peak-header__logo:focus-visible .peak-header__mark {
-  /* Un terzo di giro: il triangolo torna su se stesso, e si vede muovere. */
-  transform: rotate(120deg);
-}
-
-.peak-header__logo:hover .peak-header__wordmark,
-.peak-header__logo:focus-visible .peak-header__wordmark {
-  width: 62px;
-  margin-left: 8px;
-  opacity: 1;
-  transform: translateX(0);
+  font-size: 28px;
 }
 
 /* --- icone a destra ----------------------------------------------------- */
@@ -237,8 +204,8 @@
   height: 17px;
   padding: 0 4px;
   border-radius: 999px;
-  background-color: var(--color-arancia-500);
-  color: var(--color-neutral-900);
+  background-color: var(--bg-brand);
+  color: var(--text-on-brand);
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 700;
@@ -415,13 +382,7 @@
   .peak-header--open .peak-header__toggle-line:last-child {
     transform: translateY(-2.8px) rotate(-45deg);
   }
-  /* Senza puntatore il wordmark non comparirebbe mai: sta sempre accanto ai punti. */
-  .peak-header__wordmark {
-    width: 62px;
-    margin-left: 6px;
-    opacity: 1;
-    transform: none;
-  }
+  /* Senza puntatore la salita parte da sola al caricamento: vedi SymbolRise. */
 }
 
 body.peak-menu-open {
@@ -432,8 +393,6 @@ body.peak-menu-open {
   .peak-header__marquee {
     animation: none;
   }
-  .peak-header__mark,
-  .peak-header__wordmark,
   .peak-header__panel {
     transition: none;
   }

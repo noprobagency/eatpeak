@@ -8,13 +8,113 @@ Tutte le geometrie e le varianti stanno in
 possono andare fuori sincrono col codice.
 
 ```bash
-npm run brand:vectorize      # rigenera il tracciato del wordmark (serve il TTF di Gabarito)
-npm run assets:generate      # rigenera logo, lockup, favicon, PNG, ICO, manifest
+npm run brand:vectorize                       # il tracciato di ripiego (Gabarito 900)
+npm run brand:vectorize -- --font-id=rund     # il wordmark della v1, solo in locale (Rund trial)
+npm run assets:generate                       # logo, lockup, favicon, PNG, ICO, manifest
 ```
 
 ---
 
-## Il wordmark
+## 3.1 — il marchio oggi
+
+Le sezioni dopo questa raccontano la 2.0 e la 3.0 e restano per la storia.
+Dove non coincidono, vale questa.
+
+### Il wordmark: quello della v1, bianco o ambra
+
+La parola è **`peak`** in **Rund Display Black**, il wordmark della v1, con il
+suo tracking (−2 su un corpo 60, cioè **−0,0333em**): la "e" che entra nella
+"a", i tondi pieni. Senza il contorno della v1: **un solo colore, pieno**.
+
+- **Bianco** su ogni fondo colore: ambra 400 e 700, i campi gusto, lime 700,
+  le foto con campo pieno. È il logo del packaging e del footer.
+- **Ambra** (`#FFAE34`) su bianco e carta: header, documenti.
+- Mai cacao, mai nero, mai due colori. Il colore-gusto resta solo al pack
+  Neutro.
+
+È un logo, non testo: la soglia del 4,5:1 non lo riguarda. Ambra su bianco e
+bianco su ambra fanno entrambi **1,85:1**: è una scelta del brand, e vale solo
+per il segno, mai per le parole.
+
+**Rund è in licenza TRIAL** ("evaluation only"). Il tracciato si genera in
+locale (`--font-id=rund`, dal file in `assets/fonts/rund-900.otf`) e va in
+`src/brand/wordmarks/rund.json`, **fuori da git** come il font. Dove non c'è
+— Vercel, un clone pulito — `wordmarkFor()` torna il **ripiego**,
+`src/brand/wordmark.json`: lo stesso segno in Gabarito 900, cioè la v1 com'era
+senza il font installato. Anche gli asset committati (`assets/logo/`) usano il
+ripiego; quelli con il tracciato vero escono in `assets/export/logo-v1/`, fuori
+da git. Con la **licenza desktop** di Rund Display Black il tracciato si
+committa e il ripiego sparisce: per un logo in tracciati non serve la licenza
+web.
+
+### Il simbolo: quattro punti
+
+**Quattro cerchi pieni, un solo colore**, diametri **0,64 · 0,76 · 0,88 · 1**
+(1 è il più grande). Tre geometrie in `SYMBOL_GEOMETRY` (`paths.ts`), ognuna
+nel suo viewBox, `(cx, cy, r)`:
+
+| Geometria | viewBox | Punti | Spazio fra i punti |
+|---|---|---|---|
+| **montagna** (a riposo) | 213 × 171,6 | (32, 139.6, 32) · (111.8, 133.6, 38) · (59.3, 58, 44) · (163, 50, 50) | 0,1 del diametro maggiore |
+| **salita** (diagonale a 36°) | 305,3 × 244,2 | (32, 212.2, 32) · (96.7, 165.2, 38) · (171.2, 111.1, 44) · (255.3, 50, 50) | 0,1 |
+| **favicon** | 228,2 × 180,1 | (32, 148.1, 32) · (121.8, 142.1, 38) · (64.4, 57.8, 44) · (178.2, 50, 50) | 0,2, perché a 16px non si impastino |
+
+Colori: **ambra 700** su chiaro, **cacao** sull'ambra, **bianco** sugli altri
+fondi colore. È la variante **V7** dietro `SYMBOL_VARIANT`; le varianti a tre
+punti della 3.0 (V0–V6) restano in `#/lab/simbolo`, come archivio.
+
+### La salita
+
+Nell'header, al passaggio del puntatore (o arrivando con la tastiera), i
+quattro punti passano dalla montagna alla diagonale, dal più piccolo al più
+grande, e poi compare il wordmark. Componente `<SymbolRise />`, stile in
+`src/brand/salita.css`, numeri in `SALITA_MOTION`.
+
+- **520ms**, ritardi **0 / 60 / 120 / 190ms** (l'ultimo sale per ultimo),
+  easing **`cubic-bezier(.3,1.45,.5,1)`**.
+- Tutto in em: i punti sono span con `left` / `bottom`, e il contenitore del
+  simbolo si allarga e si alza insieme a loro (100 unità = 0,5em).
+- Il wordmark: `max-width` 0 → 3,4em, opacità 0 → 1, `translateX(-6px)` → 0,
+  in 400ms, dopo l'ultimo punto; lo spazio dal simbolo è 0,3em.
+- All'uscita si torna alla montagna **senza ritardi**. Mai in loop.
+- **Touch** (`hover: none`): la salita parte una volta al caricamento e resta;
+  un tap la ripete.
+- **`prefers-reduced-motion`**: i punti non si muovono, compare solo il
+  wordmark.
+
+Nell'header cambia solo il simbolo con la sua animazione (a 28px di corpo) e
+il colore della striscia annunci (ambra 400, testo cacao). Il resto è del
+proprietario.
+
+### Il lockup
+
+Simbolo a montagna + wordmark, **centrati in verticale sulla scritta**, con
+**0,3em** di spazio, misurati sul corpo del wordmark (`size`).
+
+| Fondo | Simbolo | Wordmark |
+|---|---|---|
+| bianco, carta (`light`) | ambra 700 | ambra |
+| ambra 400 (`brand`) | cacao | bianco |
+| altri fondi colore (`flavor`, `dark`) | bianco | bianco |
+
+```tsx
+<Lockup size={64} />
+<Lockup size={56} background="brand" />
+<Lockup size={56} orientation="vertical" background="dark" />
+```
+
+### Il favicon e gli asset
+
+Quadrato **ambra 400**, raggio **24%** del lato, i quattro punti **cacao** con
+la geometria `favicon`, al **64%** del lato. `npm run assets:generate` scrive
+`favicon.ico` (16, 32, 48), `favicon.svg`, `apple-touch-icon.png` (180, senza
+raggio), `icon-192.png`, `icon-512.png`, i PNG da 16 a 512 in `assets/favicon/`
+(`peak-simbolo-*`) e il manifest con **`theme_color #FFAE34`**, che è anche
+il `theme-color` di `index.html`.
+
+---
+
+## Il wordmark (2.0–3.0)
 
 La parola è **`peak`**, sempre minuscola, **nel font candidato attivo** (default
 **Nunito 900**; Gabarito 800 è il controllo), **vettorializzata in tracciati**. Il logo non dipende più da nessun font: si apre ovunque, si stampa
@@ -102,7 +202,7 @@ colore è vietato — si usa inchiostro sul tint. La tabella completa è in
 
 ---
 
-## Il vertice
+## Il vertice (2.0–3.0)
 
 Il simbolo è il **vertice**: tre cerchi pieni e uguali disposti a triangolo, uno
 sopra e due sotto. La saetta della 1.0 è uscita dal sistema.
@@ -167,7 +267,7 @@ come pittogramma per "tre" o "ingredienti" lo svaluta.
 
 ---
 
-## Il lockup
+## Il lockup (2.0–3.0)
 
 Vertice libero e wordmark. **Lo spazio tra i due è pari alla metà dell'altezza
 del simbolo.** È l'unica regola di lockup necessaria. Esiste anche la versione

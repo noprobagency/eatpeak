@@ -60,7 +60,7 @@ export function Formula() {
                     <ul className="flex flex-col gap-2">
                       {ing.claims.map((id) => (
                         <li key={id} className="flex items-start gap-3 text-body-sm text-text-secondary" data-compliance="authorized-claim">
-                          <Icon variant="free" color={i === 2 ? 'lime' : 'arancia'} size={16} title="" className="mt-1 shrink-0" />
+                          <Icon variant="free" color={i === 2 ? 'lime' : 'brand'} size={16} title="" className="mt-1 shrink-0" />
                           <span>
                             {authorizedClaimText(id)}
                             {EFSA_CLAIMS[id].ingredient === 'vitamina D' && (
@@ -84,7 +84,7 @@ export function Formula() {
       </Section>
 
       {/* --- il protocollo ------------------------------------------------ */}
-      <Section tone="arancia-tint" id="protocollo">
+      <Section tone="brand-soft" id="protocollo">
         <Container>
           <SectionHeader
             eyebrow="Il protocollo"

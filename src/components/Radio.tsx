@@ -61,7 +61,7 @@ export function RadioGroup({
                     'pointer-events-none flex h-5 w-5 items-center justify-center rounded-full border',
                     'border-border-strong bg-bg-surface transition-colors duration-fast ease-standard',
                     'peer-hover:border-border-brand',
-                    'peer-checked:border-bg-brand peer-checked:border-[6px]',
+                    'peer-checked:border-border-brand peer-checked:border-[6px]',
                     'peer-disabled:opacity-45',
                     error && 'border-error',
                   )}

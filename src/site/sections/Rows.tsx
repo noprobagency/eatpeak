@@ -35,7 +35,7 @@ export function Rows({ items, numbered = true, deep = false, className }: RowsPr
         <li key={i} className="grid gap-4 py-8 md:grid-cols-[72px_1fr_auto] md:items-start md:gap-8">
           {numbered ? (
             <div className="relative flex h-12 w-12 items-center justify-center">
-              <HandDot seed={`row-${i}`} size={48} fill={item.dot ?? 'ring'} className={cn('absolute inset-0', deep ? 'text-neutral-0' : 'text-arancia-500')} />
+              <HandDot seed={`row-${i}`} size={48} fill={item.dot ?? 'ring'} className={cn('absolute inset-0', deep ? 'text-neutral-0' : 'text-dot-done')} />
               <span className={cn('relative font-mono text-body-sm font-medium', item.dot === 'solid' || item.dot === 'scribble' ? 'text-neutral-0' : deep ? 'text-neutral-0' : 'text-text-primary')}>
                 {String(i + 1).padStart(2, '0')}
               </span>

@@ -6,7 +6,8 @@
  * senso.
  * QUANDO NO: per dare un fondo a un blocco di testo. Nella 3.0 tutto il resto
  * e' riga, campo o vetro. Le card morbide (`soft`) sono sul tint, senza bordo,
- * con raggio 2xl.
+ * con raggio 2xl: dalla 3.1 il tint del brand e' ambra 50 (`brand-soft`) o 100
+ * (`brand-tint`).
  */
 
 import type { ElementType, ReactNode } from 'react'
@@ -14,6 +15,7 @@ import { cn } from '../lib/cn'
 
 export type CardTone =
   | 'surface' | 'raised' | 'warm'
+  | 'brand' | 'brand-soft' | 'brand-tint'
   | 'arancia' | 'lime' | 'arancia-tint' | 'lime-tint'
   | 'brand-deep' | 'lime-deep'
 
@@ -34,16 +36,19 @@ const TONES: Record<CardTone, string> = {
   surface: 'bg-bg-surface text-text-primary',
   raised: 'bg-bg-raised text-text-primary',
   warm: 'bg-bg-warm text-text-primary',
+  brand: 'bg-bg-brand text-text-on-brand',
+  'brand-soft': 'bg-bg-brand-soft text-text-primary',
+  'brand-tint': 'bg-bg-brand-tint text-text-primary',
   arancia: 'bg-bg-flavor-arancia text-text-on-flavor',
   lime: 'bg-bg-flavor-lime text-text-on-flavor',
   'arancia-tint': 'bg-bg-flavor-arancia-tint text-text-on-flavor-small',
   'lime-tint': 'bg-bg-flavor-lime-tint text-text-on-flavor-small',
-  'brand-deep': 'bg-bg-brand-deep text-text-inverse',
+  'brand-deep': 'bg-bg-brand-deep text-text-on-brand-deep',
   'lime-deep': 'bg-bg-lime-deep text-text-inverse',
 }
 
 /** Sui toni pieni e sui tint la card e' morbida: niente bordo. */
-const BORDERLESS: readonly CardTone[] = ['arancia', 'lime', 'arancia-tint', 'lime-tint', 'brand-deep', 'lime-deep']
+const BORDERLESS: readonly CardTone[] = ['brand', 'brand-soft', 'brand-tint', 'arancia', 'lime', 'arancia-tint', 'lime-tint', 'brand-deep', 'lime-deep']
 
 const RADIUS = { lg: 'rounded-lg', xl: 'rounded-xl', '2xl': 'rounded-2xl' } as const
 const PADDING = { none: '', sm: 'p-5', md: 'p-6 md:p-8', lg: 'p-8 md:p-12' } as const

@@ -12,6 +12,10 @@
  * e codici, il font display dal laboratorio (?font=<id>), il simbolo dietro
  * SYMBOL_VARIANT. In fondo, i quattro laboratori dove si decide.
  *
+ * La 3.1 cambia il colore brand (ambra), il simbolo (quattro punti, con la
+ * salita animata dell'header), il wordmark (quello della v1, bianco o ambra) e
+ * il font di tutto il testo (Denim, trial: solo in locale).
+ *
  * Regola per chi la estende: se aggiungi un componente e non lo aggiungi qui
  * — anche dentro i dettagli tecnici — per il sistema quel componente non
  * esiste.
@@ -25,11 +29,11 @@ import {
   RadioGroup, ReviewCard, Section, SectionHeader, Select, Stack, StickPack, StickyAddToCart,
   Tabs, Tag, Toast, ToastStack, Tooltip, TrustRow, WeekTimeline,
 } from '../components'
-import { DayDot, DotField, HandDot, Icon, Lockup, Logo } from '../brand'
+import { DayDot, DotField, HandDot, Icon, Lockup, Logo, SymbolRise } from '../brand'
 import {
-  CLEARSPACE_RATIO, FAVICON_SIZES, HEADER_LOGO_WIDTH, ICON_VARIANTS, LOGO_FORBIDDEN_USES,
-  SYMBOL_VARIANT, WORDMARK_MIN_WIDTH_MM, WORDMARK_MIN_WIDTH_PX, WORDMARK_TRACKING_EM, wordmarkHeightFor,
-  type IconVariant,
+  FAVICON_SIZES, ICON_VARIANTS, LOGO_FORBIDDEN_USES, SALITA_MOTION,
+  SYMBOL_COLORS, SYMBOL_VARIANT, WORDMARK_MIN_WIDTH_MM, WORDMARK_MIN_WIDTH_PX, WORDMARK_V1_AVAILABLE,
+  useWordmark, wordmarkHeightFor, type IconVariant,
 } from '../brand/paths'
 import { FONT_CANDIDATES, candidate, fontLabHref, useFontLab } from '../lib/fontlab'
 import { to } from '../lib/routes'
@@ -97,14 +101,15 @@ function Swatch({ name, hex }: { name: string; hex: string }) {
 // ---------------------------------------------------------------------------
 
 const CORE_COLORS = [
+  { name: 'ambra', hex: palette.ambra['400'], use: 'Il colore del brand (3.1). Fondi: hero, bande, footer, annunci, pulsante primario, badge. Sopra solo cacao.' },
+  { name: 'ambra 700', hex: palette.ambra['700'], use: 'Il profondo: i punti e il simbolo su chiaro, i link, il testo brand, l anello della tastiera.' },
   { name: 'bianco', hex: palette.neutral['0'], use: 'Superfici, pieni, il logo su colore.' },
   { name: 'carta', hex: palette.neutral['50'], use: 'Il fondo del sito e della stampa.' },
-  { name: 'cacao', hex: palette.cacao['900'], use: 'Il testo e il logo su chiaro. Caldo, mai nero: le superfici scure sono arancia 600.' },
-  { name: 'arancia', hex: palette.arancia['500'], use: 'Colore-gusto 01 e primario del brand. Campi pieni, pulsanti.' },
+  { name: 'cacao', hex: palette.cacao['900'], use: 'Il testo, anche sull ambra. Caldo, mai nero.' },
+  { name: 'arancia', hex: palette.arancia['500'], use: 'Colore-gusto 01 (Arancia Rossa). Resta del pack: si decide nello step packaging.' },
   { name: 'lime', hex: palette.lime['500'], use: 'Colore-gusto 02. Campi pieni delle comunicazioni del gusto.' },
-  { name: 'miele', hex: palette.miele['300'], use: 'L unico accento: bollino della dose, badge, il punto di oggi. Mai testo su chiaro.' },
-  { name: 'arancia 600', hex: palette.arancia['600'], use: 'Il profondo: pulsante primario, footer, i campi con testo corrente bianco.' },
   { name: 'lime 700', hex: palette.lime['700'], use: 'Il profondo del gusto 02: il rituale dei 30 punti.' },
+  { name: 'miele', hex: palette.miele['300'], use: 'L accento: bollino della dose, il punto di oggi. Mai testo su chiaro.' },
 ] as const
 
 // ---------------------------------------------------------------------------
@@ -115,17 +120,19 @@ const CONTRAST_PAIRS: Array<{ fg: string; bg: string; label: string; allowed: bo
   { fg: palette.cacao['900'], bg: palette.neutral['50'], label: 'text-primary (cacao 900) su carta', allowed: true },
   { fg: palette.cacao['600'], bg: palette.neutral['50'], label: 'text-secondary (cacao 600) su carta', allowed: true },
   { fg: palette.cacao['500'], bg: palette.neutral['0'], label: 'text-muted (cacao 500) su bianco', allowed: true },
-  { fg: palette.arancia['600'], bg: palette.neutral['0'], label: 'text-brand (arancia 600) su bianco', allowed: true },
-  { fg: palette.neutral['0'], bg: palette.arancia['600'], label: 'bianco su arancia 600: pulsante primario, footer, toast', allowed: true },
+  { fg: palette.cacao['900'], bg: palette.ambra['400'], label: 'cacao 900 su ambra 400: hero, footer, annunci, pulsante primario', allowed: true },
+  { fg: palette.cacao['900'], bg: palette.ambra['500'], label: 'cacao 900 su ambra 500: hover del primario', allowed: true },
+  { fg: palette.ambra['700'], bg: palette.neutral['50'], label: 'text-brand (ambra 700) su carta: link, occhielli', allowed: true },
+  { fg: palette.ambra['700'], bg: palette.neutral['0'], label: 'ambra 700 su bianco: pulsante secondario, pillola sui campi', allowed: true },
+  { fg: palette.ambra['700'], bg: palette.ambra['50'], label: 'ambra 700 su ambra 50: badge tenue', allowed: true },
+  { fg: palette.neutral['0'], bg: palette.ambra['700'], label: 'bianco su ambra 700: toast, tooltip, bg-brand-deep', allowed: true },
   { fg: palette.neutral['0'], bg: palette.lime['700'], label: 'bianco su lime 700', allowed: true },
-  { fg: palette.arancia['700'], bg: palette.neutral['0'], label: 'arancia 700 su bianco: la pillola sui campi', allowed: true },
-  { fg: palette.neutral['0'], bg: palette.arancia['500'], label: 'logo bianco e testo grande su arancia 500', allowed: true, large: true, note: 'Solo logo e testo grande: 3,68:1.' },
   { fg: palette.neutral['0'], bg: palette.lime['500'], label: 'logo bianco e testo grande su lime 500', allowed: true, large: true, note: 'Solo logo e testo grande: 3,29:1.' },
   { fg: palette.cacao['900'], bg: palette.miele['300'], label: 'cacao 900 su miele 300', allowed: true },
   { fg: palette.lime['700'], bg: palette.neutral['0'], label: 'lime 700 (success) su bianco', allowed: true },
-  { fg: palette.neutral['0'], bg: palette.arancia['500'], label: 'bianco come testo corrente su arancia 500', allowed: false, note: 'Vietato: 3,68:1. Il testo corrente sta sul deep (arancia 600) o in cacao sul tint.' },
-  { fg: palette.cacao['900'], bg: palette.arancia['500'], label: 'cacao 900 come testo corrente su arancia 500', allowed: false, note: 'Vietato: 3,72:1. Sul 500 stanno solo logo e testo grande.' },
-  { fg: palette.arancia['500'], bg: palette.neutral['0'], label: 'arancia 500 come testo su bianco', allowed: false, note: 'Vietato. Il 500 e un campo; per il testo brand il 600 o il 700.' },
+  { fg: palette.neutral['0'], bg: palette.ambra['400'], label: 'bianco come testo su ambra 400', allowed: false, note: 'Vietato: 1,85:1. Su ambra si scrive solo in cacao. Il logo bianco sull ambra e un segno, non testo.' },
+  { fg: palette.cacao['600'], bg: palette.ambra['400'], label: 'cacao 600 come testo su ambra 400', allowed: false, note: 'Vietato: 3,31:1. Sull ambra niente grigi: la gerarchia la fanno corpo e peso.' },
+  { fg: palette.ambra['400'], bg: palette.neutral['0'], label: 'ambra 400 come testo su bianco', allowed: false, note: 'Vietato: 1,85:1. Il 400 e un fondo; per il testo brand il 700.' },
   { fg: palette.miele['300'], bg: palette.neutral['0'], label: 'miele 300 come testo su bianco', allowed: false, note: 'Vietato. Il miele e un accento, non un inchiostro.' },
   { fg: palette.cacao['400'], bg: palette.neutral['0'], label: 'cacao 400 come testo su bianco', allowed: false, note: 'Non arriva a 4,5:1: e il colore degli anelli da fare. text-muted parte dal 500.' },
 ]
@@ -219,6 +226,7 @@ export function DesignSystem() {
   const [detailsOpen, setDetailsOpen] = useState(false)
   const lab = useFontLab()
   const font = candidate(lab.font)
+  const wordmark = useWordmark()
 
   return (
     <>
@@ -226,9 +234,9 @@ export function DesignSystem() {
       <Section tone="page" spacing="flush">
         <Container>
           <div className="flex flex-col gap-4 pt-10">
-            <Logo size={220} variant="ink" title="" className="h-auto max-w-full" />
+            <Logo size={220} variant="ambra" title="" className="h-auto max-w-full" />
             <header className="flex flex-col gap-2">
-              <h1 className="type-display-md text-text-primary">peak — design system <Em>3.0</Em></h1>
+              <h1 className="type-display-md text-text-primary">peak — design system <Em>3.1</Em></h1>
               <p className="max-w-prose text-body-lg text-text-secondary">
                 {CLAIMS.brand.it} Creatina + glicina + vitamina D3 in stick monodose.
               </p>
@@ -262,16 +270,16 @@ export function DesignSystem() {
             </Block>
 
             {/* ---------------------------------------------------------- */}
-            <Block id="logo" number="01 — logo" title={<>il wordmark: bianco, pieno, <Em>grande</Em></>} intro={`Un tracciato, non un testo: il candidato attivo del laboratorio font (${font.family} ${font.wordmarkWeight}) vettorializzato, tracking ${WORDMARK_TRACKING_EM}em. Un solo colore, nessun contorno. Bianco su ogni campo colore-gusto e sul profondo; cacao su bianco e carta. Il tracciato di ogni candidato sta in src/brand/wordmarks/.`}>
+            <Block id="logo" number="01 — logo" title={<>il wordmark della v1: bianco o <Em>ambra</Em></>} intro={`Un tracciato, non un testo: il wordmark della v1, “peak” in Rund Display Black con il suo tracking (−0,0333em), senza più il contorno. ${WORDMARK_V1_AVAILABLE ? 'Qui lo vedi dal tracciato vero, generato in locale.' : 'Rund è in licenza trial: qui vedi il ripiego, lo stesso segno in Gabarito 900, finché la licenza non c’è.'} Un solo colore, pieno: sempre bianco, oppure ambra su bianco e carta. Mai cacao, mai nero.`}>
               <div className="flex flex-col gap-4">
                 {([
-                  { bg: 'bg-bg-flavor-arancia', variant: 'white', label: 'bianco su arancia 500 — primaria, il logo del packaging' },
-                  { bg: 'bg-bg-flavor-lime', variant: 'white', label: 'bianco su lime 500' },
-                  { bg: 'bg-bg-page border border-border-subtle', variant: 'ink', label: 'cacao su carta — header del sito, documenti' },
+                  { bg: 'bg-bg-brand', variant: 'white', label: 'bianco su ambra 400 — il campo del brand, il footer', labelClass: 'text-text-on-brand' },
+                  { bg: 'bg-bg-flavor-arancia', variant: 'white', label: 'bianco su arancia 500 — il logo del packaging', labelClass: 'text-neutral-0/80' },
+                  { bg: 'bg-bg-page border border-border-subtle', variant: 'ambra', label: 'ambra su carta — header del sito, documenti', labelClass: 'text-text-muted' },
                 ] as const).map((t) => (
                   <div key={t.label} className={cn('flex flex-col gap-6 rounded-xl p-8 md:p-12', t.bg)}>
                     <Logo size={520} variant={t.variant} title="" className="h-auto w-full max-w-[520px]" />
-                    <span className={cn('type-label', t.variant === 'white' ? 'text-neutral-0/80' : 'text-text-muted')}>{t.label}</span>
+                    <span className={cn('type-label', t.labelClass)}>{t.label}</span>
                   </div>
                 ))}
               </div>
@@ -281,15 +289,15 @@ export function DesignSystem() {
                   <p className="type-label text-text-muted">Misura minima</p>
                   <p className="mt-2 font-mono text-heading-lg text-text-primary">{WORDMARK_MIN_WIDTH_PX}px · {WORDMARK_MIN_WIDTH_MM}mm</p>
                   <div className="mt-3 flex items-end gap-4">
-                    <Logo size={WORDMARK_MIN_WIDTH_PX} variant="ink" title="" />
+                    <Logo size={WORDMARK_MIN_WIDTH_PX} variant="ambra" title="" />
                     <span className="text-body-sm text-text-muted"><span className="font-mono">{WORDMARK_MIN_WIDTH_PX}</span>px di larghezza</span>
                   </div>
                 </Card>
                 <Card padding="sm">
                   <p className="type-label text-text-muted">Area di rispetto</p>
-                  <p className="mt-2 text-body-sm text-text-secondary">L’altezza della “e” minuscola su tutti i lati: il {Math.round(CLEARSPACE_RATIO * 100)}% dell’altezza del blocco.</p>
-                  <div className="mt-3 inline-block bg-bg-raised outline-dashed outline-1 outline-border-brand" style={{ padding: wordmarkHeightFor(140) * CLEARSPACE_RATIO }}>
-                    <Logo size={140} variant="ink" title="" />
+                  <p className="mt-2 text-body-sm text-text-secondary">L’altezza della “e” minuscola su tutti i lati: il {Math.round(wordmark.clearspaceRatio * 100)}% dell’altezza del blocco.</p>
+                  <div className="mt-3 inline-block bg-bg-raised outline-dashed outline-1 outline-border-brand" style={{ padding: wordmarkHeightFor(140, wordmark.viewBox) * wordmark.clearspaceRatio }}>
+                    <Logo size={140} variant="ambra" title="" />
                   </div>
                 </Card>
                 <Card padding="sm">
@@ -297,27 +305,41 @@ export function DesignSystem() {
                   <ul className="mt-2 flex flex-col gap-1 text-body-sm text-text-secondary">
                     <li>Busta: 82% della larghezza, a sinistra, in alto.</li>
                     <li>Stick: lungo la lunghezza, ruotato di 90°.</li>
-                    <li>Header: {HEADER_LOGO_WIDTH.desktop}px desktop, {HEADER_LOGO_WIDTH.mobile}px mobile.</li>
+                    <li>Header: la salita, corpo 28px; il wordmark compare al passaggio.</li>
                     <li>Hero: XL.</li>
-                    <li>Variante colore-gusto: solo su chiaro, sopra i 48px di altezza.</li>
+                    <li>Variante colore-gusto: solo il pack Neutro, sopra i 48px di altezza.</li>
                   </ul>
                 </Card>
               </div>
             </Block>
 
             {/* ---------------------------------------------------------- */}
-            <Block id="simbolo" number="02 — simbolo" title={<>il <Em>vertice</Em></>} intro={`Tre punti a triangolo: il picco senza disegnare una montagna, i tre ingredienti, i tre grammi. La geometria attiva è la variante ${SYMBOL_VARIANT.toUpperCase()}, dietro il flag SYMBOL_VARIANT; le altre stanno in #/lab/simbolo e la scelta è del brand. Favicon, avatar, sigillo sullo stick, seme del pattern. Mai come icona funzionale nell’interfaccia.`}>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <Block id="simbolo" number="02 — simbolo" title={<>quattro <Em>punti</Em></>} intro={`Quattro cerchi pieni, un solo colore, diametri 0,64 · 0,76 · 0,88 · 1. A riposo sono una montagna; al passaggio salgono in diagonale a 36 gradi, dal più piccolo al più grande, ed è la salita dell’header. Variante ${SYMBOL_VARIANT.toUpperCase()}, dietro il flag SYMBOL_VARIANT; le varianti a tre punti della 3.0 restano in #/lab/simbolo. Ambra 700 su chiaro, cacao su ambra, bianco sugli altri fondi colore. Mai come icona funzionale nell’interfaccia.`}>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
                 {(Object.keys(ICON_VARIANTS) as IconVariant[]).map((v) => (
                   <div key={v} className="flex flex-col items-center gap-3 rounded-md border border-border-subtle bg-bg-surface p-5">
-                    <Icon size={88} variant={v} color="arancia" title="" />
+                    <Icon size={88} variant={v} title="" />
                     <span className="text-center type-label text-text-primary">{ICON_VARIANTS[v].label}</span>
                     <span className="text-center text-body-sm text-text-secondary">{ICON_VARIANTS[v].note}</span>
                   </div>
                 ))}
               </div>
 
-              <Sub title="favicon" note="Sotto i 24px i punti passano a r=13, per non fondersi. Le misure sono quelle esportate in assets/favicon.">
+              <Sub title="la salita" note={`Passa sopra (o arriva con la tastiera): i punti salgono in ${SALITA_MOTION.durationMs} ms, uno dopo l’altro (${SALITA_MOTION.delaysMs.join(' / ')} ms), poi compare il wordmark. All’uscita si torna giù, senza ritardi. Su touch parte da sola una volta; con il movimento ridotto compare solo il wordmark.`}>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <a href="#/design-system#simbolo" className="flex h-32 items-center justify-center rounded-xl border border-border-subtle bg-bg-page" aria-label="La salita su carta">
+                    <SymbolRise style={{ fontSize: 48 }} />
+                  </a>
+                  <a href="#/design-system#simbolo" className="flex h-32 items-center justify-center rounded-xl bg-bg-brand" aria-label="La salita su ambra">
+                    <SymbolRise symbolColor={SYMBOL_COLORS.onBrand} wordmarkColor="#FFFFFF" style={{ fontSize: 48 }} />
+                  </a>
+                  <a href="#/design-system#simbolo" className="flex h-32 items-center justify-center rounded-xl bg-bg-lime-deep" aria-label="La salita su lime 700">
+                    <SymbolRise symbolColor={SYMBOL_COLORS.onColor} wordmarkColor="#FFFFFF" style={{ fontSize: 48 }} />
+                  </a>
+                </div>
+              </Sub>
+
+              <Sub title="favicon" note="Quadrato ambra 400 con il raggio al 24% del lato, quattro punti cacao al 64% del lato, con lo spazio fra i punti a 0,2 perché a 16px non si impastino. Le misure sono quelle esportate in assets/favicon.">
                 <div className="flex flex-wrap items-end gap-8 rounded-lg border border-border-subtle bg-bg-surface p-8">
                   {FAVICON_SIZES.filter((s) => s <= 96).map((size) => (
                     <div key={size} className="flex flex-col items-center gap-2">
@@ -328,17 +350,17 @@ export function DesignSystem() {
                 </div>
               </Sub>
 
-              <Sub title="lockup" note="Vertice libero e wordmark: lo spazio è la metà dell’altezza del simbolo. Su chiaro il vertice è nel colore-gusto e la parola in cacao; sul colore e sul profondo è tutto bianco.">
+              <Sub title="lockup" note="Simbolo e wordmark centrati in verticale sulla scritta, con 0,3em di spazio. Su chiaro: simbolo ambra 700, parola ambra. Sull’ambra: simbolo cacao, parola bianca. Sugli altri fondi colore: tutto bianco.">
                 <div className="grid gap-4 lg:grid-cols-3">
-                  <Card padding="lg" className="flex items-center justify-center"><Lockup iconSize={56} /></Card>
-                  <Card padding="lg" className="flex items-center justify-center"><Lockup iconSize={56} orientation="vertical" flavor="lime" /></Card>
-                  <Card padding="lg" tone="brand-deep" className="flex items-center justify-center"><Lockup iconSize={56} background="dark" /></Card>
+                  <Card padding="lg" className="flex items-center justify-center"><Lockup size={56} /></Card>
+                  <Card padding="lg" tone="brand" className="flex items-center justify-center"><Lockup size={56} background="brand" /></Card>
+                  <Card padding="lg" tone="lime-deep" className="flex items-center justify-center"><Lockup size={56} orientation="vertical" background="dark" /></Card>
                 </div>
               </Sub>
             </Block>
 
             {/* ---------------------------------------------------------- */}
-            <Block id="colore" number="03 — colore" title={<>carta, cacao, due colori-gusto, <Em>un</Em> accento</>} intro="Niente nero, da nessuna parte: il testo è cacao, le superfici scure sono arancia 600 e lime 700. I campi 500 sono pieni e a tutto campo e portano solo il logo, il testo grande e le chip di vetro; il testo corrente va cacao sul tint o bianco sul profondo. La grana (3–5%) si posa sui campi e sul vetro.">
+            <Block id="colore" number="03 — colore" title={<>ambra, carta, cacao, <Em>due</Em> colori-gusto</>} intro="Dalla 3.1 il colore del brand è l’ambra: il 400 per i fondi (hero, bande, footer, annunci, pulsante primario, badge), con sopra solo il cacao 900; il 700 per i punti e il simbolo su chiaro, i link, il testo brand e l’anello della tastiera. I tint (50, 100) fanno le card morbide e i fondi di sezione. Arancia e lime restano i colori-gusto del pack. Niente nero, da nessuna parte. La grana (3–5%) si posa sui campi e sul vetro.">
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 {CORE_COLORS.map((c) => (
                   <div key={c.name} className="flex flex-col overflow-hidden rounded-lg border border-border-subtle">
@@ -370,14 +392,14 @@ export function DesignSystem() {
                 ))}
               </div>
 
-              <Sub title="il laboratorio font" note="Sette candidati OFL da Google Fonts. Il parametro ?font=<id> cambia display e wordmark in tutto il sito, ?italic=0 spegne la parola in corsivo. La scelta la fa il brand, nella scorecard di #/lab/font.">
+              <Sub title="il laboratorio font" note="Dalla 3.1 tutto il testo è in Denim (versione basic), titoli e testo corrente: è in licenza trial, quindi si vede solo in locale; in produzione lo stack scende su Nunito e Inter. Gli altri sette candidati OFL restano con ?font=<id>; ?italic=0 spegne la parola in corsivo.">
                 <div className="flex flex-wrap gap-2">
                   {FONT_CANDIDATES.map((c) => (
                     <a
                       key={c.id}
                       href={fontLabHref({ font: c.id })}
                       aria-current={c.id === font.id ? 'true' : undefined}
-                      className={cn('rounded-full border px-4 py-2 text-body-sm font-bold transition-colors', c.id === font.id ? 'border-arancia-600 bg-bg-brand-soft text-text-brand' : 'border-border-default text-text-secondary hover:border-arancia-600')}
+                      className={cn('rounded-full border px-4 py-2 text-body-sm font-bold transition-colors', c.id === font.id ? 'border-border-brand bg-bg-brand-soft text-text-brand' : 'border-border-default text-text-secondary hover:border-border-brand')}
                       style={{ fontFamily: c.stack }}
                     >
                       {c.family}
@@ -484,14 +506,14 @@ export function DesignSystem() {
                   <div className="h-32 rounded-lg border border-border-subtle bg-bg-surface p-4"><DotField direction="down" color="#3A2A22" opacity={[0.08, 0.35]} stretch className="h-full w-full" /></div>
                 </div>
               </Sub>
-              <Sub title="DayDot e HandDot" note="I tre stati, sempre gli stessi: da fare (anello cacao), fatto (arancia, bianco sul colore), oggi (miele con l’anello arancia 700). Il punto a mano è il segno del cliente: calendario, retro busta, numerazioni.">
+              <Sub title="DayDot e HandDot" note="I tre stati, sempre gli stessi: da fare (anello cacao), fatto (ambra 700 su chiaro, cacao sull’ambra, bianco sugli altri colori), oggi (miele con l’anello ambra 700). Il punto a mano è il segno del cliente: calendario, retro busta, numerazioni.">
                 <div className="flex flex-wrap items-center gap-10">
                   <div className="flex items-center gap-4">
                     <DayDot state="todo" size={28} label="da fare" />
                     <DayDot state="done" size={28} label="fatto" />
                     <DayDot state="today" size={28} label="oggi" />
                   </div>
-                  <div className="flex items-center gap-4 text-arancia-500">
+                  <div className="flex items-center gap-4 text-dot-done">
                     <HandDot seed="ds-1" size={28} />
                     <HandDot seed="ds-2" size={28} />
                     <HandDot seed="ds-3" size={28} />
@@ -499,7 +521,7 @@ export function DesignSystem() {
                 </div>
               </Sub>
               <Sub title="Glass" note="Solo sopra colore o immagine: chip, card prezzo, switch gusto, barra sticky. Mai su carta. Con i fallback per chi non ha backdrop-filter o riduce la trasparenza.">
-                <div className="flex flex-wrap items-center gap-4 rounded-xl bg-bg-flavor-arancia p-6">
+                <div className="flex flex-wrap items-center gap-4 rounded-xl bg-bg-brand p-6">
                   <Glass tone="light" liquid radius="xl">
                     <p className="type-label text-text-brand">Rituale Completo</p>
                     <p className="mt-1 font-mono text-display-md text-text-primary">€0,94 <span className="text-body-sm font-display font-semibold text-text-muted">al giorno</span></p>
@@ -566,13 +588,13 @@ export function DesignSystem() {
             <Block id="laboratori" number="09 — laboratori" title={<>quattro laboratori, <Em>una</Em> scelta ciascuno</>} intro="Le decisioni ancora aperte non si prendono nel codice: si guardano. Ogni laboratorio mette le alternative fianco a fianco e lascia la scelta al brand.">
               <div className="grid gap-4 sm:grid-cols-2">
                 {[
-                  { href: to('/lab/font'), title: 'Font', body: 'Sette candidati per titoli e wordmark, con ?font=<id> che cambia tutto il sito e la scorecard da compilare.' },
-                  { href: to('/lab/simbolo'), title: 'Simbolo', body: 'Le sei varianti del vertice a 16, 32, 64 e 256 px, sui quattro fondi, nel lockup e accanto al test Asana.' },
+                  { href: to('/lab/font'), title: 'Font', body: 'Deciso nella 3.1: Denim per tutto il testo. Gli altri candidati restano con ?font=<id> e la scorecard.' },
+                  { href: to('/lab/simbolo'), title: 'Simbolo', body: 'Deciso nella 3.1: i quattro punti (V7). Il laboratorio tiene le sei varianti a tre punti della 3.0, per la storia.' },
                   { href: to('/lab/box'), title: 'Sezioni', body: 'I sei archetipi di sezione, uno sotto l’altro, e la stessa sequenza a 390 px.' },
                   { href: to('/lab/pack'), title: 'Pack', body: 'La busta nei due gusti con la frutta, il Neutro, il retro con i trenta cerchi e gli stick.' },
                 ].map((l) => (
-                  <a key={l.href} href={l.href} className="flex flex-col gap-2 rounded-2xl border border-border-subtle bg-bg-surface p-6 transition-colors duration-fast hover:border-arancia-600">
-                    <span className="flex items-center gap-3 text-heading-md text-text-primary"><HandDot seed={l.title} size={12} className="text-arancia-500" />{l.title}</span>
+                  <a key={l.href} href={l.href} className="flex flex-col gap-2 rounded-2xl border border-border-subtle bg-bg-surface p-6 transition-colors duration-fast hover:border-border-brand">
+                    <span className="flex items-center gap-3 text-heading-md text-text-primary"><HandDot seed={l.title} size={12} className="text-dot-done" />{l.title}</span>
                     <span className="text-body-sm text-text-secondary">{l.body}</span>
                   </a>
                 ))}
@@ -754,9 +776,9 @@ export function DesignSystem() {
                   </Stack>
                 </Sub>
 
-                <Sub title="Card" note="I toni profondi portano il testo bianco; i tint e i pieni portano il cacao.">
+                <Sub title="Card" note="I toni profondi portano il testo bianco; l’ambra, i tint e i pieni portano il cacao.">
                   <Grid cols={4}>
-                    {(['surface', 'raised', 'warm', 'brand-deep', 'lime-deep', 'arancia', 'lime', 'arancia-tint', 'lime-tint'] as const).map((tone) => (
+                    {(['surface', 'raised', 'warm', 'brand', 'brand-soft', 'brand-tint', 'brand-deep', 'lime-deep', 'arancia', 'lime', 'arancia-tint', 'lime-tint'] as const).map((tone) => (
                       <Card key={tone} tone={tone} elevation={tone === 'surface' ? 'md' : 'none'}>
                         <p className="type-label opacity-70">{tone}</p>
                         <p className="mt-3 text-heading-md">{CLAIMS.product.it}</p>
@@ -825,7 +847,7 @@ export function DesignSystem() {
                   </div>
                 </Sub>
 
-                <Sub title="Marquee" note="Sui campi colore-gusto il mono è cacao; il bianco sta sulla banda profonda (arancia 600).">
+                <Sub title="Marquee" note="Di default la banda è ambra 400 con il testo cacao; sui campi colore-gusto il mono è cacao; il bianco sta sulla banda profonda (ambra 700).">
                   <div className="-mx-6 md:-mx-[28px]">
                     <Marquee />
                     <div className="mt-3"><Marquee tone="lime" /></div>
@@ -893,7 +915,7 @@ export function DesignSystem() {
                     ] as const).map((t) => (
                       <div key={t.label} className="relative flex flex-col items-center gap-3 overflow-hidden rounded-md border border-errore-500/40 bg-bg-surface p-6">
                         <div className="flex h-20 items-center" style={t.style}>
-                          <Logo size={130} variant="ink" title="" />
+                          <Logo size={130} variant="ambra" title="" />
                         </div>
                         <span className="type-label text-errore-700">no · {t.label}</span>
                         <span aria-hidden="true" className="pointer-events-none absolute inset-0" style={{

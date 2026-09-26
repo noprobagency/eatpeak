@@ -32,6 +32,8 @@ const SCATTER = [
 
 export function Statement({ children, note, tone = 'page', id, dataRef, className }: StatementProps) {
   const deep = tone === 'brand-deep' || tone === 'lime-deep'
+  // Su ambra 400 solo cacao 900: niente grigi.
+  const onBrand = tone === 'brand'
   return (
     <Section tone={tone} spacing="loose" id={id} dataRef={dataRef} className={cn('overflow-hidden', className)}>
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
@@ -41,18 +43,18 @@ export function Statement({ children, note, tone = 'page', id, dataRef, classNam
             seed={d.seed}
             size={d.s}
             fill={d.s > 12 ? 'solid' : 'ring'}
-            className={cn('absolute', deep ? 'text-neutral-0/80' : 'text-arancia-500')}
+            className={cn('absolute', onBrand ? 'text-text-on-brand' : deep ? 'text-neutral-0/80' : 'text-dot-done')}
             style={{ left: `${d.x}%`, top: `${d.y}%` }}
           />
         ))}
       </div>
       <Container width="narrow">
         <div className="relative flex flex-col items-center gap-6 text-center" data-archetype="D">
-          <p className={cn('type-display-lg', deep ? 'text-neutral-0' : 'text-text-primary')}>{children}</p>
-          {note && <p className={cn('max-w-prose text-body-lg', deep ? 'text-neutral-0/85' : 'text-text-secondary')}>{note}</p>}
+          <p className={cn('type-display-lg', onBrand ? 'text-text-on-brand' : deep ? 'text-neutral-0' : 'text-text-primary')}>{children}</p>
+          {note && <p className={cn('max-w-prose text-body-lg', onBrand ? 'text-text-on-brand' : deep ? 'text-neutral-0/85' : 'text-text-secondary')}>{note}</p>}
           <div className="flex items-center gap-3" aria-hidden="true">
             {[1, 2, 3, 4, 5, 6, 7].map((n) => (
-              <HandDot key={n} seed={`row-${n}`} size={n === 7 ? 12 : 10} fill={n < 5 ? 'solid' : 'ring'} className={deep ? 'text-neutral-0' : 'text-arancia-500'} />
+              <HandDot key={n} seed={`row-${n}`} size={n === 7 ? 12 : 10} fill={n < 5 ? 'solid' : 'ring'} className={onBrand ? 'text-text-on-brand' : deep ? 'text-neutral-0' : 'text-dot-done'} />
             ))}
           </div>
         </div>

@@ -1,0 +1,135 @@
+/* ---------------------------------------------------------------------------
+ * La salita (3.1): i quattro punti passano dalla montagna alla diagonale a 36
+ * gradi, dal piu' piccolo al piu' grande, e poi compare il wordmark.
+ *
+ * Le misure arrivano dal componente come variabili, in em: --l0/--b0 a riposo,
+ * --l1/--b1 in salita, --s il diametro, --d il ritardo del punto. Si sale con
+ * il passaggio del puntatore sul contenitore (solo dove il puntatore c'e'), con
+ * la tastiera (:focus-visible), o con data-risen (touch: al caricamento e al tap).
+ * All'uscita i ritardi tornano a zero: si scende tutti insieme.
+ * ------------------------------------------------------------------------ */
+
+.peak-rise {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+  vertical-align: middle;
+}
+
+.peak-rise__mark {
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+  width: var(--w0);
+  height: var(--h0);
+  transition:
+    width var(--salita-ms) var(--salita-ease),
+    height var(--salita-ms) var(--salita-ease);
+}
+
+.peak-rise__dot {
+  position: absolute;
+  left: var(--l0);
+  bottom: var(--b0);
+  width: var(--s);
+  height: var(--s);
+  border-radius: 999px;
+  background-color: currentColor;
+  transition:
+    left var(--salita-ms) var(--salita-ease),
+    bottom var(--salita-ms) var(--salita-ease);
+}
+
+.peak-rise__word {
+  display: block;
+  max-width: 0;
+  margin-left: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    max-width var(--word-ms) var(--easing-standard),
+    margin-left var(--word-ms) var(--easing-standard),
+    opacity var(--word-ms) ease,
+    transform var(--word-ms) var(--easing-standard);
+}
+
+.peak-rise__word svg {
+  display: block;
+}
+
+/* --- in salita ---------------------------------------------------------- */
+
+.peak-rise[data-risen] .peak-rise__mark,
+:focus-visible > .peak-rise .peak-rise__mark {
+  width: var(--w1);
+  height: var(--h1);
+}
+
+.peak-rise[data-risen] .peak-rise__dot,
+:focus-visible > .peak-rise .peak-rise__dot {
+  left: var(--l1);
+  bottom: var(--b1);
+  transition-delay: var(--d);
+}
+
+.peak-rise[data-risen] .peak-rise__word,
+:focus-visible > .peak-rise .peak-rise__word {
+  max-width: var(--word-max);
+  margin-left: var(--gap);
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: var(--word-delay);
+}
+
+/* Il passaggio solo dove c'e' un puntatore: su touch l'hover resterebbe
+   appiccicato dopo il tap e il tap non potrebbe ripetere la salita. */
+@media (hover: hover) {
+  :hover > .peak-rise .peak-rise__mark,
+  .peak-rise:hover .peak-rise__mark {
+    width: var(--w1);
+    height: var(--h1);
+  }
+  :hover > .peak-rise .peak-rise__dot,
+  .peak-rise:hover .peak-rise__dot {
+    left: var(--l1);
+    bottom: var(--b1);
+    transition-delay: var(--d);
+  }
+  :hover > .peak-rise .peak-rise__word,
+  .peak-rise:hover .peak-rise__word {
+    max-width: var(--word-max);
+    margin-left: var(--gap);
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: var(--word-delay);
+  }
+}
+
+/* --- movimento ridotto: i punti restano a montagna, compare il wordmark ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .peak-rise .peak-rise__mark,
+  .peak-rise .peak-rise__dot {
+    transition: none;
+  }
+  .peak-rise[data-risen] .peak-rise__mark,
+  :focus-visible > .peak-rise .peak-rise__mark,
+  :hover > .peak-rise .peak-rise__mark,
+  .peak-rise:hover .peak-rise__mark {
+    width: var(--w0);
+    height: var(--h0);
+  }
+  .peak-rise[data-risen] .peak-rise__dot,
+  :focus-visible > .peak-rise .peak-rise__dot,
+  :hover > .peak-rise .peak-rise__dot,
+  .peak-rise:hover .peak-rise__dot {
+    left: var(--l0);
+    bottom: var(--b0);
+  }
+  .peak-rise .peak-rise__word {
+    transform: none;
+    transition: opacity 200ms ease;
+    transition-delay: 0ms;
+  }
+}

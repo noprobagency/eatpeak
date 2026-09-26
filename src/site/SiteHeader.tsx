@@ -3,16 +3,16 @@
  *
  * Due strisce fisse, staccate dai bordi: sopra gli annunci con le prove del
  * prodotto che scorrono; sotto la barra di vetro con il menu a sinistra, il
- * marchio al centro e ricerca, account e carrello a destra. Il marchio e' il
- * vertice arancione: al passaggio ruota di un terzo di giro e rivela il
- * wordmark, piu' piccolo di prima. Su mobile il menu diventa un pannello.
+ * marchio al centro e ricerca, account e carrello a destra. Il marchio sono i
+ * quattro punti a montagna (3.1): al passaggio salgono in diagonale e poi
+ * compare il wordmark (<SymbolRise />). Su mobile il menu diventa un pannello.
  *
  * Le misure e l'effetto vetro sono in site-header.css; i testi vengono da
  * src/lib/copy.ts e le rotte da src/lib/routes.ts.
  */
 
 import { useEffect, useState, type FormEvent } from 'react'
-import { Icon, Logo } from '../brand'
+import { SymbolRise } from '../brand'
 import { cn } from '../lib/cn'
 import { PRODUCT } from '../lib/copy'
 import { SITE_NAV, STUDIO_NAV, to, type RoutePath } from '../lib/routes'
@@ -155,10 +155,7 @@ export function SiteHeader({ current }: SiteHeaderProps) {
         </div>
 
         <a className="peak-header__logo" href={to('/')} aria-label="peak, torna alla home">
-          <Icon variant="free" color="arancia" size={30} title="" className="peak-header__mark" />
-          <span className="peak-header__wordmark" aria-hidden="true">
-            <Logo size={60} variant="ink" title="" />
-          </span>
+          <SymbolRise className="peak-header__mark" />
         </a>
 
         <div className="peak-header__nav peak-header__nav--right">

@@ -91,6 +91,22 @@ default del `font.display` in `tokens.json` e `npm run tokens:build`;
 `ColorField` di H6: `lime-deep` oppure `page` con i punti arancia (i colori
 dei `DayDot` seguono da soli); screenshot; docs 09; D17 chiusa.
 
+## Quando arrivano le licenze dei font (LIC-01, LIC-02)
+
+**Rund Display Black, licenza desktop (LIC-02).** Il wordmark diventa
+definitivo: si toglie `src/brand/wordmarks/rund.json` da `.gitignore`, si
+rigenera con `npm run brand:vectorize -- --font-id=rund` dal file con licenza,
+si committa; in `scripts/generate-assets.mjs` gli asset committati passano dal
+ripiego al tracciato vero; `npm run assets:generate`; screenshot; docs 03 e
+`assets/fonts/README.md`. Il file del font resta fuori da git.
+
+**Denim, licenza web (LIC-01).** Prima si chiarisce con Displaay se i file
+possono stare in un repo pubblico. Se no: repo privato, oppure i file arrivano
+al deploy da fuori git (variabile d'ambiente con un URL privato, o un passo di
+build). I nomi dei file licenziati (`Denim-<Peso>.woff2`) li riconosce già il
+plugin `peak-trial-fonts` in `vite.config.ts`. Poi screenshot da produzione e
+docs 02.
+
 ## Quando arrivano le fotografie (FOTO-01)
 
 1. Il file in `public/media/<id>.<ext>`.

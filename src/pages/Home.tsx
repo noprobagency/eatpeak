@@ -4,11 +4,11 @@
  * Costruita sezione per sezione sui reference (docs/10-riferimenti-sezioni.md),
  * con i sei archetipi di src/site/sections e mai due uguali di fila:
  *
- *   H1 hero campo arancia (A+F) → H2 barra numeri (C) → H3 statement (D)
+ *   H1 hero campo ambra (A+F) → H2 barra numeri (C) → H3 statement (D)
  *   → H4 il gesto in 3 passi (B/E) → H5 ingredienti (E) → H6 il rituale (A lime)
  *   → H7 gusti (A, due tile) → H8 confronto (E) → H9 la co-fondatrice (B)
  *   → H10 recensioni (F) → H11 standard (C/E) → H12 offerta (C + tier)
- *   → H13 garanzia (E) → H14 FAQ (E) → H15 footer arancia (A, in SiteFooter)
+ *   → H13 garanzia (E) → H14 FAQ (E) → H15 footer ambra (A, in SiteFooter)
  *
  * Ogni sezione ha `data-ref`: con ?ref=1 compare l'etichetta del reference.
  * Il copy e' una bozza (src/lib/copy.ts) presa dai reference: va riscritto.
@@ -37,13 +37,13 @@ import { cn } from '../lib/cn'
 // Pezzi locali della home
 // ---------------------------------------------------------------------------
 
-/** Le tre spunte di fiducia: pallini bianchi, non check. */
-function Trust({ items, onColor = true }: { items: readonly string[]; onColor?: boolean }) {
+/** Le tre spunte di fiducia: pallini, non check. Sull'ambra 400 in cacao. */
+function Trust({ items, tone = 'brand' }: { items: readonly string[]; tone?: 'brand' | 'color' | 'light' }) {
   return (
     <ul className="flex flex-wrap gap-x-6 gap-y-2">
       {items.map((t) => (
-        <li key={t} className={cn('flex items-center gap-2 text-body-sm font-display font-bold', onColor ? 'text-neutral-0' : 'text-text-primary')}>
-          <DayDot state="done" size={12} onColor={onColor} />
+        <li key={t} className={cn('flex items-center gap-2 text-body-sm font-display font-bold', tone === 'brand' ? 'text-text-on-brand' : tone === 'color' ? 'text-neutral-0' : 'text-text-primary')}>
+          <DayDot state="done" size={12} onColor={tone === 'color'} onBrand={tone === 'brand'} />
           {t}
         </li>
       ))}
@@ -58,7 +58,7 @@ function MiniStock({ sold, total }: { sold: number; total: number }) {
   return (
     <span className="inline-flex items-center gap-1" aria-hidden="true">
       {Array.from({ length: dots }, (_, i) => (
-        <span key={i} className={cn('h-[6px] w-[6px] rounded-full bg-arancia-600', i < taken && 'opacity-30')} />
+        <span key={i} className={cn('h-[6px] w-[6px] rounded-full bg-bg-brand-deep', i < taken && 'opacity-30')} />
       ))}
     </span>
   )
@@ -75,10 +75,10 @@ export function Home() {
 
   return (
     <>
-      {/* --- H1 · hero campo arancia --------------------------------------- */}
+      {/* --- H1 · hero campo ambra ----------------------------------------- */}
       <ColorField
         id="hero"
-        tone="brand-deep"
+        tone="brand"
         spacing="loose"
         dataRef="Cure · hero + Create · gerarchia"
         className="lg:pb-16"
@@ -95,17 +95,17 @@ export function Home() {
       >
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
           <div className="flex flex-col gap-6 lg:col-span-7">
-            <p className="type-eyebrow text-neutral-0/90">Creatina + glicina + vitamina D3</p>
-            <h1 className="type-display-xl text-neutral-0">la creatina, <Em>evoluta</Em>.</h1>
-            <p className="max-w-prose text-heading-md font-normal text-neutral-0/90 md:text-[24px] md:leading-snug">
+            <p className="type-eyebrow text-text-on-brand">Creatina + glicina + vitamina D3</p>
+            <h1 className="type-display-xl text-text-on-brand">la creatina, <Em>evoluta</Em>.</h1>
+            <p className="max-w-prose text-heading-md font-normal text-text-on-brand md:text-[24px] md:leading-snug">
               {CLAIMS.product.it} {CLAIMS.noLoading.it}
             </p>
             <div className="flex flex-wrap items-center gap-5 pt-2">
               <Button variant="inverse" size="lg" dot as="a" href={to('/prodotto')}>Inizia il tuo rituale</Button>
-              <a href={to('/', 'gesto')} className="peak-link text-body-md font-display font-bold text-neutral-0">Come funziona</a>
+              <a href={to('/', 'gesto')} className="peak-link text-body-md font-display font-bold text-text-on-brand">Come funziona</a>
             </div>
             <Trust items={['Made in Italy', 'Vegan', 'Nessun abbonamento']} />
-            <p className="max-w-prose text-body-sm text-neutral-0/80" data-compliance="authorized-claim">
+            <p className="max-w-prose text-body-sm text-text-on-brand" data-compliance="authorized-claim">
               {authorizedClaimText('physical-performance')}
             </p>
           </div>
@@ -321,7 +321,7 @@ export function Home() {
               {REVIEWS.map((r) => (
                 <Glass key={r.author} tone="light" liquid radius="xl" padding="sm" className="max-w-[340px]">
                   <div className="flex items-center gap-2">
-                    <HandDot seed={`rev-${r.author}`} size={14} className="text-arancia-500" />
+                    <HandDot seed={`rev-${r.author}`} size={14} className="text-dot-done" />
                     <span className="text-body-sm font-display font-bold text-text-primary">{r.author}, <span className="font-mono">{r.age}</span> · {r.city} · {r.habit}</span>
                   </div>
                   <p className="mt-2 text-body-sm text-text-secondary">“{r.text}”</p>
@@ -337,7 +337,7 @@ export function Home() {
       </Section>
 
       {/* --- H11 · i nostri standard --------------------------------------- */}
-      <Section id="standard" tone="arancia-tint" dataRef="Blueprint · our standards + Create · quality promise">
+      <Section id="standard" tone="brand-soft" dataRef="Blueprint · our standards + Create · quality promise">
         <Container>
           <div className="grid items-center gap-10 lg:grid-cols-12">
             <div className="flex flex-col gap-5 lg:col-span-7">
@@ -346,14 +346,14 @@ export function Home() {
               <p className="max-w-prose text-body-lg text-text-secondary">{STANDARDS.body}</p>
               <ul className="flex flex-wrap gap-x-8 gap-y-3">
                 {STANDARDS.facts.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-body-md font-display font-bold text-text-primary"><HandDot seed={f} size={12} className="text-arancia-500" /> {f}</li>
+                  <li key={f} className="flex items-center gap-2 text-body-md font-display font-bold text-text-primary"><HandDot seed={f} size={12} className="text-dot-done" /> {f}</li>
                 ))}
               </ul>
             </div>
             <div className="flex items-center gap-6 lg:col-span-5 lg:justify-end">
               <div className="flex flex-col items-center gap-3 rounded-2xl bg-bg-surface p-6">
                 <Badge tone="brand" variant="solid">Lotto {PRODUCT.launchLot}</Badge>
-                <div className="flex h-32 w-32 items-center justify-center rounded-xl border-2 border-dashed border-arancia-300 font-mono text-body-sm text-text-muted">QR</div>
+                <div className="flex h-32 w-32 items-center justify-center rounded-xl border-2 border-dashed border-ambra-300 font-mono text-body-sm text-text-muted">QR</div>
                 <p className="text-body-sm text-text-secondary">Certificato di analisi</p>
                 <LabTag what="certificato del lotto">PDF in arrivo</LabTag>
               </div>
@@ -378,7 +378,7 @@ export function Home() {
             </Button>
             <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-body-sm text-text-secondary">
               {OFFER_NOTES.map((n) => (
-                <li key={n} className="flex items-center gap-2"><HandDot seed={n} size={10} className="text-arancia-500" />{n}</li>
+                <li key={n} className="flex items-center gap-2"><HandDot seed={n} size={10} className="text-dot-done" />{n}</li>
               ))}
             </ul>
           </div>
@@ -394,7 +394,7 @@ export function Home() {
           </div>
           <ul className="mt-6 flex flex-col gap-2 text-body-sm text-text-secondary">
             {GUARANTEE.conditions.map((c) => (
-              <li key={c} className="flex items-start gap-2"><Icon variant="free" color="arancia" size={14} onLight title="" className="mt-1 shrink-0" />{c}</li>
+              <li key={c} className="flex items-start gap-2"><Icon variant="free" size={14} title="" className="mt-1 shrink-0" />{c}</li>
             ))}
           </ul>
           <a href={to('/prodotto', 'garanzia')} className="peak-link mt-6 inline-block text-body-md font-display font-bold text-text-brand">Il regolamento completo →</a>

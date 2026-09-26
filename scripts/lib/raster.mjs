@@ -112,6 +112,8 @@ export function renderIcon(spec, size, radiusUnits = 26) {
   const scale = size / 100
 
   const bg = spec.background ? parseHex(spec.background) : null
+  // Il contenitore: 2 unita' di margine per le varianti 3.0, 0 per il favicon 3.1.
+  const inset = spec.inset ?? 2
   const dots = parseHex(spec.dots)
   // Ogni cerchio puo' avere il suo colore e la sua opacita' (la punta miele,
   // i punti fantasma della griglia). Si disegnano in ordine, uno sopra l'altro.
@@ -134,7 +136,7 @@ export function renderIcon(spec, size, radiusUnits = 26) {
           const ux = (x + (sx + 0.5) / SS) / scale
           const uy = (y + (sy + 0.5) / SS) / scale
 
-          if (bg && insideRoundedRect(ux, uy, 2, 2, 96, 96, radiusUnits)) bgHits++
+          if (bg && insideRoundedRect(ux, uy, inset, inset, 100 - inset * 2, 100 - inset * 2, radiusUnits)) bgHits++
           circles.forEach((c, i) => {
             if (insideCircle(ux, uy, c.cx, c.cy, c.r)) circleHits[i]++
           })

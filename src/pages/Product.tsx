@@ -136,7 +136,7 @@ function Gallery({ flavor, onFlavor }: { flavor: FlavorId; onFlavor: (id: Flavor
             role="tab"
             aria-selected={view === v.id}
             onClick={() => setView(v.id)}
-            className={cn('flex aspect-square flex-col items-center justify-center gap-1 rounded-lg border p-1 text-center transition-colors', view === v.id ? 'border-arancia-600 bg-bg-surface' : 'border-border-subtle bg-bg-page hover:border-border-strong')}
+            className={cn('flex aspect-square flex-col items-center justify-center gap-1 rounded-lg border p-1 text-center transition-colors', view === v.id ? 'border-border-brand bg-bg-surface' : 'border-border-subtle bg-bg-page hover:border-border-strong')}
           >
             <span className="text-[11px] font-display font-bold leading-tight text-text-secondary">{v.label}</span>
           </button>
@@ -160,7 +160,7 @@ function NinetyDays({ selectedDays }: { selectedDays: number }) {
     <div className="flex flex-col gap-6" data-ref="Create · 2–3 weeks, no loading">
       <div className="grid gap-3 sm:grid-cols-3">
         {blocks.map((b, bi) => (
-          <div key={b.days} className={cn('rounded-2xl p-4', b.days <= selectedDays ? 'bg-bg-flavor-arancia-tint' : 'bg-bg-raised')}>
+          <div key={b.days} className={cn('rounded-2xl p-4', b.days <= selectedDays ? 'bg-bg-brand-soft' : 'bg-bg-raised')}>
             <svg viewBox="0 0 150 30" className="block h-auto w-full" aria-hidden="true">
               {Array.from({ length: 30 }, (_, i) => (
                 <circle key={i} cx={(i % 15) * 10 + 5} cy={Math.floor(i / 15) * 12 + 8} r={3.4} fill={b.days <= selectedDays ? 'var(--dot-done)' : 'var(--color-cacao-300)'} />
@@ -259,7 +259,7 @@ export function Product() {
                 <p className="type-eyebrow text-text-brand">Integratore alimentare · {PRODUCT.format}</p>
                 <h1 className="type-display-md text-text-primary">peak · creatina + glicina + vitamina d3</h1>
                 <p className="flex flex-wrap items-center gap-2 text-body-sm text-text-muted">
-                  <span className="flex items-center gap-1" aria-hidden="true">{[1, 2, 3, 4, 5].map((n) => <HandDot key={n} seed={`star-${n}`} size={10} className="text-arancia-500" />)}</span>
+                  <span className="flex items-center gap-1" aria-hidden="true">{[1, 2, 3, 4, 5].map((n) => <HandDot key={n} seed={`star-${n}`} size={10} className="text-dot-done" />)}</span>
                   Recensioni di esempio <LabTag what="rating">esempio</LabTag>
                 </p>
                 <p className="text-body-md text-text-secondary">{CLAIMS.product.it} {CLAIMS.noLoading.it}</p>
@@ -270,7 +270,7 @@ export function Product() {
                 <legend className="mb-3 type-eyebrow text-text-brand"><span className="font-mono">1.</span> Il gusto</legend>
                 <div className="flex flex-col gap-2">
                   {FLAVORS.map((x) => (
-                    <label key={x.id} className={cn('flex cursor-pointer items-center gap-4 rounded-2xl border px-4 py-3 transition-colors', x.id === flavor ? 'border-arancia-600 bg-bg-surface' : 'border-border-subtle bg-bg-surface hover:border-border-strong')}>
+                    <label key={x.id} className={cn('flex cursor-pointer items-center gap-4 rounded-2xl border px-4 py-3 transition-colors', x.id === flavor ? 'border-border-brand bg-bg-surface' : 'border-border-subtle bg-bg-surface hover:border-border-strong')}>
                       <input type="radio" name="gusto" value={x.id} checked={x.id === flavor} onChange={() => setFlavor(x.id)} className="sr-only" />
                       <span className={cn('flex h-10 w-10 shrink-0 items-center justify-center rounded-full', x.colorToken)} aria-hidden="true">
                         {x.id === flavor && <span className="h-3 w-3 rounded-full bg-neutral-0" />}
@@ -307,12 +307,12 @@ export function Product() {
       </Section>
 
       {/* --- P4 · e' per me? ------------------------------------------------ */}
-      <Section tone="arancia-tint" id="per-me" dataRef="Create · is this right for me?">
+      <Section tone="brand-soft" id="per-me" dataRef="Create · is this right for me?">
         <Container>
           <SectionHeader eyebrow="È per me?" title={<>la stessa dose. cambia il <Em>racconto</Em>.</>} body="Uno stick al giorno per tutti. Quello che cambia è il claim autorizzato per il tuo profilo, e lo scriviamo letterale." />
           <div className="mt-8 flex flex-wrap gap-2" role="tablist" aria-label="Profili">
             {PROFILES.map((p) => (
-              <button key={p.id} type="button" role="tab" aria-selected={p.id === profile} onClick={() => setProfile(p.id)} className={cn('rounded-full px-4 py-2 text-body-sm font-display font-bold transition-colors', p.id === profile ? 'bg-bg-brand-deep text-neutral-0' : 'bg-bg-surface text-text-secondary hover:text-text-primary')}>
+              <button key={p.id} type="button" role="tab" aria-selected={p.id === profile} onClick={() => setProfile(p.id)} className={cn('rounded-full px-4 py-2 text-body-sm font-display font-bold transition-colors', p.id === profile ? 'bg-bg-brand text-text-on-brand' : 'bg-bg-surface text-text-secondary hover:text-text-primary')}>
                 {p.title}
               </button>
             ))}
@@ -326,7 +326,7 @@ export function Product() {
                 {EFSA_CLAIMS[activeProfile.claim].ingredient === 'vitamina D' && <> <LabTag what="%VNR vitamina D3" /></>}
               </p>
             </div>
-            <div className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-bg-flavor-arancia-tint p-6">
+            <div className="flex flex-col items-center justify-center gap-2 rounded-2xl bg-bg-brand-soft p-6">
               <span className="font-mono text-display-md text-text-primary">1</span>
               <span className="type-label text-text-muted">stick al giorno</span>
             </div>
@@ -440,7 +440,7 @@ export function Product() {
           </div>
           <div className="mt-6 flex flex-wrap gap-2" role="group" aria-label="Filtri">
             {([['tutte', 'Tutte'], ['under45', 'Sotto i 45'], ['over45', 'Oltre i 45'], ['arancia', 'Arancia Rossa'], ['lime', FLAVORS[1].name]] as const).map(([id, label]) => (
-              <button key={id} type="button" aria-pressed={reviewFilter === id} onClick={() => setReviewFilter(id)} className={cn('rounded-full border px-4 py-2 text-body-sm font-display font-bold transition-colors', reviewFilter === id ? 'border-arancia-600 bg-bg-brand-soft text-text-brand' : 'border-border-default text-text-secondary hover:border-arancia-600')}>
+              <button key={id} type="button" aria-pressed={reviewFilter === id} onClick={() => setReviewFilter(id)} className={cn('rounded-full border px-4 py-2 text-body-sm font-display font-bold transition-colors', reviewFilter === id ? 'border-border-brand bg-bg-brand-soft text-text-brand' : 'border-border-default text-text-secondary hover:border-border-brand')}>
                 {label}
               </button>
             ))}
@@ -449,7 +449,7 @@ export function Product() {
             {reviews.map((r) => (
               <figure key={r.author} className="m-0 flex flex-col gap-3 rounded-2xl border border-border-subtle bg-bg-surface p-6">
                 <div className="flex items-center gap-2 text-body-sm font-display font-bold text-text-primary">
-                  <HandDot seed={`rev-${r.author}`} size={14} className="text-arancia-500" />
+                  <HandDot seed={`rev-${r.author}`} size={14} className="text-dot-done" />
                   {r.author}, <span className="font-mono">{r.age}</span> · {r.city} · {r.habit}
                 </div>
                 <blockquote className="m-0 text-body-md text-text-primary">“{r.text}”</blockquote>
@@ -469,7 +469,7 @@ export function Product() {
           <SectionHeader eyebrow={GUARANTEE.title} title={<>se non continui, ti <Em>rimborsiamo</Em>.</>} body={GUARANTEE.intro} size="md" />
           <div className="mt-6"><Rows items={GUARANTEE.steps.map((s) => ({ title: s.title, body: s.body, dot: 'scribble' }))} /></div>
           <ul className="mt-6 flex flex-col gap-2 text-body-sm text-text-secondary">
-            {GUARANTEE.conditions.map((c) => <li key={c} className="flex items-start gap-2"><HandDot seed={c} size={12} className="mt-1 shrink-0 text-arancia-500" />{c}</li>)}
+            {GUARANTEE.conditions.map((c) => <li key={c} className="flex items-start gap-2"><HandDot seed={c} size={12} className="mt-1 shrink-0 text-dot-done" />{c}</li>)}
           </ul>
         </Container>
       </Section>

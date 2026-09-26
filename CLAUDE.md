@@ -39,17 +39,23 @@ servono subito sono importati qui sotto e arrivano in contesto da soli.
 2. **L'header è del proprietario.** `src/site/SiteHeader.tsx` e
    `src/site/site-header.css` non si toccano. Si riporta cosa cambia di
    riflesso via token e dati.
-3. **Le decisioni di brand le prende il proprietario**: il font
-   (`#/lab/font`), il simbolo (`SYMBOL_VARIANT`), il fondo del rituale. Claude
-   prepara le alternative nei laboratori, non sceglie.
-4. **Sistema visivo**: niente nero (i neutri del testo sono cacao, le
-   superfici scure sono arancia 600 e lime 700); titoli 700–800 mai 900 con
-   una parola in corsivo; occhielli in display 600 e frase normale; mono solo
-   per numeri e codici; vetro solo sopra colore; solo token semantici nei
-   componenti. Tutto in `docs/02-tokens.md`.
+3. **Le decisioni di brand le prende il proprietario**. Nella 3.1 ha scelto:
+   ambra come colore del brand, il simbolo a quattro punti con la salita
+   (`SYMBOL_VARIANT = 'v7'`), il wordmark della v1 bianco o ambra, Denim per
+   tutto il testo. Resta aperto il fondo del rituale. Claude prepara le
+   alternative nei laboratori, non sceglie.
+4. **Sistema visivo**: il brand è l'**ambra** (400 per i fondi, 700 per punti,
+   simbolo, link e testo brand); **sull'ambra 400 solo cacao 900**, mai bianco
+   né grigi; niente nero (i neutri del testo sono cacao); arancia e lime sono i
+   colori-gusto del pack; titoli 700 (con Denim; mai 900) con una parola in
+   corsivo; occhielli in display 600 e frase normale; mono solo per numeri e
+   codici; vetro solo sopra colore; solo token semantici nei componenti. Tutto
+   in `docs/02-tokens.md` e `docs/03-logo.md`.
 5. **Recensioni, numeri, rating mai finti in pubblico**: esempi con il tag
    "esempio". Niente Kit Rituale (dopo il lancio), niente quiz.
-6. **Nessuna dipendenza runtime nuova.** Font solo da Google Fonts (OFL).
+6. **Nessuna dipendenza runtime nuova.** Font da Google Fonts (OFL), oppure
+   file con licenza che **non entrano in git**: il repo è pubblico. Denim e
+   Rund sono in trial e stanno solo in locale (`assets/fonts/README.md`).
    Immagini, loghi e claim di terzi mai: i reference stanno in
    `docs/references/`, fuori dal versionamento.
 7. **`npm test` verde prima di ogni commit**: typecheck, compliance, contrasto,
@@ -91,9 +97,10 @@ La mappa completa è in `docs/contesto/06-mappa.md`. I punti d'ingresso:
   vietati: `src/lib/compliance.ts`.
 - **Token**: `src/tokens/tokens.json` → `npm run tokens:build` → `tokens.css`.
   Tailwind li legge all'avvio: dopo un cambio si riavvia il dev server.
-- **Brand**: `src/brand/` (Logo, Icon, Lockup, DotField, HandDot, DayDot,
-  Grain; `paths.ts` con `SYMBOL_VARIANT` e i wordmark per candidato in
-  `wordmarks/`).
+- **Brand**: `src/brand/` (Logo, Icon, Lockup, SymbolRise con `salita.css`,
+  DotField, HandDot, DayDot, Grain; `paths.ts` con `SYMBOL_VARIANT`,
+  `SYMBOL_GEOMETRY`, `SALITA_MOTION` e i wordmark in `wordmarks/`, dove
+  `rund.json` resta fuori da git).
 - **Componenti**: `src/components/`. Archetipi di sezione:
   `src/site/sections/`. Pagine: `src/pages/`, laboratori in `src/pages/lab/`.
 - **Font lab**: `src/lib/fontlab.ts` (`?font=`, `?italic=0`, `?body=display`,
@@ -111,8 +118,9 @@ npm run dev                                   # dev server su :5173
 npm test                                      # tutta la catena, verde prima di ogni commit
 npm run docs:screens                          # screenshot in docs/screens (dev server acceso)
 npm run export:pack -- arancia --busta        # busta | --stick | --retro --marked=12 | --neutro | --font=<id>
-npm run assets:generate                       # logo, lockup, favicon dal SYMBOL_VARIANT e dal font default
-npm run brand:vectorize -- --font-id=nunito   # tracciato del wordmark di un candidato (--all, --download)
+npm run assets:generate                       # logo, lockup, favicon (simbolo v7, favicon ambra)
+npm run brand:vectorize -- --font-id=rund     # il wordmark della v1, solo in locale (Rund trial)
+npm run brand:vectorize -- --font-id=nunito   # tracciato di un candidato OFL (--all, --download)
 npm run docs:brand                            # rigenera docs/00 da src/lib/brand-overview.ts
 ```
 

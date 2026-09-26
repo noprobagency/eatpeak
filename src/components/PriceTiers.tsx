@@ -77,7 +77,7 @@ export function PriceTiers({
                 'flex cursor-pointer items-start gap-4 rounded-lg border p-5',
                 'transition-colors duration-base ease-standard',
                 selected
-                  ? 'border-arancia-600 bg-bg-surface shadow-sm'
+                  ? 'border-border-brand bg-bg-surface shadow-sm'
                   : 'border-border-default bg-bg-surface hover:border-border-strong',
               )}
               data-preselected={tier.preselected || undefined}
@@ -96,7 +96,7 @@ export function PriceTiers({
                 aria-hidden="true"
                 className={cn(
                   'mt-1 flex h-5 w-5 shrink-0 rounded-full border transition-colors duration-fast',
-                  selected ? 'border-[6px] border-arancia-600' : 'border-border-strong bg-bg-surface',
+                  selected ? 'border-[6px] border-border-brand' : 'border-border-strong bg-bg-surface',
                 )}
               />
 
@@ -106,7 +106,7 @@ export function PriceTiers({
                   {tier.badge && (
                     <span className={cn(
                       'rounded-full px-3 py-1 type-label',
-                      tier.preselected ? 'bg-bg-brand-deep text-neutral-0' : 'bg-lime-50 text-lime-700',
+                      tier.preselected ? 'bg-bg-brand text-text-on-brand' : 'bg-lime-50 text-lime-700',
                     )}>
                       {tier.badge}
                     </span>

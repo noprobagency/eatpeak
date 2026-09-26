@@ -6,12 +6,15 @@
  * se una coppia dichiarata vietata la raggiungerebbe (nel qual caso il divieto
  * andrebbe rivisto), lo script esce con codice 1.
  *
- * Regole 3.0:
+ * Regole 3.1:
+ * - il colore brand e' l'ambra: il 400 fa i fondi e ci si scrive SOLO in
+ *   cacao 900 (7,4:1); mai bianco (1,85:1), mai i grigi cacao;
+ * - l'ambra 700 e' il profondo: punti e simbolo su chiaro, link, testo brand,
+ *   anello della tastiera; regge anche il bianco (toast, tooltip);
  * - il testo e' cacao (900 / 600 / 500), mai inchiostro: l'inchiostro e' un
  *   token di stampa e non compare qui;
- * - le superfici scure sono arancia 600 e lime 700, con testo bianco;
- * - sui campi 500 (arancia, lime) stanno solo il logo, i titoli e i numeri
- *   grandi: il testo corrente ci va sopra solo sul tint, in cacao.
+ * - arancia e lime restano i colori-gusto del pack: sui 500 solo logo, titoli
+ *   e numeri grandi.
  *
  *   npm run tokens:contrast
  */
@@ -33,31 +36,35 @@ export const PAIRS = [
   { fg: c.cacao['600'], bg: c.neutral['50'], label: '`text-secondary` (cacao 600) su carta', allowed: true },
   { fg: c.cacao['500'], bg: c.neutral['50'], label: '`text-muted` (cacao 500) su carta', allowed: true },
   { fg: c.cacao['500'], bg: c.neutral['0'], label: '`text-muted` su bianco', allowed: true },
-  { fg: c.cacao['900'], bg: c.arancia['50'], label: '`text-on-flavor-small` (cacao 900) su tint arancia', allowed: true },
-  { fg: c.cacao['900'], bg: c.lime['50'], label: '`text-on-flavor-small` su tint lime', allowed: true },
-  { fg: c.cacao['500'], bg: c.arancia['50'], label: 'cacao 500 su tint arancia', allowed: true },
   { fg: c.cacao['600'], bg: c.miele['50'], label: '`text-secondary` su `bg-warm`', allowed: true },
-  { fg: c.cacao['900'], bg: c.miele['300'], label: 'cacao 900 su miele 300 (accento, badge)', allowed: true },
+  { fg: c.cacao['900'], bg: c.miele['300'], label: 'cacao 900 su miele 300 (accento, il punto di oggi)', allowed: true },
 
-  // --- testo brand ---
-  { fg: c.arancia['600'], bg: c.neutral['0'], label: '`text-brand` (arancia 600) su bianco — occhielli', allowed: true },
-  { fg: c.arancia['600'], bg: c.neutral['50'], label: 'arancia 600 su carta — occhielli', allowed: true },
-  { fg: c.arancia['700'], bg: c.neutral['0'], label: 'arancia 700 su bianco — pillola bianca sui campi', allowed: true },
-  { fg: c.arancia['700'], bg: c.arancia['50'], label: 'arancia 700 su arancia 50 (badge)', allowed: true },
+  // --- l'ambra: i fondi (400) e il testo cacao ---
+  { fg: c.cacao['900'], bg: c.ambra['400'], label: '**cacao 900 su ambra 400** — `text-on-brand` su `bg-brand`: hero, bande, footer, annunci, pulsante primario, badge', allowed: true },
+  { fg: c.cacao['900'], bg: c.ambra['500'], label: 'cacao 900 su ambra 500 — hover del primario (`bg-brand-hover`)', allowed: true },
+  { fg: c.cacao['900'], bg: c.ambra['50'], label: 'cacao 900 su ambra 50 — `bg-brand-soft`', allowed: true },
+  { fg: c.cacao['900'], bg: c.ambra['100'], label: 'cacao 900 su ambra 100 — `bg-brand-tint`', allowed: true },
+  { fg: c.cacao['600'], bg: c.ambra['50'], label: '`text-secondary` su ambra 50', allowed: true },
+  { fg: c.cacao['500'], bg: c.ambra['50'], label: '`text-muted` su ambra 50', allowed: true },
+
+  // --- l'ambra 700: il testo brand e il profondo ---
+  { fg: c.ambra['700'], bg: c.neutral['50'], label: '**`text-brand` (ambra 700) su carta** — link, occhielli, secondario', allowed: true },
+  { fg: c.ambra['700'], bg: c.neutral['0'], label: 'ambra 700 su bianco — pillola bianca sui campi, secondario', allowed: true },
+  { fg: c.ambra['700'], bg: c.ambra['50'], label: 'ambra 700 su ambra 50 — badge tenue', allowed: true },
+  { fg: c.ambra['700'], bg: c.ambra['100'], label: 'ambra 700 su ambra 100', allowed: true },
+  { fg: c.neutral['0'], bg: c.ambra['700'], label: '**bianco su ambra 700** — `bg-brand-deep`: toast, tooltip, play', allowed: true },
+
+  // --- lime, i colori-gusto e i loro deep ---
+  { fg: c.cacao['900'], bg: c.arancia['50'], label: 'cacao 900 su tint arancia (gusto 01)', allowed: true },
+  { fg: c.cacao['900'], bg: c.lime['50'], label: '`text-on-flavor-small` su tint lime', allowed: true },
   { fg: c.lime['700'], bg: c.neutral['0'], label: 'lime 700 (`success`) su bianco', allowed: true },
   { fg: c.lime['700'], bg: c.lime['50'], label: 'lime 700 su lime 50 (badge)', allowed: true },
-
-  // --- le superfici brand scure: testo corrente bianco ---
-  { fg: c.neutral['0'], bg: c.arancia['600'], label: '**bianco su arancia 600** — pulsante primario, footer, toast, `bg-brand-deep`', allowed: true },
   { fg: c.neutral['0'], bg: c.lime['700'], label: '**bianco su lime 700** — `bg-lime-deep`', allowed: true },
-  { fg: c.neutral['0'], bg: c.arancia['700'], label: 'bianco su arancia 700 (hover del primario)', allowed: true },
-
-  // --- i campi colore-gusto 500: solo logo e testo grande ---
-  { fg: c.neutral['0'], bg: c.arancia['500'], label: '**logo bianco** e testo grande su arancia 500', allowed: true, largeOnly: true, note: 'Solo logo, titoli display e numeri grandi (>= 24px bold o >= 32px regular).' },
-  { fg: c.neutral['0'], bg: c.lime['500'], label: '**logo bianco** e testo grande su lime 500', allowed: true, largeOnly: true, note: 'Solo logo, titoli display e numeri grandi.' },
+  { fg: c.neutral['0'], bg: c.arancia['500'], label: '**logo bianco** e testo grande su arancia 500 (gusto 01)', allowed: true, largeOnly: true, note: 'Solo logo, titoli display e numeri grandi (>= 24px bold o >= 32px regular).' },
+  { fg: c.neutral['0'], bg: c.lime['500'], label: '**logo bianco** e testo grande su lime 500 (gusto 02)', allowed: true, largeOnly: true, note: 'Solo logo, titoli display e numeri grandi.' },
 
   // --- vetro: il velo interno garantisce il cacao ---
-  { fg: c.cacao['900'], bg: '#F6EFEA', label: 'cacao 900 sul vetro con velo (bianco 62% su arancia)', allowed: true },
+  { fg: c.cacao['900'], bg: '#FFE0B2', label: 'cacao 900 sul vetro con velo (bianco 62% su ambra 400)', allowed: true },
 
   // --- stato ---
   { fg: c.state.error, bg: c.neutral['0'], label: '`error` su bianco', allowed: true },
@@ -66,14 +73,24 @@ export const PAIRS = [
 
   // --- le combinazioni vietate dal manuale ---
   {
-    fg: c.neutral['0'], bg: c.arancia['500'], allowed: false, largeOnly: true,
-    label: 'bianco come **testo corrente** su arancia 500',
-    note: 'Si ferma a 3,68:1. Il testo corrente sta sul deep (arancia 600) o, in cacao, sul tint.',
+    fg: c.neutral['0'], bg: c.ambra['400'], allowed: false, largeOnly: true,
+    label: 'bianco come **testo** su ambra 400',
+    note: 'Si ferma a 1,85:1, nemmeno il testo grande regge. Su ambra si scrive solo in cacao 900. Il wordmark bianco sull ambra e un logo, non testo (scelta del brand, 3.1).',
+  },
+  {
+    fg: c.cacao['600'], bg: c.ambra['400'], allowed: false,
+    label: '`text-secondary` (cacao 600) come testo su ambra 400',
+    note: 'Si ferma a 3,31:1. Sull ambra niente grigi: la gerarchia la fanno corpo e peso, sempre in cacao 900.',
+  },
+  {
+    fg: c.ambra['400'], bg: c.neutral['0'], allowed: false, largeOnly: true,
+    label: 'ambra 400 come **testo** su bianco',
+    note: 'Si ferma a 1,85:1. Il 400 e un fondo; il testo brand e ambra 700. Il wordmark ambra su bianco e un logo, non testo.',
   },
   {
     fg: c.cacao['900'], bg: c.arancia['500'], allowed: false, largeOnly: true,
     label: 'cacao 900 come **testo corrente** su arancia 500',
-    note: 'Si ferma a 3,72:1: nemmeno il cacao regge sul 500. Sul 500 stanno solo logo e testo grande.',
+    note: 'Si ferma a 3,72:1. Sul 500 del gusto stanno solo logo e testo grande.',
   },
   {
     fg: c.neutral['0'], bg: c.lime['500'], allowed: false, largeOnly: true,
@@ -81,14 +98,9 @@ export const PAIRS = [
     note: 'Si ferma a 3,29:1. Il testo corrente sta su lime 700.',
   },
   {
-    fg: c.arancia['500'], bg: c.neutral['0'], allowed: false,
-    label: 'arancia 500 come **testo** su bianco',
-    note: 'Per il testo brand su fondo chiaro si usa il 600 o il 700. Il 500 e un campo, non un inchiostro.',
-  },
-  {
     fg: c.miele['300'], bg: c.neutral['0'], allowed: false,
     label: 'miele 300 come **testo** su bianco',
-    note: 'Il miele e l accento: bollino, badge, il punto di oggi. Mai come testo su fondo chiaro.',
+    note: 'Il miele e l accento: bollino, il punto di oggi. Mai come testo su fondo chiaro.',
   },
   {
     fg: c.cacao['400'], bg: c.neutral['0'], allowed: false,

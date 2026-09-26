@@ -7,7 +7,8 @@
  * <Tag />. Per un valore in attesa del laboratorio c'e' <LabTag />.
  *
  * 3.0: niente mono e niente maiuscolo tracciato. Il badge e' nel font display,
- * peso 700, sentence case. I pieni sono colore brand, mai neri.
+ * peso 700, sentence case. I pieni sono colore brand, mai neri: dalla 3.1 il
+ * brand pieno e' ambra 400 con testo cacao, il tenue ambra 50 con ambra 700.
  */
 
 import type { ReactNode } from 'react'
@@ -24,7 +25,7 @@ export interface BadgeProps {
 }
 
 const TONES: Record<BadgeTone, { soft: string; solid: string }> = {
-  brand:   { soft: 'bg-arancia-50 text-arancia-700',  solid: 'bg-bg-brand-deep text-text-on-brand' },
+  brand:   { soft: 'bg-bg-brand-soft text-text-brand', solid: 'bg-bg-brand text-text-on-brand' },
   lime:    { soft: 'bg-lime-50 text-lime-700',        solid: 'bg-bg-lime-deep text-neutral-0' },
   miele:   { soft: 'bg-miele-100 text-miele-800',     solid: 'bg-miele-300 text-cacao-900' },
   neutral: { soft: 'bg-neutral-100 text-cacao-600',   solid: 'bg-cacao-100 text-cacao-900' },

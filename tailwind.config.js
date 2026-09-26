@@ -31,10 +31,11 @@ export default {
   theme: {
     // La scala di default viene sostituita, non estesa: i grigi freddi di
     // Tailwind spezzerebbero la temperatura calda del brand.
-    // Palette 2.0: 3 neutri + 2 colori-gusto + 1 accento. Niente altro.
+    // Palette 3.1: ambra brand + 3 neutri + 2 colori-gusto + 1 accento.
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
+      ambra: t.color.ambra,
       arancia: t.color.arancia,
       lime: t.color.lime,
       miele: t.color.miele,
@@ -78,6 +79,7 @@ export default {
       },
       transitionTimingFunction: {
         standard: t.motion.easing.standard,
+        salita: t.motion.easing.salita,
       },
       padding: {
         section: t.section.desktop,

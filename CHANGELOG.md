@@ -8,6 +8,29 @@ componente nuovo, major per un cambio di sistema. I racconti per fase della
 qui c'è il registro. Ogni commit aggiunge la sua riga qui, nello stesso
 commit.
 
+## [3.1.0] · 2026-09-26 · ambra, quattro punti, salita, wordmark v1, Denim
+
+Branch `v3-ambra`, aperto da `task/setup-contesto`, in attesa di merge.
+
+- **brand** · il colore del brand passa all'**ambra** `#FFAE34` (scala 50–900):
+  il 400 per i fondi con sopra solo il cacao 900 (7,4:1), il 700 `#A04F06`
+  per punti, simbolo, link, testo brand e anello della tastiera. Semantici
+  rimappati e nuovi (`bg-brand-hover`, `bg-brand-tint`, `text-on-brand-deep`,
+  `symbol-*`, `logo-on-color`), report di contrasto riscritto. Primario
+  ambra/cacao, secondario ambra 700; hero, footer, badge e striscia annunci in
+  ambra. Arancia e lime restano i colori-gusto del pack.
+  Il **simbolo a quattro punti** (V7, `SYMBOL_GEOMETRY`) con la **salita**
+  nell'header (`<SymbolRise />`, 520ms, 0/60/120/190ms, touch e reduced
+  motion); lockup centrato con 0,3em; favicon ambra con i punti cacao, ICO
+  16/32/48, PNG 16–512, apple-touch, manifest e `theme-color` `#FFAE34`. Il
+  **wordmark della v1** (Rund Display Black), bianco o ambra. **Denim** per
+  tutto il testo, titoli a 700. Denim e Rund sono in trial: file e tracciato
+  fuori da git, plugin `peak-trial-fonts` in `vite.config.ts`, ripieghi su
+  Vercel. Corretto il retino del wordmark nel footer (il `clipPath` scalato
+  mostrava solo l'angolo). Docs 00, 02, 03, README dei font, CLAUDE.md,
+  contesto (D21–D26, backlog BRAND-05/06/07, HEADER-03, PACK-05, LIC-01/02),
+  screenshot.
+
 ## [3.0.1] · 2026-09-26 · setup del contesto
 
 Branch `task/setup-contesto`, in attesa di merge.

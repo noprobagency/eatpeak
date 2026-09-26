@@ -16,6 +16,8 @@
 .peak-breath:focus-visible circle:nth-of-type(2) { animation-delay: 110ms; }
 .peak-breath:hover circle:nth-of-type(3),
 .peak-breath:focus-visible circle:nth-of-type(3) { animation-delay: 220ms; }
+.peak-breath:hover circle:nth-of-type(4),
+.peak-breath:focus-visible circle:nth-of-type(4) { animation-delay: 330ms; }
 @keyframes peak-breath {
   0% { opacity: 0.35; transform: scale(0.72); }
   60% { opacity: 1; transform: scale(1.12); }

@@ -53,9 +53,9 @@ const SHOTS = [
   { name: 'lab-font-nunito', route: '#/lab/font', query: 'font=nunito', width: 1440, height: 2600 },
   { name: 'lab-font-gabarito', route: '#/lab/font', query: 'font=gabarito', width: 1440, height: 2600 },
   { name: 'lab-font-mplus', route: '#/lab/font', query: 'font=mplus', width: 1440, height: 2600 },
-  { name: 'lab-simbolo', route: '#/lab/simbolo', query: 'font=nunito', width: 1440, height: 2600 },
-  { name: 'lab-box', route: '#/lab/box', query: 'font=nunito', width: 1440, height: 3200 },
-  { name: 'lab-pack', route: '#/lab/pack', query: 'font=nunito', width: 1440, height: 2600 },
+  { name: 'lab-simbolo', route: '#/lab/simbolo', query: 'font=denim', width: 1440, height: 2600 },
+  { name: 'lab-box', route: '#/lab/box', query: 'font=denim', width: 1440, height: 3200 },
+  { name: 'lab-pack', route: '#/lab/pack', query: 'font=denim', width: 1440, height: 2600 },
 ]
 
 /** I singoli pack, isolati: escono da export:pack, che rende il componente da solo. */

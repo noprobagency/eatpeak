@@ -1,12 +1,14 @@
 /**
  * Archetipo A · Campo colore.
  *
- * Fondo arancia o lime a tutta larghezza, con la grana, testo bianco, e gli
- * oggetti — pack, frutta — che escono dai bordi della sezione. E' l'hero, i
- * gusti, il footer, e al massimo una banda a meta' pagina.
+ * Fondo colore a tutta larghezza, con la grana, e gli oggetti — pack, frutta —
+ * che escono dai bordi della sezione. E' l'hero, i gusti, il footer, e al
+ * massimo una banda a meta' pagina.
  *
- * `tone`: i 500 (arancia, lime) reggono solo logo, titoli e numeri grandi;
- * i deep (arancia 600, lime 700) reggono anche il testo corrente bianco.
+ * `tone`: dalla 3.1 il campo del brand e' `brand`, ambra 400, e ci si scrive
+ * solo in cacao 900 (7,4:1), mai in bianco. I 500 dei gusti (arancia, lime)
+ * reggono solo logo, titoli e numeri grandi in bianco; i deep (ambra 700,
+ * lime 700) reggono anche il testo corrente bianco.
  * `bleed` sono gli elementi che sbordano: stanno fuori dal flusso, con
  * `overflow: visible`, e la sezione dopo li lascia passare.
  */
@@ -18,7 +20,7 @@ import { cn } from '../../lib/cn'
 
 export interface ColorFieldProps {
   children: ReactNode
-  tone?: 'arancia' | 'lime' | 'brand-deep' | 'lime-deep'
+  tone?: 'brand' | 'arancia' | 'lime' | 'brand-deep' | 'lime-deep'
   /** Elementi che escono dai bordi: posizionati in assoluto dentro la sezione. */
   bleed?: ReactNode
   grain?: boolean
@@ -30,9 +32,10 @@ export interface ColorFieldProps {
 }
 
 const TONES = {
+  brand: 'bg-bg-brand text-text-on-brand',
   arancia: 'bg-bg-flavor-arancia text-text-on-flavor',
   lime: 'bg-bg-flavor-lime text-text-on-flavor',
-  'brand-deep': 'bg-bg-brand-deep text-text-inverse',
+  'brand-deep': 'bg-bg-brand-deep text-text-on-brand-deep',
   'lime-deep': 'bg-bg-lime-deep text-text-inverse',
 } as const
 
@@ -44,7 +47,7 @@ const SPACING = {
 } as const
 
 export function ColorField({
-  children, tone = 'arancia', bleed, grain = true, spacing = 'default', width = 'default', id, dataRef, className,
+  children, tone = 'brand', bleed, grain = true, spacing = 'default', width = 'default', id, dataRef, className,
 }: ColorFieldProps) {
   return (
     <section

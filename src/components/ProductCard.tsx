@@ -76,7 +76,7 @@ export function ProductCard({
             disabled={soldOut}
             className={cn(
               'mt-3 h-control-md rounded-full bg-bg-brand px-6 text-body-md font-medium text-text-on-brand',
-              'transition-colors duration-base ease-standard hover:bg-arancia-400',
+              'transition-colors duration-base ease-standard hover:bg-bg-brand-hover',
               'disabled:cursor-not-allowed disabled:opacity-45',
             )}
           >

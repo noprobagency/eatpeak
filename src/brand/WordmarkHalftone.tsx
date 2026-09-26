@@ -45,10 +45,14 @@ export function WordmarkHalftone({ color = '#FFFFFF', className, fontId }: Wordm
             <path d={wordmark.path} />
           </clipPath>
         </defs>
-        <g clipPath="url(#peak-halftone-clip)" transform={`scale(${sx} ${sy})`}>
-          {field.dots.map((d, i) => (
-            <circle key={i} cx={d.cx} cy={d.cy} r={d.r} fill={color} opacity={d.o} />
-          ))}
+        {/* Il ritaglio sta fuori dalla scala: sullo stesso <g> il tracciato
+            verrebbe scalato con i punti e coprirebbe solo l'angolo in alto. */}
+        <g clipPath="url(#peak-halftone-clip)">
+          <g transform={`scale(${sx} ${sy})`}>
+            {field.dots.map((d, i) => (
+              <circle key={i} cx={d.cx} cy={d.cy} r={d.r} fill={color} opacity={d.o} />
+            ))}
+          </g>
         </g>
       </svg>
       <svg viewBox={`0 0 ${width} ${height}`} className="peak-halftone__solid block h-auto w-full" aria-hidden="true" focusable="false">

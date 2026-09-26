@@ -12,7 +12,8 @@
  * obbligatoria e il claim EFSA viene stampato sotto il titolo.
  * ─────────────────────────────────────────────────────────────────────────
  *
- * 3.0: l'occhiello e' nel font display, peso 600, sentence case, arancia 600.
+ * 3.0: l'occhiello e' nel font display, peso 600, sentence case; dalla 3.1 in
+ * ambra 700 (`text-brand`).
  * Niente mono, niente maiuscolo tracciato. Il titolo accetta JSX: la parola in
  * corsivo si scrive con <Em>.
  */
@@ -27,8 +28,8 @@ interface SectionHeaderBase {
   title: ReactNode
   body?: ReactNode
   align?: 'left' | 'center'
-  /** `deep` sui campi brand scuri (arancia 600, lime 700): testo bianco. */
-  tone?: 'default' | 'deep'
+  /** `deep` sui campi scuri (ambra 700, lime 700): bianco. `brand` sull'ambra 400: cacao. */
+  tone?: 'default' | 'deep' | 'brand'
   size?: 'sm' | 'md' | 'lg' | 'xl'
   locale?: Locale
   className?: string
@@ -51,10 +52,12 @@ export function SectionHeader(props: SectionHeaderProps) {
   } = props
 
   const deep = tone === 'deep'
-  const faint = deep ? 'text-neutral-0/80' : 'text-text-muted'
-  const dim = deep ? 'text-neutral-0/90' : 'text-text-secondary'
-  const strong = deep ? 'text-text-inverse' : 'text-text-primary'
-  const eyebrowColor = deep ? 'text-neutral-0/90' : 'text-text-brand'
+  // Su ambra 400 (`brand`) regge solo il cacao 900: niente grigi, niente bianco.
+  const onBrand = tone === 'brand'
+  const faint = onBrand ? 'text-text-on-brand' : deep ? 'text-neutral-0/80' : 'text-text-muted'
+  const dim = onBrand ? 'text-text-on-brand' : deep ? 'text-neutral-0/90' : 'text-text-secondary'
+  const strong = onBrand ? 'text-text-on-brand' : deep ? 'text-text-inverse' : 'text-text-primary'
+  const eyebrowColor = onBrand ? 'text-text-on-brand' : deep ? 'text-neutral-0/90' : 'text-text-brand'
 
   return (
     <header className={cn('flex flex-col gap-4', align === 'center' && 'items-center text-center', className)}>

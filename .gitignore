@@ -17,6 +17,17 @@ public/fonts/*.woff
 public/fonts/*.woff2
 public/fonts/*.otf
 public/fonts/*.ttf
+public/fonts/**/*.woff
+public/fonts/**/*.woff2
+public/fonts/**/*.otf
+public/fonts/**/*.ttf
+
+# I font in licenza TRIAL (3.1): Denim (Displaay) per il testo e Rund Display
+# (Letters from Sweden) per il wordmark della v1. Le licenze trial vietano di
+# tenerli su server accessibili al pubblico, e questo repo e' pubblico: i file
+# e il tracciato che ne deriva restano solo in locale. In produzione il sito
+# usa i ripieghi. Vedi assets/fonts/README.md.
+src/brand/wordmarks/rund.json
 
 # artefatti di build di TypeScript
 *.tsbuildinfo

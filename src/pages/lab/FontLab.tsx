@@ -3,7 +3,7 @@
  *
  * Sette candidati, tutti OFL. Per ciascuno: il fronte busta nei due gusti (il
  * Neutro arriva con la fase pack), il wordmark a 64px come nell'header e a
- * tutta larghezza su arancia come nel footer, l'H1 dell'hero, un H2, il
+ * tutta larghezza sull'ambra come nel footer, l'H1 dell'hero, un H2, il
  * prezzo al giorno e il blocco "3 g". La scorecard in fondo e' da compilare a
  * mano: le note restano nel browser (localStorage), la scelta non la fa il
  * sistema.
@@ -31,7 +31,7 @@ const SCORE_KEY = 'peak-fontlab-scorecard'
 function Candidate({ f, active }: { f: FontCandidate; active: boolean }) {
   const display = { fontFamily: f.stack, fontWeight: f.titleWeight }
   return (
-    <section className={cn('scroll-mt-24 border-t border-border-subtle py-12', active && 'bg-bg-flavor-arancia-tint/40')} id={`font-${f.id}`}>
+    <section className={cn('scroll-mt-24 border-t border-border-subtle py-12', active && 'bg-bg-brand-soft')} id={`font-${f.id}`}>
       <Container>
         <div className="mb-8 flex flex-wrap items-baseline justify-between gap-3">
           <h2 className="type-display-md text-text-primary" style={display}>
@@ -40,7 +40,7 @@ function Candidate({ f, active }: { f: FontCandidate; active: boolean }) {
               wordmark {f.wordmarkWeight} · titoli {f.titleWeight} · {f.note}
             </span>
           </h2>
-          {active && <span className="rounded-full bg-bg-brand-deep px-3 py-1 text-body-sm font-display font-bold text-neutral-0">attivo nel sito</span>}
+          {active && <span className="rounded-full bg-bg-brand px-3 py-1 text-body-sm font-display font-bold text-text-on-brand">attivo nel sito</span>}
         </div>
 
         <div className="grid gap-8 lg:grid-cols-[auto_1fr] lg:items-start">
@@ -53,10 +53,10 @@ function Candidate({ f, active }: { f: FontCandidate; active: boolean }) {
           <div className="flex flex-col gap-6">
             {/* header 64px e footer a tutta larghezza */}
             <div className="flex items-center gap-6 rounded-2xl border border-border-subtle bg-bg-page p-5">
-              <Logo size={64} variant="ink" fontId={f.id} title="" />
-              <span className="text-body-sm text-text-muted">wordmark a 64px, come nell’header</span>
+              <Logo size={64} variant="ambra" fontId={f.id} title="" />
+              <span className="text-body-sm text-text-muted">il tracciato del candidato a 64px (dalla 3.1 il wordmark del sito è quello della v1)</span>
             </div>
-            <div className="overflow-hidden rounded-2xl bg-bg-brand-deep p-6">
+            <div className="overflow-hidden rounded-2xl bg-bg-brand p-6">
               <Logo size={1200} variant="white" fontId={f.id} title="" className="h-auto w-full" />
             </div>
 

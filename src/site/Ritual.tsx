@@ -51,7 +51,7 @@ export function Ritual({ upTo = 12, onColor = true, className }: RitualProps) {
     return () => clearTimeout(t)
   }, [started, filled, upTo])
 
-  const color = onColor ? 'text-neutral-0' : 'text-arancia-500'
+  const color = onColor ? 'text-neutral-0' : 'text-dot-done'
 
   return (
     <div ref={ref} className={cn('flex flex-col gap-8', className)}>

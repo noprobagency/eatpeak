@@ -31,7 +31,7 @@ function Stars({ value }: { value: number }) {
         <svg key={i} className="h-4 w-4" viewBox="0 0 16 16" aria-hidden="true">
           <path
             d="M8 1.6l1.9 3.9 4.3.6-3.1 3 .7 4.3L8 11.4l-3.8 2 .7-4.3-3.1-3 4.3-.6z"
-            fill={i < value ? 'var(--color-arancia-500)' : 'var(--color-neutral-300)'}
+            fill={i < value ? 'var(--dot-done)' : 'var(--color-neutral-300)'}
           />
         </svg>
       ))}

@@ -1,5 +1,5 @@
 /**
- * peak — token tipizzati (3.0).
+ * peak — token tipizzati (3.1).
  *
  * tokens.json e' la sorgente di verita'. Questo file la ri-esporta con i tipi
  * e aggiunge le utility di lettura. tokens.css e' generato dallo stesso JSON.
@@ -11,9 +11,11 @@ import raw from './tokens.json'
 export const tokens = raw
 
 // ---------------------------------------------------------------------------
-// Colori — 3 neutri + 2 colori-gusto + 1 accento
+// Colori — ambra brand + 3 neutri + 2 colori-gusto + 1 accento
 // ---------------------------------------------------------------------------
 
+/** Il colore del brand dalla 3.1: 400 per i fondi, 700 per punti, link e testo brand. */
+export const ambra = raw.color.ambra
 export const arancia = raw.color.arancia
 export const lime = raw.color.lime
 export const miele = raw.color.miele
@@ -24,6 +26,7 @@ export const errore = raw.color.errore
 export const printInk = raw.color.print.ink
 export const stateColor = raw.color.state
 
+export type AmbraStep = keyof typeof ambra
 export type AranciaStep = keyof typeof arancia
 export type LimeStep = keyof typeof lime
 export type MieleStep = keyof typeof miele
@@ -32,6 +35,7 @@ export type NeutralStep = keyof typeof neutral
 export type ErroreStep = keyof typeof errore
 
 export const palette = {
+  ambra,
   arancia,
   lime,
   miele,

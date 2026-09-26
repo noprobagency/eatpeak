@@ -23,7 +23,7 @@ export function LabShell({ title, intro, children }: { title: string; intro: str
                   href={l.href}
                   className={cn(
                     'rounded-full border px-4 py-2 text-body-sm font-display font-bold transition-colors',
-                    window.location.hash.startsWith(l.href) ? 'border-arancia-600 bg-bg-brand-soft text-text-brand' : 'border-border-default text-text-secondary hover:border-arancia-600',
+                    window.location.hash.startsWith(l.href) ? 'border-border-brand bg-bg-brand-soft text-text-brand' : 'border-border-default text-text-secondary hover:border-border-brand',
                   )}
                 >
                   {l.label}
@@ -33,7 +33,7 @@ export function LabShell({ title, intro, children }: { title: string; intro: str
             <h1 className="type-display-lg text-text-primary">{title}</h1>
             <p className="max-w-prose text-body-lg text-text-secondary">{intro}</p>
 
-            <div className="flex flex-wrap items-center gap-3 rounded-2xl bg-bg-flavor-arancia-tint p-4">
+            <div className="flex flex-wrap items-center gap-3 rounded-2xl bg-bg-brand-soft p-4">
               <span className="type-eyebrow text-text-brand">Font in tutto il sito</span>
               {FONT_CANDIDATES.map((f) => (
                 <a
@@ -42,7 +42,7 @@ export function LabShell({ title, intro, children }: { title: string; intro: str
                   onClick={(e) => { e.preventDefault(); setFontLab({ font: f.id }); window.history.replaceState(null, '', fontLabHref({ font: f.id })) }}
                   className={cn(
                     'rounded-full px-3 py-1 text-body-sm font-display font-bold transition-colors',
-                    lab.font === f.id ? 'bg-bg-brand-deep text-neutral-0' : 'bg-bg-surface text-text-secondary hover:text-text-primary',
+                    lab.font === f.id ? 'bg-bg-brand text-text-on-brand' : 'bg-bg-surface text-text-secondary hover:text-text-primary',
                   )}
                   style={{ fontFamily: f.stack }}
                 >

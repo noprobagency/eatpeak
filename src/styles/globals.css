@@ -5,12 +5,14 @@
 @tailwind utilities;
 
 /* ---------------------------------------------------------------------------
- * Font
+ * Font (3.1)
  *
- * Le quattro famiglie arrivano da Google Fonts (link in index.html): Gabarito
- * per display e wordmark, Inter per il testo, DM Mono per i dati, Fraunces
- * Italic per i nomi dei gusti. Nessun file locale, nessuna licenza da comprare.
- * Rund e' uscito dal sistema con la 2.0: vedi assets/fonts/README.md.
+ * Tutto il testo e' in Denim (Displaay, versione basic): titoli, testo e
+ * corsivo. Denim e' in licenza trial: i @font-face li scrive il plugin
+ * peak-trial-fonts (vite.config.ts) solo dove ci sono i file, cioe' in locale.
+ * Altrove gli stack scendono sui ripieghi di Google Fonts (link in
+ * index.html): Nunito, Inter, Fraunces Italic. DM Mono resta per i numeri.
+ * Vedi assets/fonts/README.md.
  * ------------------------------------------------------------------------ */
 
 @layer base {

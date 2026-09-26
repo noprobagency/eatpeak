@@ -10,8 +10,11 @@ Stati: `aperto` · `in corso` · `in attesa di <chi/cosa>` · `fatto (versione)`
 
 | Id | Task | Stato | Note |
 |---|---|---|---|
-| BRAND-01 | Scegliere il font tra i sette candidati | in attesa del proprietario | `#/lab/font`, scorecard. Poi: `DEFAULT_FONT_ID`, `npm run assets:generate`, screenshot, docs 02 e 03 |
-| BRAND-02 | Scegliere la variante del simbolo (V1–V6) | in attesa del proprietario | `#/lab/simbolo`. Poi: `SYMBOL_VARIANT`, `npm run assets:generate`, favicon, docs 03 |
+| BRAND-01 | Scegliere il font | fatto (3.1.0) | Denim, versione basic, per tutto il testo (D24). In trial: vedi LIC-01 |
+| BRAND-02 | Scegliere il simbolo | fatto (3.1.0) | i quattro punti con la salita, V7 (D22) |
+| BRAND-05 | Il wordmark su bianco e carta: ambra 400 `#FFAE34` (com'è, 1,85:1) o ambra 700 `#A04F06` (5,4:1, come il simbolo)? | in attesa del proprietario | un valore in `LOGO_VARIANTS.ambra` (`paths.ts`) e `logo-on-light` in `tokens.json`. Nell'header, quando sotto passa l'hero ambra, la parola ambra quasi sparisce |
+| BRAND-06 | Il lockup sull'ambra: simbolo cacao (brief) + wordmark bianco (regola del logo), oppure tutto bianco? | in attesa del proprietario | `COLORS.brand` in `Lockup.tsx`, `lockups.ambra` in `generate-assets.mjs`, il `VertexBreath` del footer mobile |
+| BRAND-07 | Il ColorField dell'hero e il footer: ambra 400 pieno com'è, o ambra con la frutta del gusto ridotta? | aperto | oggi nell'hero ci sono ancora le arance del gusto Nº01 sopra l'ambra |
 | BRAND-03 | Decidere il fondo del rituale H6 (lime 700 o carta) | in attesa del proprietario | `tone` del `ColorField` in `Home.tsx` |
 | BRAND-04 | Nome autore dei commit (oggi "west-marney") ed eventuale riscrittura degli 8 commit della 3.0 | in attesa del proprietario | Solo su richiesta esplicita: richiede force push |
 
@@ -21,6 +24,7 @@ Stati: `aperto` · `in corso` · `in attesa di <chi/cosa>` · `fatto (versione)`
 |---|---|---|---|
 | HEADER-01 | Rifacimento dell'header | in corso, per conto del proprietario | `SiteHeader.tsx`, `site-header.css`. Claude non tocca |
 | HEADER-02 | Dopo il rifacimento: verificare cosa cambia di riflesso, rigenerare `home.png` e `pdp.png` | aperto | dipende da HEADER-01 |
+| HEADER-03 | Nell'header 3.1 sono cambiati, su richiesta del proprietario, solo il simbolo (salita) e la striscia annunci (ambra 400, testo cacao). Di riflesso via token: il pulsante "Cerca" del pannello (ambra, cacao). Da decidere: le voci del menu mobile hanno `font-weight: 900`, che con Denim diventa Heavy | in attesa del proprietario | `site-header.css`, `.peak-header__panel-link` |
 
 ## Fotografie e prototipi
 
@@ -38,6 +42,7 @@ Stati: `aperto` · `in corso` · `in attesa di <chi/cosa>` · `fatto (versione)`
 | PACK-02 | Valori di composizione: glicina, vitamina D3 in µg e %VNR, kcal, zuccheri, aromi, peso netto | in attesa del laboratorio | chiudono tabella, retro, `[dal laboratorio]` e decidono i claim sulla vitamina D |
 | PACK-03 | Finitura e prova colore (arancia `#E4572E`, lime `#5E9E1F`) | in attesa del laboratorio | — |
 | PACK-04 | Etichetta di legge del retro con laboratorio e notifica al Ministero | in attesa di PACK-02 | `PackBack` resta l'elenco |
+| PACK-05 | Step packaging 3.1: i colori-gusto (Nº01 arancia, Nº02 lime) con l'ambra, e il wordmark del Neutro (oggi arancia 600; per la regola del logo sarebbe ambra) | aperto, lo decide il proprietario | il wordmark del pack è già quello della v1; `BustaPack`, `StickPack`, `DoseSeal` (numero a 900 = Denim Heavy) |
 
 ## Home
 
@@ -81,6 +86,14 @@ Stati: `aperto` · `in corso` · `in attesa di <chi/cosa>` · `fatto (versione)`
 | INFRA-03 | Tag git `v3.0.0` su `f8378bd` | aperto, lo fa il proprietario | `git tag v3.0.0 f8378bd && git push origin v3.0.0` |
 | INFRA-04 | Carrello vero (Shopify) al posto del toast | aperto, dopo il lancio | i componenti sono pronti a diventare sezioni di un tema |
 | INFRA-05 | Dominio definitivo e meta per i social | aperto | `index.html` |
+| INFRA-06 | Merge di `v3-ambra` su `main` (porta anche `task/setup-contesto`) | in attesa del proprietario | comando nella risposta; prima LIC-01 e LIC-02 se la produzione deve mostrare Denim e il wordmark Rund |
+
+## Licenze
+
+| Id | Task | Stato | Note |
+|---|---|---|---|
+| LIC-01 | Licenza **web** di Denim (Displaay), più la desktop se va sul pack. Chiedere se i file possono stare in un repo pubblico | in attesa del proprietario | finché manca, Denim solo in locale; in produzione Nunito + Inter + Fraunces. Procedura in `07-procedure.md` |
+| LIC-02 | Licenza **desktop** di Rund Display Black (Letters from Sweden) per il wordmark in tracciati | in attesa del proprietario | finché manca, in produzione il ripiego Gabarito 900. Procedura in `07-procedure.md` |
 
 ## Documentazione
 

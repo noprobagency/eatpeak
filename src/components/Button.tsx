@@ -8,8 +8,10 @@
  * Il raggio e' sempre `full`: nel sistema di peak i pulsanti sono pillole,
  * senza eccezioni. Non esiste una prop per cambiarlo, di proposito.
  *
- * 3.0: il primario e' arancia 600 con testo bianco (4,91:1). Sui campi colore
- * si usa `inverse`, la pillola bianca con testo arancia 700. Niente nero.
+ * 3.1: il primario e' ambra 400 con testo cacao (7,4:1), hover ambra 500; il
+ * secondario ha bordo e testo ambra 700. Sui campi colore (ambra compreso,
+ * dove il primario sparirebbe) si usa `inverse`, la pillola bianca con testo
+ * ambra 700 (5,8:1). Mai bianco su ambra 400. Niente nero.
  */
 
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
@@ -37,21 +39,21 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
 
 const VARIANTS: Record<ButtonVariant, string> = {
   primary:
-    'bg-bg-brand-deep text-text-on-brand border border-transparent ' +
-    'hover:bg-arancia-700 active:bg-arancia-800',
+    'bg-bg-brand text-text-on-brand border border-transparent ' +
+    'hover:bg-bg-brand-hover active:bg-bg-brand-hover',
   secondary:
-    'bg-transparent text-text-primary border border-border-strong ' +
-    'hover:border-arancia-600 hover:text-text-brand active:bg-bg-brand-soft',
+    'bg-transparent text-text-brand border border-border-brand ' +
+    'hover:bg-bg-brand-soft active:bg-bg-brand-tint',
   ghost:
     'bg-transparent text-text-primary border border-transparent ' +
     'hover:bg-bg-raised active:bg-neutral-200',
   link:
     'bg-transparent text-text-brand border border-transparent underline underline-offset-4 ' +
-    'px-0 hover:text-arancia-700 active:text-arancia-800',
-  /** La pillola bianca: sui campi colore. Testo arancia 700 (6,69:1). */
+    'px-0 hover:text-ambra-800 active:text-ambra-900',
+  /** La pillola bianca: sui campi colore. Testo ambra 700 (5,81:1). */
   inverse:
-    'bg-neutral-0 text-arancia-700 border border-transparent ' +
-    'hover:bg-arancia-50 active:bg-arancia-100',
+    'bg-neutral-0 text-text-brand border border-transparent ' +
+    'hover:bg-bg-brand-soft active:bg-bg-brand-tint',
 }
 
 const SIZES: Record<ButtonSize, string> = {

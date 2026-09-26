@@ -16,7 +16,8 @@
  * ─────────────────────────────────────────────────────────────────────────
  *
  * Il mono sui campi colore-gusto e' testo piccolo: quindi cacao, non bianco.
- * Il bianco sta sulla banda `deep` (arancia 600).
+ * Dalla 3.1 la banda di default e' `brand`, ambra 400 con testo cacao; il
+ * bianco sta sulla banda `deep` (ambra 700).
  */
 
 import { useEffect, useState } from 'react'
@@ -25,7 +26,7 @@ import { MARQUEE_ITEMS } from '../lib/copy'
 
 export interface MarqueeProps {
   items?: readonly string[]
-  tone?: 'arancia' | 'lime' | 'deep' | 'miele'
+  tone?: 'brand' | 'arancia' | 'lime' | 'deep' | 'miele'
   /** Il separatore tra una voce e l'altra. */
   separator?: string
   /** Ferma lo scorrimento quando il puntatore entra nella banda. */
@@ -34,9 +35,10 @@ export interface MarqueeProps {
 }
 
 const TONES = {
+  brand: 'bg-bg-brand text-text-on-brand',
   arancia: 'bg-bg-flavor-arancia text-text-on-flavor-small',
   lime: 'bg-bg-flavor-lime text-text-on-flavor-small',
-  deep: 'bg-bg-brand-deep text-text-inverse',
+  deep: 'bg-bg-brand-deep text-text-on-brand-deep',
   miele: 'bg-miele-300 text-cacao-900',
 } as const
 
@@ -56,7 +58,7 @@ function usePrefersReducedMotion(): boolean {
 
 export function Marquee({
   items = MARQUEE_ITEMS,
-  tone = 'arancia',
+  tone = 'brand',
   separator = '·',
   pauseOnHover = true,
   className,

@@ -59,3 +59,17 @@ nuovo. Niente segreti: token e password non si scrivono qui.
 - Il classificatore dei permessi blocca anche script che *parlano* di merge e
   push su `main`, non solo i comandi: le note su questo tema si scrivono con
   l'editor, non con uno script.
+- **Il repo GitHub è pubblico.** I font in licenza trial (Denim in
+  `~/Downloads/Denim Collection`, Rund in `v1/public/fonts/`) e il tracciato
+  che ne deriva (`src/brand/wordmarks/rund.json`) restano fuori da git: in
+  locale si vedono, su Vercel no. Dopo un clone vanno rimessi a mano
+  (`assets/fonts/README.md`) e il dev server va riavviato.
+<!-- peak-compliance-ignore-start focus — citazione del termine vietato per spiegare la regola, non un uso -->
+- Il linter di compliance vieta anche "focus" nei commenti: per la tastiera si
+  scrive "anello della tastiera" o `:focus-visible` (i selettori passano).
+<!-- peak-compliance-ignore-end -->
+- Se la 5173 è occupata dal dev server di un'altra sessione, si usa una
+  configurazione su un'altra porta e `npm run docs:screens -- --url=...`.
+- Il pannello browser nascosto ferma le animazioni CSS a 0 ms: per vedere una
+  transizione si fa uno screenshot (forza il rendering) o si usa Chrome
+  headless via CDP (con Node 20 serve `node --experimental-websocket`).

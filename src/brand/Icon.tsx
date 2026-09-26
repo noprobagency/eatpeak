@@ -1,11 +1,13 @@
 /**
  * <Icon /> — il simbolo di peak.
  *
- * Tre punti disposti a triangolo, uno sopra e due sotto: il picco senza
- * disegnare una montagna, i tre ingredienti, i tre grammi. Dalla 3.0 la
- * geometria e' una variante (SYMBOL_VARIANTS): la default e' V5, crescendo
- * con la punta miele, dietro il flag SYMBOL_VARIANT. La scelta finale e' del
- * brand: #/lab/simbolo le mostra tutte.
+ * Dalla 3.1 sono quattro punti pieni, un solo colore, diametri 0,64 · 0,76 ·
+ * 0,88 · 1, a montagna (V7, dietro il flag SYMBOL_VARIANT). Libero, sta in
+ * ambra 700 su chiaro, cacao su ambra, bianco sugli altri fondi colore; nel
+ * contenitore (favicon, app icon) e' un quadrato ambra 400 con i punti cacao.
+ * Le varianti a tre punti della 3.0 (V0-V6) restano in #/lab/simbolo.
+ *
+ * La salita animata dell'header e' <SymbolRise />, non questo componente.
  *
  * QUANDO USARLO: favicon, app icon, avatar social, sigillo sullo stick, lockup,
  * e come seme del pattern <DotField />.
@@ -23,6 +25,7 @@ import {
   ICON_VIEWBOX,
   MIELE_HEX,
   MIELE_RING_HEX,
+  SYMBOL_COLORS,
   SYMBOL_VARIANT,
   SYMBOL_VARIANTS,
   VERTEX_SMALL_BELOW_PX,
@@ -38,13 +41,17 @@ export interface IconProps {
   /** Lato reso in px. Governa la clamp del raggio e la misura dei punti. */
   size?: number
   variant?: IconVariant
-  /** Per la variante `free`: il colore dei punti. Un gusto, cacao, o bianco. */
-  color?: FlavorId | 'cacao' | 'white'
+  /**
+   * Per la variante `free`: il colore dei punti. `brand` (ambra 700, su
+   * chiaro, il default), `cacao` (su ambra), `white` (sugli altri fondi
+   * colore), o un gusto (solo nelle comunicazioni del gusto).
+   */
+  color?: FlavorId | 'brand' | 'cacao' | 'white'
   /** La geometria del simbolo. Default: SYMBOL_VARIANT. Solo il laboratorio la forza. */
   symbol?: SymbolVariantId
   /**
    * Il simbolo sta su un fondo chiaro: la punta miele, se c'e', porta un
-   * anello arancia 700 perche' da sola non si vede.
+   * anello arancia 700 perche' da sola non si vede (solo le varianti 3.0).
    */
   onLight?: boolean
   /** Testo alternativo. Se vuoto l'icona diventa decorativa (aria-hidden). */
@@ -53,12 +60,16 @@ export interface IconProps {
   style?: CSSProperties
 }
 
-const FREE_COLORS: Record<'cacao' | 'white', string> = { cacao: '#3A2A22', white: '#FFFFFF' }
+const FREE_COLORS: Record<'brand' | 'cacao' | 'white', string> = {
+  brand: SYMBOL_COLORS.onLight,
+  cacao: SYMBOL_COLORS.onBrand,
+  white: SYMBOL_COLORS.onColor,
+}
 
 export function Icon({
   size = 64,
   variant = DEFAULT_ICON_VARIANT,
-  color = 'arancia',
+  color = 'brand',
   symbol = SYMBOL_VARIANT,
   onLight,
   title = 'peak',
@@ -75,7 +86,7 @@ export function Icon({
 
   const base =
     spec.dots === 'flavor'
-      ? color === 'cacao' || color === 'white'
+      ? color === 'brand' || color === 'cacao' || color === 'white'
         ? FREE_COLORS[color]
         : flavorHex(color)
       : spec.dots
@@ -98,7 +109,7 @@ export function Icon({
     >
       {!decorative && <title>{title}</title>}
 
-      {spec.background && <rect x={2} y={2} width={96} height={96} rx={radius} fill={spec.background} />}
+      {spec.background && <rect x={0} y={0} width={100} height={100} rx={radius} fill={spec.background} />}
 
       {/* Dal basso alla vetta: e' l'ordine del respiro (H1). */}
       {[...dots].sort((a, b) => b.cy - a.cy).map((d, i) => {

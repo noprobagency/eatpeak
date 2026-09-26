@@ -15,7 +15,7 @@
   color: var(--text-primary);
 }
 
-/* Il velo interno: garantisce il cacao a 4,5:1 anche sopra l'arancia. */
+/* Il velo interno: garantisce il cacao a 4,5:1 anche sopra i campi colore. */
 .peak-glass--light {
   background:
     linear-gradient(to bottom right, var(--glass-from), var(--glass-mid) 55%, transparent),

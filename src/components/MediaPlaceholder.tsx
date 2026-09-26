@@ -75,7 +75,7 @@ export function MediaPlaceholder({ shot, compact = false, radius = 'lg', classNa
       </div>
 
       <div className="relative flex flex-1 items-center justify-center py-4">
-        <Icon variant="free" color={onFlavor || onInk ? 'white' : 'cacao'} size={compact ? 40 : 56} title="" />
+        <Icon variant="free" color={onFlavor || onInk ? 'white' : 'brand'} size={compact ? 40 : 56} title="" />
       </div>
 
       <div className="relative flex flex-col gap-1">

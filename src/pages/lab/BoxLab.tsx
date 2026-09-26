@@ -30,16 +30,16 @@ export function Archetypes() {
     <>
       <Label letter="A" title="campo colore" when="hero, gusti, footer, una banda a metà pagina" />
       <ColorField
-        tone="brand-deep"
+        tone="brand"
         bleed={<BustaPack flavor="arancia" width={220} className="absolute -bottom-16 right-[8%] rotate-[-4deg]" />}
       >
         <div className="max-w-[620px]">
-          <p className="type-eyebrow text-neutral-0/90">Creatina + glicina + vitamina D3</p>
+          <p className="type-eyebrow text-text-on-brand">Creatina + glicina + vitamina D3</p>
           <h2 className="mt-3 type-display-xl">la creatina, <Em>evoluta</Em>.</h2>
-          <p className="mt-6 max-w-prose text-body-lg text-neutral-0/90">{CLAIMS.product.it} {CLAIMS.noLoading.it}</p>
+          <p className="mt-6 max-w-prose text-body-lg text-text-on-brand">{CLAIMS.product.it} {CLAIMS.noLoading.it}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button variant="inverse" size="lg" dot>Inizia il tuo rituale</Button>
-            <a href="#/" className="peak-link self-center text-body-md font-display font-bold text-neutral-0">Come funziona</a>
+            <a href="#/" className="peak-link self-center text-body-md font-display font-bold text-text-on-brand">Come funziona</a>
           </div>
           <div className="mt-10 max-w-[360px]">
             <Glass tone="light" liquid>

@@ -27,6 +27,8 @@ export interface NumbersProps {
 
 export function Numbers({ items, tone = 'page', size = 'default', id, dataRef, className }: NumbersProps) {
   const deep = tone === 'brand-deep' || tone === 'lime-deep'
+  // Su ambra 400 solo cacao 900: niente grigi.
+  const onBrand = tone === 'brand'
   return (
     <Section tone={tone} spacing={size === 'compact' ? 'tight' : 'default'} id={id} dataRef={dataRef} className={className}>
       <Container>
@@ -34,13 +36,13 @@ export function Numbers({ items, tone = 'page', size = 'default', id, dataRef, c
           {items.map((item, i) => (
             <li key={i} className="flex items-center gap-6 md:gap-10">
               <div className="flex flex-col items-center gap-2 text-center">
-                <span className={cn('font-mono font-medium', size === 'compact' ? 'text-display-md' : 'type-mono-lg', deep ? 'text-neutral-0' : 'text-text-primary')}>
+                <span className={cn('font-mono font-medium', size === 'compact' ? 'text-display-md' : 'type-mono-lg', onBrand ? 'text-text-on-brand' : deep ? 'text-neutral-0' : 'text-text-primary')}>
                   {item.value}
                 </span>
-                <span className={cn('type-eyebrow', deep ? 'text-neutral-0/85' : 'text-text-secondary')}>{item.label}</span>
+                <span className={cn('type-eyebrow', onBrand ? 'text-text-on-brand' : deep ? 'text-neutral-0/85' : 'text-text-secondary')}>{item.label}</span>
               </div>
               {i < items.length - 1 && (
-                <HandDot seed={`num-${i}`} size={size === 'compact' ? 10 : 14} className={cn('hidden md:block', deep ? 'text-neutral-0/70' : 'text-arancia-500')} />
+                <HandDot seed={`num-${i}`} size={size === 'compact' ? 10 : 14} className={cn('hidden md:block', onBrand ? 'text-text-on-brand' : deep ? 'text-neutral-0/70' : 'text-dot-done')} />
               )}
             </li>
           ))}

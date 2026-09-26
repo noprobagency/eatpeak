@@ -4,7 +4,7 @@
   Lo stesso contenuto alimenta il componente <BrandOverview />.
 -->
 
-# peak — Design System 3.0
+# peak — Design System 3.1
 
 La creatina, evoluta. Creatina + glicina + vitamina D3 in stick monodose, con formula CreaVida™. Due gusti, una busta da 30 stick per 30 giorni, tre grammi al giorno senza fase di carico.
 
@@ -44,7 +44,7 @@ Aperto per scelta, mai segmentato per genere. Chi si allena senza essere un atle
 
 ## PERCHÉ PEAK
 
-Peak → picco. Corto, memorabile, internazionale. Il vertice — tre punti a triangolo — è il picco senza disegnare una montagna, e sono anche i tre ingredienti e i tre grammi.
+Peak → picco. Corto, memorabile, internazionale. Il simbolo sono quattro punti che crescono, disposti a montagna: il picco fatto con i punti che contano i giorni. Al passaggio salgono in diagonale, uno dopo l’altro.
 
 Non è il picco della prestazione, è quello della giornata: il momento in cui stai bene e lo senti. Il nome dice una sensazione, non una promessa.
 

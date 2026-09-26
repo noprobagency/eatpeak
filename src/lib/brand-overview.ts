@@ -55,12 +55,12 @@ export const BRAND_SHEET = [
   },
   {
     label: 'direzione visiva',
-    text: 'Clinical Joy, umanizzato: base bianco e carta con il testo cacao e i numeri in mono; colore-gusto pieno a tutto campo con una grana leggera, logo bianco grande, nome del gusto in corsivo, i punti che contano i giorni.',
+    text: 'Clinical Joy, umanizzato: base bianco e carta con il testo cacao e i numeri in mono; l ambra come colore del brand, a tutto campo con una grana leggera; i colori-gusto sul pack; logo bianco grande, nome del gusto in corsivo, i punti che contano i giorni.',
   },
 ] as const
 
 export const BRAND_OVERVIEW: BrandOverviewContent = {
-  title: 'peak — Design System 3.0',
+  title: 'peak — Design System 3.1',
 
   intro:
     'La creatina, evoluta. Creatina + glicina + vitamina D3 in stick monodose, con formula CreaVida™. Due gusti, una busta da 30 stick per 30 giorni, tre grammi al giorno senza fase di carico.',
@@ -99,7 +99,7 @@ export const BRAND_OVERVIEW: BrandOverviewContent = {
     {
       label: 'PERCHÉ PEAK',
       paragraphs: [
-        'Peak → picco. Corto, memorabile, internazionale. Il vertice — tre punti a triangolo — è il picco senza disegnare una montagna, e sono anche i tre ingredienti e i tre grammi.',
+        'Peak → picco. Corto, memorabile, internazionale. Il simbolo sono quattro punti che crescono, disposti a montagna: il picco fatto con i punti che contano i giorni. Al passaggio salgono in diagonale, uno dopo l’altro.',
         'Non è il picco della prestazione, è quello della giornata: il momento in cui stai bene e lo senti. Il nome dice una sensazione, non una promessa.',
       ],
     },

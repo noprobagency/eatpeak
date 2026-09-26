@@ -1,14 +1,18 @@
 /**
- * peak — il laboratorio dei font (3.0).
+ * peak — il laboratorio dei font (3.0, deciso nella 3.1).
  *
- * Sette candidati per il wordmark e i titoli, tutti Google Fonts con licenza
- * OFL. Lo switch `?font=<id>` cambia display e wordmark in tutto il sito via
- * variabile CSS; `?italic=0` spegne la parola in corsivo; `?body=display`
- * mette il testo nello stesso font rotondo. La scelta e' rimandata: il
- * default e' Nunito finche' non si decide (vedi #/lab/font).
+ * La 3.1 chiude la scelta: tutto il testo del sito e' in Denim (Displaay,
+ * versione basic), titoli e testo corrente. Denim e' in licenza TRIAL: i file
+ * stanno solo in locale (public/fonts/denim/, fuori da git) e in produzione lo
+ * stack scende su Nunito per i titoli e Inter per il testo. Vedi
+ * assets/fonts/README.md.
  *
- * Il wordmark vettorializzato di ogni candidato sta in src/brand/wordmarks/
- * (`npm run brand:vectorize -- --font-id=<id>`); <Logo> legge quello attivo.
+ * Gli altri sette candidati, tutti Google Fonts con licenza OFL, restano
+ * raggiungibili con `?font=<id>`; `?italic=0` spegne la parola in corsivo;
+ * `?body=display` mette il testo nello stesso font dei titoli.
+ *
+ * Il wordmark non segue piu' il font: dalla 3.1 e' quello della v1 (vedi
+ * src/brand/paths.ts). #/lab/font mostra ancora il tracciato di ogni candidato.
  */
 
 import { useSyncExternalStore } from 'react'
@@ -23,9 +27,13 @@ export interface FontCandidate {
   note: string
   /** Lo stack CSS completo. */
   stack: string
+  /** Lo stack del testo corrente, se il candidato lo copre. Default: Inter. */
+  textStack?: string
 }
 
 export const FONT_CANDIDATES: readonly FontCandidate[] = [
+  // Denim non ha l'800: il 700 e' Bold, il 900 e' Heavy (vietato nei titoli).
+  { id: 'denim', family: 'Denim', wordmarkWeight: 700, titleWeight: 700, note: 'La scelta della 3.1, per tutto il testo. Trial: solo in locale.', stack: "'Denim', 'Nunito', system-ui, sans-serif", textStack: "'Denim', 'Inter', system-ui, sans-serif" },
   { id: 'gabarito', family: 'Gabarito', wordmarkWeight: 800, titleWeight: 700, note: 'Controllo: l attuale, senza il 900.', stack: "'Gabarito', system-ui, sans-serif" },
   { id: 'nunito', family: 'Nunito', wordmarkWeight: 900, titleWeight: 800, note: 'Rotondo, adulto.', stack: "'Nunito', system-ui, sans-serif" },
   { id: 'mplus', family: 'M PLUS Rounded 1c', wordmarkWeight: 800, titleWeight: 700, note: 'Rotondo geometrico, vicino a Dosys.', stack: "'M PLUS Rounded 1c', system-ui, sans-serif" },
@@ -35,7 +43,7 @@ export const FONT_CANDIDATES: readonly FontCandidate[] = [
   { id: 'varela', family: 'Varela Round', wordmarkWeight: 400, titleWeight: 400, note: 'Un peso solo. Solo come wordmark, se regge.', stack: "'Varela Round', system-ui, sans-serif" },
 ]
 
-export const DEFAULT_FONT_ID = 'nunito'
+export const DEFAULT_FONT_ID = 'denim'
 
 export interface FontLabState {
   font: string
@@ -45,7 +53,8 @@ export interface FontLabState {
   refs: boolean
 }
 
-const STORAGE_KEY = 'peak-fontlab'
+/** Cambiata nella 3.1: lo stato salvato prima puntava a Nunito. */
+const STORAGE_KEY = 'peak-fontlab-3.1'
 
 function readParams(): Partial<FontLabState> {
   if (typeof window === 'undefined') return {}
@@ -75,7 +84,7 @@ let state: FontLabState = { font: DEFAULT_FONT_ID, italic: true, bodyDisplay: fa
 const listeners = new Set<() => void>()
 
 export function candidate(id: string = state.font): FontCandidate {
-  return FONT_CANDIDATES.find((f) => f.id === id) ?? FONT_CANDIDATES[1]
+  return FONT_CANDIDATES.find((f) => f.id === id) ?? FONT_CANDIDATES[0]
 }
 
 /** Applica lo stato al documento: variabili CSS e attributi data-*. */
@@ -85,10 +94,10 @@ function apply() {
   const f = candidate(state.font)
   root.style.setProperty('--font-display', f.stack)
   root.style.setProperty('--display-weight', String(f.titleWeight))
-  root.style.setProperty('--font-text', state.bodyDisplay ? f.stack : "'Inter', system-ui, sans-serif")
+  root.style.setProperty('--font-text', state.bodyDisplay ? f.stack : (f.textStack ?? "'Inter', system-ui, sans-serif"))
   root.dataset.font = f.id
   root.dataset.italic = state.italic ? '1' : '0'
-  root.dataset.body = state.bodyDisplay ? 'display' : 'inter'
+  root.dataset.body = state.bodyDisplay ? 'display' : f.textStack ? f.id : 'inter'
   root.dataset.refs = state.refs ? '1' : '0'
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state))

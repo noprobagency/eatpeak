@@ -1,5 +1,5 @@
 /**
- * peak — geometrie e varianti del marchio (2.0).
+ * peak — geometrie e varianti del marchio (2.0, rivisto nella 3.1).
  *
  * Qui stanno i dati puri: il tracciato del wordmark, i cerchi del vertice, le
  * combinazioni di colore. I componenti Logo, Icon, Lockup e DotField si
@@ -12,7 +12,6 @@
 
 import wordmark from './wordmark.json'
 import { FLAVORS, type FlavorId } from '../lib/copy'
-import { candidate, useFontLab } from '../lib/fontlab'
 
 // ---------------------------------------------------------------------------
 // Il wordmark
@@ -21,13 +20,15 @@ import { candidate, useFontLab } from '../lib/fontlab'
 export const WORDMARK_TEXT = 'peak'
 
 /**
- * Il tracciato della parola, vettorializzato da Gabarito 900 con
- * scripts/vectorize-wordmark.mjs. Non dipende piu' da nessun font.
+ * Il tracciato di ripiego, vettorializzato da Gabarito 900 con
+ * scripts/vectorize-wordmark.mjs: e' il wordmark della v1 come si vedeva senza
+ * Rund Display installato. Dalla 3.1 il wordmark vero e' quello della v1 (vedi
+ * WORDMARK_ID sotto); questo resta quando il tracciato Rund non c'e'.
  */
 export const WORDMARK_PATH: string = wordmark.path
 export const WORDMARK_VIEWBOX = wordmark.viewBox as { width: number; height: number }
 
-/** Tracking con cui e' stato generato: -0.04em. Non si tocca (uso vietato). */
+/** Tracking del ripiego: -0.04em. Il tracciato della v1 ha il suo (-0.0333em). Non si tocca. */
 export const WORDMARK_TRACKING_EM: number = wordmark.$meta.trackingEm
 
 /**
@@ -42,9 +43,6 @@ export const WORDMARK_MIN_WIDTH_MM = 12
 
 /** Sotto questa altezza la variante `flavor` non si usa: il colore si impasta. */
 export const FLAVOR_VARIANT_MIN_HEIGHT_PX = 48
-
-/** Larghezza minima nell'header del sito. */
-export const HEADER_LOGO_WIDTH = { desktop: 96, mobile: 80 } as const
 
 /** Altezza resa per una larghezza data: il viewBox e' stretto sull'inchiostro. */
 export function wordmarkHeightFor(widthPx: number, viewBox: { width: number; height: number } = WORDMARK_VIEWBOX): number {
@@ -79,19 +77,33 @@ export function wordmarkFor(fontId: string): WordmarkSpec {
 }
 
 /**
- * Il wordmark del font attivo nel laboratorio (`?font=`). Reattivo.
- * Con `override` si forza un candidato: serve alla pagina #/lab/font, che
- * mostra tutti i font insieme.
+ * Il wordmark del marchio, dalla 3.1: quello della v1, "peak" in Rund Display
+ * Black con il tracking della v1 (-2 su 60, cioe' -0.0333em).
+ *
+ * Rund e' in licenza TRIAL: il tracciato (src/brand/wordmarks/rund.json) si
+ * genera in locale con `npm run brand:vectorize -- --font-id=rund` e non entra
+ * in git. Dove non c'e' (Vercel, un clone pulito) wordmarkFor() torna il
+ * ripiego Gabarito 900, cioe' la v1 com'era senza il font. Con la licenza
+ * desktop comprata il tracciato si committa e il ripiego sparisce.
+ */
+export const WORDMARK_ID = 'rund'
+
+/** true se il tracciato della v1 c'e' davvero (solo in locale, finche' Rund e' in trial). */
+export const WORDMARK_V1_AVAILABLE = `./wordmarks/${WORDMARK_ID}.json` in CANDIDATE_WORDMARKS
+
+/**
+ * Il wordmark da disegnare. Dalla 3.1 non segue piu' il font del laboratorio:
+ * e' sempre quello della v1. Con `override` si forza un candidato: serve alla
+ * pagina #/lab/font, che mostra il tracciato di ogni font.
  */
 export function useWordmark(override?: string): WordmarkSpec {
-  const { font } = useFontLab()
-  return wordmarkFor(candidate(override ?? font).id)
+  return wordmarkFor(override ?? WORDMARK_ID)
 }
 
 export const WORDMARK_FONT_IDS = Object.keys(CANDIDATE_WORDMARKS).map((k) => k.replace('./wordmarks/', '').replace('.json', ''))
 
 // ---------------------------------------------------------------------------
-// Varianti colore del wordmark: tre, piene, senza contorno
+// Varianti colore del wordmark (3.1): bianco o ambra, sempre. Piene.
 // ---------------------------------------------------------------------------
 
 export interface LogoVariantSpec {
@@ -101,21 +113,26 @@ export interface LogoVariantSpec {
   note: string
 }
 
+/**
+ * Dalla 3.1 il wordmark e' sempre bianco, oppure ambra quando il fondo e'
+ * bianco o carta. Mai cacao, mai nero. E' un logo, non testo: la soglia del
+ * 4,5:1 non lo riguarda (ambra su bianco fa 1,85:1, bianco su ambra lo stesso).
+ */
 export const LOGO_VARIANTS = {
   white: {
     fill: '#FFFFFF',
     label: 'Bianco',
-    note: 'Primaria. Su ogni campo colore-gusto (arancia, lime) e su inchiostro. E il logo del packaging.',
+    note: 'Primaria. Su ogni fondo colore: ambra 400 e 700, i campi gusto, lime 700. E il logo del packaging.',
   },
-  ink: {
-    fill: '#3A2A22',
-    label: 'Cacao',
-    note: 'Su bianco e carta: header del sito e documenti. E cacao 900, non nero: il nero e uscito dall interfaccia. La stampa a un colore usa print.ink dai token.',
+  ambra: {
+    fill: '#FFAE34',
+    label: 'Ambra',
+    note: 'Su bianco e carta: header del sito e documenti. Ambra 400, il colore brand.',
   },
   flavor: {
     fill: 'flavor',
     label: 'Colore-gusto',
-    note: 'Arancia 500 o lime 500, solo su bianco o carta, solo sopra i 48px di altezza. Uso raro: pubblicita su fondo chiaro.',
+    note: 'Arancia 500 o lime 500: solo il pack Neutro e la pubblicita di un gusto su fondo chiaro, sopra i 48px di altezza.',
   },
 } as const satisfies Record<string, LogoVariantSpec>
 
@@ -129,13 +146,27 @@ export function flavorHex(flavor: FlavorId): string {
 }
 
 // ---------------------------------------------------------------------------
+// I colori del simbolo (3.1)
+// ---------------------------------------------------------------------------
+
+/** Ambra 700 su chiaro, cacao su ambra, bianco sugli altri fondi colore. */
+export const SYMBOL_COLORS = {
+  onLight: '#A04F06',
+  onBrand: '#3A2A22',
+  onColor: '#FFFFFF',
+} as const
+
+/** Il colore brand dei fondi (ambra 400): favicon, campi, pulsante primario. */
+export const AMBRA_HEX = '#FFAE34'
+
+// ---------------------------------------------------------------------------
 // Il vertice
 // ---------------------------------------------------------------------------
 
 export const ICON_VIEWBOX = '0 0 100 100'
 
-/** Raggio del contenitore squadrato, in unita' di viewBox. */
-export const ICON_CORNER_RADIUS = 26
+/** Raggio del contenitore squadrato, in unita' di viewBox: il 24% del lato (3.1). */
+export const ICON_CORNER_RADIUS = 24
 
 /**
  * Tre cerchi pieni e uguali disposti a triangolo: uno sopra, due sotto.
@@ -244,16 +275,78 @@ export const SYMBOL_VARIANTS = {
       { x: 66, y: 66, scale: 1 },
     ],
   },
+  v7: {
+    label: 'Montagna, quattro punti',
+    note: 'La scelta della 3.1. Quattro cerchi pieni, diametri 0,64 · 0,76 · 0,88 · 1: la montagna a riposo, la salita al passaggio. Geometria in SYMBOL_GEOMETRY.',
+    topMiele: false,
+    // I punti veri stanno in SYMBOL_GEOMETRY, ognuno nel suo viewBox:
+    // symbolDots() li riporta sul 100x100.
+    dots: [],
+  },
 } as const
 
 export type SymbolVariantId = keyof typeof SYMBOL_VARIANTS
 
 /**
- * La variante attiva, dietro un flag. V5 e' il default proposto; la scelta
- * finale e' del brand, dopo #/lab/simbolo. Cambiandola qui cambiano favicon,
- * lockup, sigilli e header (npm run assets:generate per gli asset statici).
+ * La variante attiva, dietro un flag. Dalla 3.1 e' V7, i quattro punti: la
+ * scelta del brand. Le V0-V6 restano nel laboratorio come archivio.
+ * Cambiandola qui cambiano favicon, lockup, sigilli e header
+ * (npm run assets:generate per gli asset statici).
  */
-export const SYMBOL_VARIANT: SymbolVariantId = 'v5'
+export const SYMBOL_VARIANT: SymbolVariantId = 'v7'
+
+// ---------------------------------------------------------------------------
+// Il simbolo della 3.1: quattro punti
+// ---------------------------------------------------------------------------
+
+/**
+ * Quattro cerchi pieni, un solo colore, diametri 0,64 · 0,76 · 0,88 · 1 (1 e'
+ * il piu' grande). Tre geometrie, ognuna nel suo viewBox, con [cx, cy, r]:
+ *
+ * - `montagna`: il simbolo a riposo. Spazio tra i punti: 0,1 del diametro
+ *   maggiore.
+ * - `salita`: i punti in diagonale a 36 gradi, dal piu' piccolo al piu'
+ *   grande. E' la posizione dell'animazione dell'header.
+ * - `favicon`: la montagna con lo spazio a 0,2, perche' a 16px i punti non si
+ *   impastino. Nel contenitore occupa il 64% del lato (FAVICON_DOTS_SPAN).
+ *
+ * I punti sono in ordine: dal piu' piccolo al piu' grande. Literal semplici:
+ * gli script li leggono come testo.
+ */
+export const SYMBOL_GEOMETRY = {
+  montagna: { width: 213, height: 171.6, dots: [[32, 139.6, 32], [111.8, 133.6, 38], [59.3, 58, 44], [163, 50, 50]] },
+  salita: { width: 305.3, height: 244.2, dots: [[32, 212.2, 32], [96.7, 165.2, 38], [171.2, 111.1, 44], [255.3, 50, 50]] },
+  favicon: { width: 228.2, height: 180.1, dots: [[32, 148.1, 32], [121.8, 142.1, 38], [64.4, 57.8, 44], [178.2, 50, 50]] },
+} as const
+
+export type SymbolPose = keyof typeof SYMBOL_GEOMETRY
+
+/** Nel contenitore (favicon, app icon) i punti occupano il 64% del lato. */
+export const FAVICON_DOTS_SPAN = 0.64
+
+/** La salita dell'header: durata, ritardi per punto (dal piu' piccolo), easing. */
+export const SALITA_MOTION = {
+  durationMs: 520,
+  delaysMs: [0, 60, 120, 190],
+  easing: 'cubic-bezier(.3,1.45,.5,1)',
+  wordmarkMs: 400,
+  /** Larghezza massima del wordmark che compare, in em. */
+  wordmarkMaxEm: 3.4,
+  /** Spazio tra simbolo e wordmark, in em. */
+  gapEm: 0.3,
+} as const
+
+/**
+ * Una geometria del simbolo riportata su un riquadro 100x100: `span` e' la
+ * frazione del lato che i punti occupano in larghezza, centrati.
+ */
+export function poseDots(pose: SymbolPose, span = 1): { cx: number; cy: number; r: number }[] {
+  const g = SYMBOL_GEOMETRY[pose]
+  const k = (100 * span) / g.width
+  const ox = (100 - g.width * k) / 2
+  const oy = (100 - g.height * k) / 2
+  return g.dots.map(([cx, cy, r]) => ({ cx: ox + cx * k, cy: oy + cy * k, r: r * k }))
+}
 
 export const MIELE_HEX = '#FCD589'
 export const MIELE_RING_HEX = '#A03B1E'
@@ -268,8 +361,14 @@ export interface SymbolDot {
 
 /** I punti di una variante, con il raggio assoluto della geometria chiesta. */
 export function symbolDots(variant: SymbolVariantId = SYMBOL_VARIANT, geometry: VertexGeometry = 'contained'): SymbolDot[] {
+  if (variant === 'v7') {
+    // Libero: la montagna a tutta larghezza. Nel contenitore: la geometria del
+    // favicon al 64% del lato. Il punto piu' grande (l'ultimo) e' la vetta.
+    const dots = geometry === 'free' ? poseDots('montagna') : poseDots('favicon', FAVICON_DOTS_SPAN)
+    return dots.map((d, i) => ({ ...d, top: i === dots.length - 1, ghost: false }))
+  }
   const base = VERTEX[geometry].r
-  const spec = SYMBOL_VARIANTS[variant]
+  const spec: { dots: readonly { x: number; y: number; scale: number; top?: boolean; ghost?: boolean }[] } = SYMBOL_VARIANTS[variant]
   // La geometria libera e' un po' piu' larga: si riscala dal contenitore.
   const spread = geometry === 'free' ? 1.12 : 1
   return spec.dots.map((d) => ({
@@ -283,7 +382,7 @@ export function symbolDots(variant: SymbolVariantId = SYMBOL_VARIANT, geometry: 
 
 /**
  * Il raggio del contenitore non deve mai scendere sotto i 4px assoluti.
- * A 16px il nominale vale 4.16px, quindi la clamp non morde quasi mai.
+ * Al 24% del lato, a 16px il nominale vale 3.84px: la clamp lo porta a 4.
  */
 export function cornerRadiusFor(renderedSizePx: number): number {
   const minUnits = (4 / renderedSizePx) * 100
@@ -304,11 +403,23 @@ export interface IconVariantSpec {
 }
 
 export const ICON_VARIANTS = {
+  ambra: {
+    background: '#FFAE34',
+    dots: '#3A2A22',
+    label: 'Ambra',
+    note: 'Primaria (3.1): favicon, app icon, avatar social. Quadrato ambra 400, punti cacao.',
+  },
+  deep: {
+    background: '#A04F06',
+    dots: '#FFFFFF',
+    label: 'Ambra profondo',
+    note: 'Sulle superfici brand scure (ambra 700): toast, tooltip. Niente nero.',
+  },
   arancia: {
     background: '#E4572E',
     dots: '#FFFFFF',
     label: 'Arancia',
-    note: 'Primaria: favicon, app icon, avatar social.',
+    note: 'Sulle comunicazioni del gusto 01. Colore del pack, non del brand.',
   },
   lime: {
     background: '#5E9E1F',
@@ -316,23 +427,17 @@ export const ICON_VARIANTS = {
     label: 'Lime',
     note: 'Sulle comunicazioni del gusto 02.',
   },
-  deep: {
-    background: '#C24926',
-    dots: '#FFFFFF',
-    label: 'Arancia profondo',
-    note: 'Sulle superfici brand scure: toast, badge, footer. Niente nero.',
-  },
   free: {
     background: null,
     dots: 'flavor',
     label: 'Libero',
-    note: 'Senza contenitore, nel colore-gusto o in inchiostro. Per il lockup e il sigillo sul retro dello stick.',
+    note: 'Senza contenitore: ambra 700 su chiaro, cacao su ambra, bianco sugli altri fondi colore. Per il lockup e il sigillo.',
   },
 } as const satisfies Record<string, IconVariantSpec>
 
 export type IconVariant = keyof typeof ICON_VARIANTS
 
-export const DEFAULT_ICON_VARIANT: IconVariant = 'arancia'
+export const DEFAULT_ICON_VARIANT: IconVariant = 'ambra'
 
 /** Le misure da esportare per ogni variante di icona. */
 export const FAVICON_SIZES = [512, 192, 96, 64, 48, 32, 16] as const
@@ -345,13 +450,14 @@ export const ICO_SIZES = [16, 32, 48] as const
 // ---------------------------------------------------------------------------
 
 /**
- * Lo spazio tra il vertice e la parola e' pari alla meta' dell'altezza del
- * simbolo. E' l'unica regola di lockup che serve davvero.
+ * Il lockup della 3.1: simbolo e wordmark centrati in verticale sulla scritta,
+ * con 0,3em di spazio, misurati sul corpo del wordmark. Il simbolo a riposo e'
+ * alto quanto la parola (SYMBOL_EM_PER_UNIT: il punto piu' grande vale 0,5em).
  */
-export const LOCKUP_GAP_RATIO = 0.5
+export const LOCKUP_GAP_EM = 0.3
 
-/** Il wordmark sta bene a circa 2.4 volte il lato del vertice libero. */
-export const LOCKUP_WORDMARK_TO_ICON = 2.4
+/** Unita' di viewBox del simbolo in em del lockup: 100 unita' = 0,5em. */
+export const SYMBOL_EM_PER_UNIT = 0.005
 
 // ---------------------------------------------------------------------------
 // Il pattern a pallini
@@ -373,12 +479,12 @@ export const DOTFIELD_DEFAULTS = {
 
 export const LOGO_FORBIDDEN_USES = [
   { label: 'contorni', reason: 'Il wordmark 2.0 e pieno. Un filo lo riporta alla 1.0.' },
-  { label: 'doppio colore', reason: 'Un solo colore, sempre. Bianco, inchiostro o colore-gusto.' },
+  { label: 'doppio colore', reason: 'Il wordmark ha un solo colore: bianco, oppure ambra su bianco e carta.' },
   { label: 'gradienti', reason: 'Il brand e piatto. Il pieno e un colore solido.' },
   { label: 'ombre o glow', reason: 'Lo sposta nell estetica supplement-tech da cui vuole stare lontano.' },
   { label: 'rotazioni', reason: 'Tranne i 90 gradi sullo stick, dove il logo corre lungo la lunghezza.' },
   { label: 'tracking modificato', reason: 'E fissato a -0.04em nel tracciato. Non esiste una prop per cambiarlo.' },
   { label: 'su foto senza campo pieno', reason: 'Il bianco pieno tiene su una tinta piatta, non su una texture.' },
-  { label: 'bianco su fondi chiari', reason: 'Non si legge. Su bianco e carta il logo e cacao o arancia 600.' },
-  { label: 'nero', reason: 'L inchiostro nero e uscito dall interfaccia: il logo scuro e cacao 900, la stampa a un colore usa print.ink.' },
+  { label: 'bianco su fondi chiari', reason: 'Non si vede. Su bianco e carta il wordmark e ambra.' },
+  { label: 'cacao o nero', reason: 'Dalla 3.1 il wordmark e solo bianco o ambra. Il cacao resta al simbolo sui fondi ambra.' },
 ] as const

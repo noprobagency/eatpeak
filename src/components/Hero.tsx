@@ -12,7 +12,8 @@
  * ─────────────────────────────────────────────────────────────────────────
  *
  * 3.0: due regimi di colore. `default` su carta e bianco (testo cacao), `deep`
- * sui campi brand scuri (arancia 600, lime 700: testo bianco). L'occhiello e'
+ * sui campi scuri (ambra 700, lime 700: testo bianco), `brand` sull'ambra 400
+ * (3.1: testo cacao). L'occhiello e'
  * nel font display, sentence case, mai in mono.
  */
 
@@ -28,7 +29,8 @@ interface HeroBase {
   actions?: ReactNode
   /** Riga di prove sotto le azioni. In genere <TrustRow /> o un <Badge />. */
   proof?: ReactNode
-  tone?: 'default' | 'deep'
+  /** `deep` sui campi scuri (ambra 700, lime 700): bianco. `brand` sull'ambra 400: cacao. */
+  tone?: 'default' | 'deep' | 'brand'
   locale?: Locale
   className?: string
 }
@@ -46,10 +48,12 @@ export function Hero(props: HeroProps) {
   } = props
 
   const deep = tone === 'deep'
-  const dim = deep ? 'text-neutral-0/90' : 'text-text-secondary'
-  const faint = deep ? 'text-neutral-0/80' : 'text-text-muted'
-  const strong = deep ? 'text-text-inverse' : 'text-text-primary'
-  const eyebrowColor = deep ? 'text-neutral-0/90' : 'text-text-brand'
+  // Su ambra 400 (`brand`) regge solo il cacao 900: niente grigi, niente bianco.
+  const onBrand = tone === 'brand'
+  const dim = onBrand ? 'text-text-on-brand' : deep ? 'text-neutral-0/90' : 'text-text-secondary'
+  const faint = onBrand ? 'text-text-on-brand' : deep ? 'text-neutral-0/80' : 'text-text-muted'
+  const strong = onBrand ? 'text-text-on-brand' : deep ? 'text-text-inverse' : 'text-text-primary'
+  const eyebrowColor = onBrand ? 'text-text-on-brand' : deep ? 'text-neutral-0/90' : 'text-text-brand'
 
   return (
     <div className={cn('grid items-center gap-12 lg:grid-cols-2 lg:gap-16', className)}>

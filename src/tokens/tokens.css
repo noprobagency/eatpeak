@@ -6,6 +6,17 @@
 
 :root {
   /* --- colori grezzi: non usarli nei componenti, usa i semantici --- */
+  --color-ambra-50: #FFF7EA;
+  --color-ambra-100: #FFEDCF;
+  --color-ambra-200: #FFDFA6;
+  --color-ambra-300: #FFC96A;
+  --color-ambra-400: #FFAE34;
+  --color-ambra-500: #EE9412;
+  --color-ambra-600: #C8710A;
+  --color-ambra-700: #A04F06;
+  --color-ambra-800: #7A3C07;
+  --color-ambra-900: #542A08;
+
   --color-arancia-50: #FDF2EE;
   --color-arancia-100: #FAE1D9;
   --color-arancia-200: #F5C3B4;
@@ -74,9 +85,11 @@
   --bg-surface: var(--color-neutral-0);
   --bg-raised: var(--color-neutral-100);
   --bg-warm: var(--color-miele-50);
-  --bg-brand: var(--color-arancia-500);
-  --bg-brand-deep: var(--color-arancia-600);
-  --bg-brand-soft: var(--color-arancia-50);
+  --bg-brand: var(--color-ambra-400);
+  --bg-brand-hover: var(--color-ambra-500);
+  --bg-brand-deep: var(--color-ambra-700);
+  --bg-brand-soft: var(--color-ambra-50);
+  --bg-brand-tint: var(--color-ambra-100);
   --bg-flavor-arancia: var(--color-arancia-500);
   --bg-flavor-arancia-tint: var(--color-arancia-50);
   --bg-flavor-lime: var(--color-lime-500);
@@ -87,29 +100,33 @@
   --text-secondary: var(--color-cacao-600);
   --text-muted: var(--color-cacao-500);
   --text-inverse: var(--color-neutral-0);
-  --text-brand: var(--color-arancia-600);
-  --text-on-brand: var(--color-neutral-0);
+  --text-brand: var(--color-ambra-700);
+  --text-on-brand: var(--color-cacao-900);
+  --text-on-brand-deep: var(--color-neutral-0);
   --text-on-flavor: var(--color-neutral-0);
   --text-on-flavor-small: var(--color-cacao-900);
   --text-danger: var(--color-errore-700);
   --border-subtle: var(--color-neutral-200);
   --border-default: var(--color-neutral-300);
   --border-strong: var(--color-neutral-400);
-  --border-brand: var(--color-arancia-500);
+  --border-brand: var(--color-ambra-700);
   --border-danger: var(--color-errore-500);
-  --logo-on-flavor: var(--color-neutral-0);
-  --logo-on-light: var(--color-cacao-900);
+  --logo-on-light: var(--color-ambra-400);
+  --logo-on-color: var(--color-neutral-0);
+  --symbol-on-light: var(--color-ambra-700);
+  --symbol-on-brand: var(--color-cacao-900);
+  --symbol-on-color: var(--color-neutral-0);
   --dot-todo: var(--color-cacao-500);
-  --dot-done: var(--color-arancia-500);
+  --dot-done: var(--color-ambra-700);
   --dot-today: var(--color-miele-300);
-  --dot-today-ring: var(--color-arancia-700);
-  --focus-ring: var(--color-arancia-700);
+  --dot-today-ring: var(--color-ambra-700);
+  --focus-ring: var(--color-ambra-700);
 
   /* --- famiglie --- */
-  --font-display: 'Nunito', 'Gabarito', system-ui, sans-serif;
-  --font-text: 'Inter', system-ui, sans-serif;
+  --font-display: 'Denim', 'Nunito', system-ui, sans-serif;
+  --font-text: 'Denim', 'Inter', system-ui, sans-serif;
   --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  --font-accent: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-accent: 'Denim', 'Fraunces', Georgia, 'Times New Roman', serif;
 
   /* --- scala tipografica --- */
   --type-display-xl-size: clamp(48px, 7.6vw, 112px);
@@ -206,7 +223,10 @@
   --duration-base: 200ms;
   --duration-slow: 360ms;
   --duration-marquee: 24s;
+  --duration-salita: 520ms;
+  --duration-wordmark: 400ms;
   --easing-standard: cubic-bezier(.2,.8,.2,1);
+  --easing-salita: cubic-bezier(.3,1.45,.5,1);
 
   /* --- layout --- */
   --container-max: 1200px;

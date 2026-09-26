@@ -1,19 +1,18 @@
 /**
- * <Logo /> — il wordmark "peak" (2.0).
+ * <Logo /> — il wordmark "peak" (3.1: quello della v1).
  *
  * QUANDO USARLO: header, footer, packaging, creativita', ovunque serva il nome
  * del brand come segno.
  * QUANDO NO: dentro un titolo di testo corrente. Il wordmark non e' una parola,
  * e' un'immagine — se stai scrivendo una frase, scrivi "peak" in tondo.
  *
- * E' un tracciato, non un testo: si vede uguale ovunque, senza font. Un solo
- * colore, pieno, senza contorno. Tre varianti: bianco (primaria, su ogni campo
- * colore), `ink` che dalla 3.0 e' cacao 900 (su bianco e carta: l'inchiostro
- * nero e' uscito dall'interfaccia), colore-gusto (raro, solo su chiaro e solo
- * sopra i 48px di altezza).
+ * E' un tracciato, non un testo: la "peak" in Rund Display Black della v1
+ * (ripiego Gabarito 900 dove il tracciato trial non c'e', vedi paths.ts). Un
+ * solo colore, pieno, senza contorno. Sempre bianco, oppure ambra quando il
+ * fondo e' bianco o carta. Il colore-gusto resta al pack Neutro.
  *
- * `background` sceglie la variante da solo: flavor/dark -> bianco, light ->
- * inchiostro. Vedi docs/03-logo.md.
+ * `background` sceglie la variante da solo: light -> ambra, tutto il resto ->
+ * bianco. Vedi docs/03-logo.md.
  */
 
 import type { CSSProperties } from 'react'
@@ -40,7 +39,7 @@ export interface LogoProps {
    * componente per scegliere la variante giusta quando `variant` e' omessa,
    * e per avvisare in sviluppo se la combinazione e' illeggibile.
    */
-  background?: 'light' | 'flavor' | 'dark'
+  background?: 'light' | 'brand' | 'flavor' | 'dark'
   /**
    * Come sta nel suo contenitore. Il viewBox e' stretto sull'inchiostro,
    * quindi `left` e' il comportamento naturale; `center` lo centra come blocco.
@@ -56,7 +55,8 @@ export interface LogoProps {
 
 /** Per ogni fondo, la variante che ci si legge sopra. */
 const VARIANT_FOR_BACKGROUND: Record<NonNullable<LogoProps['background']>, LogoVariant> = {
-  light: 'ink',
+  light: 'ambra',
+  brand: 'white',
   flavor: 'white',
   dark: 'white',
 }
@@ -77,8 +77,7 @@ export function Logo({
   const spec = LOGO_VARIANTS[resolvedVariant]
   const fill = spec.fill === 'flavor' ? flavorHex(flavor) : spec.fill
 
-  // Il tracciato segue il font attivo nel laboratorio (`?font=`): e' cosi' che
-  // il wordmark cambia in tutto il sito, header compreso, senza toccarlo.
+  // Il wordmark della v1; `fontId` forza un candidato solo in #/lab/font.
   const wordmark = useWordmark(fontId)
   const height = wordmarkHeightFor(size, wordmark.viewBox)
   const decorative = title.trim() === ''
@@ -89,11 +88,14 @@ export function Logo({
     }
     if (resolvedVariant === 'flavor' && height < FLAVOR_VARIANT_MIN_HEIGHT_PX) {
       console.warn(
-        `[peak/Logo] La variante "flavor" non si usa sotto i ${FLAVOR_VARIANT_MIN_HEIGHT_PX}px di altezza (qui ${Math.round(height)}px). Usa "ink".`,
+        `[peak/Logo] La variante "flavor" non si usa sotto i ${FLAVOR_VARIANT_MIN_HEIGHT_PX}px di altezza (qui ${Math.round(height)}px). Usa "ambra".`,
       )
     }
     if (resolvedVariant === 'white' && background === 'light') {
-      console.warn('[peak/Logo] Logo bianco su fondo chiaro: non si legge. Usa "ink" (cacao).')
+      console.warn('[peak/Logo] Logo bianco su fondo chiaro: non si vede. Usa "ambra".')
+    }
+    if (resolvedVariant === 'ambra' && background && background !== 'light') {
+      console.warn('[peak/Logo] Logo ambra su un fondo colore: si usa il bianco.')
     }
   }
 

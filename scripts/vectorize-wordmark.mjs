@@ -7,6 +7,7 @@
  *   npm run brand:vectorize -- --compare          stampa -0.03 / -0.04 / -0.05 affiancati
  *   npm run brand:vectorize -- --font-id=nunito --download   un candidato del laboratorio font
  *   npm run brand:vectorize -- --all              tutti i candidati, in src/brand/wordmarks/
+ *   npm run brand:vectorize -- --font-id=rund     il wordmark della v1 (Rund Display Black), solo in locale
  *
  * Perche' esiste. Nella 1.0 il logo era testo SVG e dipendeva da un font
  * installato: senza, si vedeva il fallback. Nella 2.0 il wordmark e' un
@@ -34,8 +35,12 @@ const flag = (name, fallback) => {
 
 const WORD = 'peak'
 const FONT_SIZE = 100
-/** Tracking di default, in em. Vedi docs/03-logo.md per la scelta. */
-const TRACKING_EM = Number(flag('tracking', -0.04))
+/**
+ * Tracking di default, in em. Vedi docs/03-logo.md per la scelta. Il wordmark
+ * della v1 aveva il suo: -2 su un corpo 60, cioe' -0.0333em.
+ */
+const DEFAULT_TRACKING = flag('font-id', null) === 'rund' ? -0.0333 : -0.04
+const TRACKING_EM = Number(flag('tracking', DEFAULT_TRACKING))
 
 /**
  * I candidati del laboratorio font (3.0): stessa tabella di src/lib/fontlab.ts.
@@ -51,6 +56,14 @@ const CANDIDATES = {
   baloo: { family: 'Baloo 2', weight: 800 },
   rubik: { family: 'Rubik', weight: 800 },
   varela: { family: 'Varela Round', weight: 400 },
+  /**
+   * Il wordmark della v1 (3.1): Rund Display Black, di Letters from Sweden.
+   * E' in licenza TRIAL: niente download, il file sta solo in locale
+   * (assets/fonts/rund-900.otf) e anche il tracciato che ne esce resta fuori
+   * da git (src/brand/wordmarks/rund.json, in .gitignore). Senza, il sito usa
+   * il wordmark di ripiego. Vedi assets/fonts/README.md.
+   */
+  rund: { family: 'Rund Display', weight: 900, trial: true, file: 'assets/fonts/rund-900.otf' },
 }
 const fontId = flag('font-id', null)
 if (fontId && !CANDIDATES[fontId]) {
@@ -59,13 +72,13 @@ if (fontId && !CANDIDATES[fontId]) {
 }
 if (args.includes('--all')) {
   const { execFileSync } = await import('node:child_process')
-  for (const id of Object.keys(CANDIDATES)) {
+  for (const id of Object.keys(CANDIDATES).filter((k) => !CANDIDATES[k].trial)) {
     execFileSync(process.execPath, [fileURLToPath(import.meta.url), `--font-id=${id}`, '--download', `--tracking=${TRACKING_EM}`], { stdio: 'inherit' })
   }
   process.exit(0)
 }
 const chosen = fontId ? CANDIDATES[fontId] : { family: 'Gabarito', weight: 900 }
-const defaultFontFile = fontId ? `assets/fonts/${fontId}-${chosen.weight}.ttf` : 'assets/fonts/Gabarito-900.ttf'
+const defaultFontFile = chosen.file ?? (fontId ? `assets/fonts/${fontId}-${chosen.weight}.ttf` : 'assets/fonts/Gabarito-900.ttf')
 const FONT_PATH = resolve(root, flag('font', defaultFontFile))
 
 // Google Fonts serve un TTF statico (istanza del peso chiesto) a un browser che
@@ -75,6 +88,14 @@ const LEGACY_UA = 'Mozilla/5.0 (Windows NT 5.1)'
 
 async function ensureFont() {
   if (existsSync(FONT_PATH)) return
+  if (chosen.trial) {
+    console.error(
+      `Manca ${FONT_PATH}.\n` +
+        `${chosen.family} e' in licenza trial: non si scarica. Mettilo a mano in locale\n` +
+        '(vedi assets/fonts/README.md). Il file e il tracciato non vanno committati.',
+    )
+    process.exit(1)
+  }
   if (!args.includes('--download')) {
     console.error(
       `Manca ${FONT_PATH}.\n` +
