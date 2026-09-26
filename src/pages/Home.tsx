@@ -17,7 +17,7 @@
 import { useState } from 'react'
 import {
   Badge, BustaPack, Button, Card, Container, FaqAccordion, FlavorCard, Grid, Hero,
-  LabTag, Marquee, MediaPlaceholder, PriceTiers, ReviewCard, Section, SectionHeader,
+  LabTag, MediaPlaceholder, PriceTiers, ReviewCard, Section, SectionHeader,
   TrustRow, WeekTimeline,
 } from '../components'
 import { DotField, Icon } from '../brand'
@@ -80,9 +80,6 @@ export function Home() {
           />
         </Container>
       </Section>
-
-      {/* --- la banda delle prove --------------------------------------- */}
-      <Marquee tone="arancia" />
 
       {/* --- il protocollo: senza fase di carico, senza barattoli --------- */}
       <Section tone="page" id="protocollo">

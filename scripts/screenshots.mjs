@@ -35,11 +35,13 @@ if (!existsSync(CHROME)) {
 /** Nome del file, rotta, dimensioni della finestra, id da cui scorrere (opzionale). */
 const SHOTS = [
   { name: 'showcase-v2-top', route: '#/design-system', width: 1440, height: 900 },
-  { name: 'showcase-v2-logo-simbolo', route: '#/design-system#logo', width: 1440, height: 1800 },
+  // Senza ancora: Chrome headless rende vuota una pagina scorsa sotto la barra di
+  // vetro (backdrop-filter), quindi si allunga la finestra invece di scorrere.
+  { name: 'showcase-v2-logo-simbolo', route: '#/design-system', width: 1440, height: 3000 },
   { name: 'home', route: '#/', width: 1440, height: 900 },
   { name: 'home-mobile', route: '#/', width: 390, height: 844 },
   { name: 'pdp', route: '#/prodotto', width: 1440, height: 1100 },
-  { name: 'prototipi-v2', route: '#/prototipi#v2', width: 1440, height: 1200 },
+  { name: 'prototipi-v2', route: '#/prototipi', width: 1440, height: 1500 },
 ]
 
 /** I singoli pack, isolati: escono da export:pack, che rende il componente da solo. */

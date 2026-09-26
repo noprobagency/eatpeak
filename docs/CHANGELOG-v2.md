@@ -21,6 +21,7 @@ arancia 3,68:1 e su lime 3,29:1, ammessi solo per logo e testo grande; il testo
 piccolo sui pieni arancia è inchiostro (4,72:1). Tipografia: Gabarito, Inter, DM
 Mono, Fraunces Italic (`type.flavor*`, solo i nomi dei gusti). Rund esce.
 
+<!-- peak-compliance-ignore-start * — il paragrafo elenca i termini vietati aggiunti al linter: citazione, non uso -->
 **2 — Compliance.** Quattro claim autorizzati sulla vitamina D con la condizione
 del 15% dei VNR `[dal laboratorio]`. Allowlist delle frasi letterali nel linter,
 con auto-test (caso positivo: il claim `vitd-immune` passa; negativo: "immune" da
@@ -29,6 +30,7 @@ solo fallisce). Nuovi termini vietati: longevità (`telomer*`, metilazione,
 no bloating, water retention), glicina (collagene, glutatione), esperti
 (raccomandato/consigliato dalla dott, doctor recommended), mojito. Doc 06 con il
 ruolo della dottoressa.
+<!-- peak-compliance-ignore-end -->
 
 **3 — Wordmark.** "peak" vettorializzato da Gabarito 900 con
 `scripts/vectorize-wordmark.mjs` (opentype.js, unica devDependency nuova),
