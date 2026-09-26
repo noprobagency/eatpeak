@@ -1,10 +1,10 @@
 /**
- * peak — la scheda del brand.
+ * peak — la scheda del brand (2.0).
  *
  * Sorgente unica del documento di posizionamento. Da qui nascono due cose:
- * il componente <BrandOverview /> e docs/00-brand-overview.md, generato con
- * `npm run docs:brand`. Se cambi il testo, cambialo qui e rigenera: il
- * documento non si modifica a mano.
+ * il componente <BrandSheet /> (la versione corta, in una card) e
+ * docs/00-brand-overview.md (la versione estesa), generato con
+ * `npm run docs:brand`. Se cambi il testo, cambialo qui e rigenera.
  *
  * ─── NOTA DI COMPLIANCE ──────────────────────────────────────────────────
  * Questo e' un documento di POSIZIONAMENTO INTERNO, non copy destinato al
@@ -35,18 +35,42 @@ export interface BrandOverviewContent {
   blocks: readonly BrandOverviewBlock[]
 }
 
+/** La scheda corta: una riga per voce. E' quella della card nello Showcase. */
+export const BRAND_SHEET = [
+  {
+    label: 'posizionamento',
+    text: 'Il prodotto funziona perché lo prendi tutti i giorni. Il brand esiste per rendere quel gesto facile e piacevole.',
+  },
+  {
+    label: 'target',
+    text: 'Per chi si allena. Per chi non vuole perdere terreno. Per chi ha trenta secondi la mattina.',
+  },
+  {
+    label: 'tono',
+    text: 'Caldo, goloso, preciso.',
+  },
+  {
+    label: 'cosa non siamo',
+    text: 'Non siamo da palestra, non siamo una farmacia, non promettiamo quello che non possiamo dichiarare.',
+  },
+  {
+    label: 'direzione visiva',
+    text: 'Clinical Joy: base bianco, carta e inchiostro con i dati in mono; colore-gusto pieno a tutto campo, logo bianco grande, nome del gusto in corsivo.',
+  },
+] as const
+
 export const BRAND_OVERVIEW: BrandOverviewContent = {
-  title: 'PEAK creatine drink — Design System 1.0',
+  title: 'peak — Design System 2.0',
 
   intro:
-    'Creatina in stickpack monodose. Un prodotto solo multigusto, fatto bene, da prendere tutti i giorni.',
+    'La creatina, evoluta. Creatina + glicina + vitamina D3 in stick monodose, con formula CreaVida™. Due gusti, una busta da 30 stick per 30 giorni, tre grammi al giorno senza fase di carico.',
 
   claim: {
     label: 'CLAIM',
     lines: [
+      'La creatina, evoluta.',
+      'Uno stick. Tre grammi. Tutti i giorni.',
       'Il piacere di sentirsi al picco.',
-      'The pleasure of feeling your peak.',
-      'Peak feels good.',
     ],
   },
 
@@ -75,30 +99,36 @@ export const BRAND_OVERVIEW: BrandOverviewContent = {
     {
       label: 'PERCHÉ PEAK',
       paragraphs: [
-        'Peak → picco. Corto, memorabile, internazionale.',
-        'Il claim è il piacere di sentirsi al picco. Peak feels good.',
+        'Peak → picco. Corto, memorabile, internazionale. Il vertice — tre punti a triangolo — è il picco senza disegnare una montagna, e sono anche i tre ingredienti e i tre grammi.',
         'Non è il picco della prestazione, è quello della giornata: il momento in cui stai bene e lo senti. Il nome dice una sensazione, non una promessa.',
       ],
     },
     {
       label: 'PRODOTTO',
       paragraphs: [
-        'Tre grammi di creatina in uno stick. Da aprire, non da misurare.',
-        'Niente misurini, niente grumi, niente barattolo. Made in Italy.',
+        'Tre grammi di creatina monoidrato in uno stick, con glicina e vitamina D3 vegana: è la formula CreaVida™, che sul pack è un sigillo di qualità e mai una promessa di risultato.',
+        'Una busta, trenta stick, trenta giorni. Senza fase di carico. Due gusti al lancio: Nº01 Arancia Rossa e Nº02 Lime & Menta. Made in Italy.',
       ],
     },
     {
       label: 'TONO',
       paragraphs: [
         'Caldo, goloso, un po’ giocoso. Frasi corte, numeri invece di aggettivi.',
-        'Mai farmaceutico, mai da palestra, mai enfatico.',
+        'Nei dati e nella tabella degli ingredienti il registro cambia: preciso e asciutto. Mai farmaceutico, mai da palestra, mai enfatico.',
+      ],
+    },
+    {
+      label: 'LA DOTTORESSA',
+      paragraphs: [
+        'La co-fondatrice è farmacista. Nel sistema è co-fondatrice ed esperta del brand: spiega ed educa — cos’è la creatina, perché la costanza conta più della dose, come si legge un’etichetta.',
+        'Sul pack e nei claim non raccomanda il prodotto. Il Regolamento 1924/2006 vieta i riferimenti alla raccomandazione di singoli professionisti sanitari, e il linter lo verifica.',
       ],
     },
     {
       label: 'COSA NON SIAMO',
       // peak-compliance-ignore * — elenco dei termini che il brand non usa, non un uso
       paragraphs: [
-        'Non parliamo di bodybuilding, potenza, limiti da superare o potenziale da sbloccare.',
+        'Non parliamo di bodybuilding, potenza, limiti da superare o potenziale da sbloccare. Non usiamo Mojito: evoca un cocktail.',
         'Non usiamo un linguaggio maschile né uno femminile: usiamo quello di tutti.',
         'E non promettiamo benefici che non possiamo dichiarare.',
       ],
