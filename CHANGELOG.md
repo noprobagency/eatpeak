@@ -8,6 +8,13 @@ componente nuovo, major per un cambio di sistema. I racconti per fase della
 qui c'è il registro. Ogni commit aggiunge la sua riga qui, nello stesso
 commit.
 
+## [3.2.1] · 2026-09-26 · chiusura dello stato
+
+Branch `task/ds-footer-panel`.
+
+- **docs** · verificato il merge della 3.2.0: `main` è a `588a9fa` e il deploy
+  di produzione è READY. Stato, storico e backlog chiusi (INFRA-07).
+
 ## [3.2.0] · 2026-09-26 · il footer a pannello
 
 Branch `task/ds-footer-panel`.

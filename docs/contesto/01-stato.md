@@ -8,15 +8,15 @@ resta vero. Si aggiorna a ogni commit.
 
 | | |
 |---|---|
-| Versione | **3.2.0** in `package.json` (3.1.0 è quella su `main`) |
-| `main` | `811242c` "brand: ambra, quattro punti con la salita, wordmark v1, Denim": la 3.1 è già in produzione su https://drinkpeak.vercel.app. Il merge di `v3-ambra` l'ha lanciato il proprietario (INFRA-06, chiusa) |
-| Branch aperti | `task/ds-footer-panel`: il footer a pannello (3.2.0), un commit sopra `main` |
-| Branch mergiati | `ds-v2`, `v3-home-pdp`, `task/setup-contesto`, `v3-ambra`: si possono cancellare, in locale e su origin (INFRA-02) |
+| Versione | **3.2.1** in `package.json` (3.2.0 è quella su `main` e in produzione) |
+| `main` | `588a9fa` "ds: il footer diventa un pannello, sulla forma di awenlab", in produzione su https://drinkpeak.vercel.app (deploy Vercel READY). Il merge l'ha lanciato il proprietario (INFRA-07, chiusa) |
+| Branch aperti | `task/ds-footer-panel`: mergiato, resta solo per la chiusura dello stato (3.2.1) |
+| Branch mergiati | `ds-v2`, `v3-home-pdp`, `task/setup-contesto`, `v3-ambra`, `task/ds-footer-panel`: si possono cancellare, in locale e su origin (INFRA-02) |
 | Header | del proprietario. Non toccato in questa sessione |
 | Test | `npm test` verde sul branch |
 | Identità git | `user.email` locale = hello@noprob.agency; i commit precedenti al 26/09 sono di west-marney |
 
-## Cosa c'è, oggi (3.2, sul branch)
+## Cosa c'è, oggi (3.2, su `main` e in produzione)
 
 - **Colore**: il brand è l'**ambra** `#FFAE34` (fondi, sopra solo cacao 900)
   con il profondo **ambra 700** `#A04F06` (punti, simbolo, link, testo brand).
@@ -58,8 +58,8 @@ Il dettaglio è in `03-decisioni.md` (D21–D29), la procedura in
 
 ## In corso e prossimo
 
-- Merge di `task/ds-footer-panel` su `main` (INFRA-07): lo lancia il
-  proprietario. Senza le licenze la produzione mostra i ripieghi.
+- Niente in corso. Senza le licenze la produzione mostra i ripieghi
+  (Nunito/Inter/Fraunces, wordmark Gabarito 900), non Denim e Rund.
 - L'header, per conto del proprietario.
 - Le 13 fotografie con Higgsfield: shot list in `#/prototipi`, brief in
   `src/lib/media.ts`.
