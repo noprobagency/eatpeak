@@ -8,6 +8,28 @@ componente nuovo, major per un cambio di sistema. I racconti per fase della
 qui c'è il registro. Ogni commit aggiunge la sua riga qui, nello stesso
 commit.
 
+## [3.2.0] · 2026-09-26 · il footer a pannello
+
+Branch `task/ds-footer-panel`.
+
+- **ds** · il **footer** (H15) rifatto sulla forma di awenlab.com: non più una
+  fascia a tutta larghezza ma un **pannello staccato** in ambra 400, raggio
+  40px (`rounded-2xl`) con 16px di carta attorno, che chiude la pagina come
+  una scheda. Dentro, due colonne: a sinistra il lockup, il sign-off in
+  display, i claim autorizzati nello stesso blocco (articolo 10(3)) e i due
+  cerchi social da 44px; a destra tre liste (Il sito, Aiuto, Lo studio) con il
+  titolo in etichetta maiuscola e il filo sotto, e la riga larga dei contatti
+  con i segni. Sotto, l'avviso "integratore alimentare", la riga delle sette
+  informative e la riga legale con la firma dello studio (testo, non il logo
+  di terzi). Tutto il testo è **cacao 900 pieno** (7,4:1): l'opacità del
+  riferimento non regge sull'ambra (cacao 900 al 75% scende a 4,27:1), quindi
+  la gerarchia si fa con corpo, peso e crenatura. Contatti e dati d'impresa
+  sono segnaposto in parentesi quadre, le pagine di servizio riportano in
+  home: il sito è dimostrativo e non si inventano numeri.
+  Esce dal footer il **wordmark a tutta larghezza con il retino** (H3,
+  `<WordmarkHalftone />`), che resta senza posto: decisione aperta D27.
+  Docs 09 e 10 aggiornati, screenshot rigenerati.
+
 ## [3.1.0] · 2026-09-26 · ambra, quattro punti, salita, wordmark v1, Denim
 
 Branch `v3-ambra`, aperto da `task/setup-contesto`, in attesa di merge.

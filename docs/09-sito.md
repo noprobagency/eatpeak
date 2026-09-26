@@ -43,11 +43,19 @@ lavoro (barra annunci arancia + barra di vetro, il simbolo che ruota e rivela
 il wordmark). Riceve di riflesso i token della 3.0: il wordmark nel font
 attivo, il simbolo V5 con la punta miele, il testo cacao.
 
-**Footer** su arancia 600 (`SiteFooter.tsx`): il wordmark a tutta larghezza
-con il retino che segue il cursore (solo desktop), i link con la
-sottolineatura a pallini, il sign-off con i claim autorizzati nello stesso
-blocco (articolo 10(3)), l'avviso "integratore alimentare", la riga "sito
-dimostrativo".
+**Footer** (`SiteFooter.tsx`), forma awenlab dalla 3.2: non una fascia a tutta
+larghezza ma un **pannello staccato** in ambra 400, raggio 40px (`rounded-2xl`)
+e un margine di carta di 16px attorno, che chiude la pagina come una scheda.
+Dentro, due colonne: a sinistra il lockup, il sign-off in display, i claim
+autorizzati nello stesso blocco (articolo 10(3)) e i due cerchi social; a
+destra tre liste (Il sito, Aiuto, Lo studio) con il titolo in etichetta
+maiuscola e il filo sotto, e la riga larga dei contatti con i segni. Sotto,
+l'avviso "integratore alimentare", la riga delle informative e la riga legale
+con la firma dello studio. Tutto il testo è cacao 900 (7,4:1): sull'ambra i
+grigi e il bianco non reggono, e per questo la gerarchia si fa con corpo,
+peso e crenatura, non con l'opacità. Il wordmark a tutta larghezza con il
+retino (H3, `<WordmarkHalftone />`) esce dal footer e resta senza posto: è una
+decisione aperta.
 
 ---
 
@@ -69,7 +77,7 @@ dimostrativo".
 | H12 | Offerta | C + tier | `<StockCounter>`, `<PriceTiers>` con i giorni a punti, CTA, note |
 | H13 | Garanzia | E | tre passi a mano, tre condizioni |
 | H14 | FAQ | E | `<Accordion>` con il punto che si riempie |
-| H15 | Footer | A | vedi sopra |
+| H15 | Footer | A | pannello awenlab, vedi sopra |
 
 Il fondo del rituale (H6) è lime 700 per proposta: l'alternativa è carta con i
 punti arancia. È una delle tre decisioni aperte.

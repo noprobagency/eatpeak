@@ -1,25 +1,25 @@
 # 01 — Stato del progetto
 
-Aggiornato il **2026-09-26**, sessione "ambra, quattro punti, salita", branch
-`v3-ambra`. Questo file è importato da `CLAUDE.md`: resta corto e resta vero.
-Si aggiorna a ogni commit.
+Aggiornato il **2026-09-26**, sessione "footer a pannello", branch
+`task/ds-footer-panel`. Questo file è importato da `CLAUDE.md`: resta corto e
+resta vero. Si aggiorna a ogni commit.
 
 ## Dove siamo
 
 | | |
 |---|---|
-| Versione | **3.1.0** in `package.json` (3.0.0 è quella in produzione) |
-| `main` | `f8378bd` "v3: pulizia e documentazione", in produzione su https://drinkpeak.vercel.app (deploy Vercel READY) |
-| Branch aperti | `v3-ambra`: la 3.1, aperto da `task/setup-contesto` (3.0.1). Un solo merge porta tutti e due |
-| Branch mergiati | `ds-v2`, `v3-home-pdp`: si possono cancellare, in locale e su origin |
-| Header | del proprietario. Nella 3.1, su sua richiesta, cambiano solo il simbolo (la salita) e la striscia annunci (ambra, testo cacao) |
+| Versione | **3.2.0** in `package.json` (3.1.0 è quella su `main`) |
+| `main` | `811242c` "brand: ambra, quattro punti con la salita, wordmark v1, Denim": la 3.1 è già in produzione su https://drinkpeak.vercel.app. Il merge di `v3-ambra` l'ha lanciato il proprietario (INFRA-06, chiusa) |
+| Branch aperti | `task/ds-footer-panel`: il footer a pannello (3.2.0), un commit sopra `main` |
+| Branch mergiati | `ds-v2`, `v3-home-pdp`, `task/setup-contesto`, `v3-ambra`: si possono cancellare, in locale e su origin (INFRA-02) |
+| Header | del proprietario. Non toccato in questa sessione |
 | Test | `npm test` verde sul branch |
-| Identità git | `user.email` locale = hello@noprob.agency (dal 26/09); i commit precedenti sono di west-marney |
+| Identità git | `user.email` locale = hello@noprob.agency; i commit precedenti al 26/09 sono di west-marney |
 
-## Cosa c'è, oggi (3.1, sul branch)
+## Cosa c'è, oggi (3.2, sul branch)
 
-- **Colore**: il brand è l'**ambra** `#FFAE34` (fondi, sopra solo cacao) con il
-  profondo **ambra 700** `#A04F06` (punti, simbolo, link, testo brand).
+- **Colore**: il brand è l'**ambra** `#FFAE34` (fondi, sopra solo cacao 900)
+  con il profondo **ambra 700** `#A04F06` (punti, simbolo, link, testo brand).
   Arancia e lime restano i colori-gusto del pack.
 - **Simbolo**: quattro punti a montagna (V7); nell'header la **salita** a 36°
   e poi il wordmark. Favicon ambra con i punti cacao, manifest `#FFAE34`.
@@ -28,11 +28,18 @@ Si aggiorna a ogni commit.
 - **Trial**: Denim e Rund sono in licenza trial. Stanno **solo in locale**
   (file e tracciato fuori da git). Su Vercel, preview e produzione, il sito
   mostra i ripieghi: Nunito/Inter/Fraunces e il wordmark in Gabarito 900.
-- Home H1–H15 e PDP P1–P14 sui reference, con l'hero e il footer in ambra; le
-  fotografie sono `MediaPlaceholder` con il brief. Laboratori font, simbolo
-  (archivio V0–V6), sezioni, pack.
+- **Footer (nuovo, 3.2)**: forma awenlab.com — un **pannello staccato** in
+  ambra 400, raggio 40px con 16px di carta attorno; a sinistra lockup,
+  sign-off, claim autorizzati e due cerchi social; a destra tre liste e la
+  riga dei contatti; sotto avvertenze, informative e riga legale con la firma
+  dello studio. Tutto il testo in cacao 900 pieno (D28). Il wordmark enorme
+  con il retino (H3) è uscito dal footer e non ha ancora un posto (D29).
+- Home H1–H15 e PDP P1–P14 sui reference, con l'hero in ambra; le fotografie
+  sono `MediaPlaceholder` con il brief. Laboratori font, simbolo (archivio
+  V0–V6), sezioni, pack.
 - **Dati**: prezzi da `PRICE_TIERS`; valori di composizione
-  `[dal laboratorio]`; recensioni, rating e stock sono esempi con il tag.
+  `[dal laboratorio]`; recensioni, rating e stock sono esempi con il tag;
+  contatti e dati d'impresa del footer sono segnaposto in parentesi quadre.
 
 ## Decisioni aperte, del proprietario
 
@@ -40,16 +47,19 @@ Si aggiorna a ogni commit.
 2. **Il lockup sull'ambra**: simbolo cacao e parola bianca, o tutto bianco
    (BRAND-06).
 3. **Il fondo del rituale (H6)**: lime 700 com'è, oppure carta con i punti.
-4. **Le licenze**: Denim web (LIC-01), Rund Display Black desktop (LIC-02).
-5. **Lo step packaging**: colori-gusto e wordmark del Neutro (PACK-05).
+4. **Dove va il wordmark con il retino**, uscito dal footer (D29, DS-04).
+5. **I contatti veri del footer**: numero, indirizzi, profili social, pagine
+   di servizio (DS-05).
+6. **Le licenze**: Denim web (LIC-01), Rund Display Black desktop (LIC-02).
+7. **Lo step packaging**: colori-gusto e wordmark del Neutro (PACK-05).
 
-Il dettaglio è in `03-decisioni.md` (D21–D26), la procedura in
+Il dettaglio è in `03-decisioni.md` (D21–D29), la procedura in
 `07-procedure.md`.
 
 ## In corso e prossimo
 
-- Merge di `v3-ambra` su `main` (INFRA-06): lo lancia il proprietario. Senza
-  le licenze la produzione mostra i ripieghi, non Denim e Rund.
+- Merge di `task/ds-footer-panel` su `main` (INFRA-07): lo lancia il
+  proprietario. Senza le licenze la produzione mostra i ripieghi.
 - L'header, per conto del proprietario.
 - Le 13 fotografie con Higgsfield: shot list in `#/prototipi`, brief in
   `src/lib/media.ts`.
@@ -60,5 +70,5 @@ Il dettaglio è in `03-decisioni.md` (D21–D26), la procedura in
 - Non mergiare su `main` da Claude: i permessi lo bloccano, lo fa il
   proprietario con il comando scritto nella risposta.
 - Non committare i font trial né il tracciato `rund.json`: il repo è pubblico.
-- Non toccare l'header oltre il simbolo e la striscia annunci.
-- Non inventare valori del laboratorio, recensioni o numeri.
+- Non toccare l'header.
+- Non inventare valori del laboratorio, recensioni, numeri o contatti.

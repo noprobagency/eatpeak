@@ -69,6 +69,9 @@ Stati: `aperto` · `in corso` · `in attesa di <chi/cosa>` · `fatto (versione)`
 | DS-00 | Allineamento alla 3.0 | fatto (3.0.0) | — |
 | DS-01 | Aggiungere `Ritual` e le sezioni A–F ai dettagli tecnici del Design system | aperto | oggi stanno solo in `#/lab/box` |
 | DS-02 | Chiudere il font lab dopo BRAND-01: tenere il candidato scelto come default, lasciare gli altri raggiungibili con `?font=` | in attesa di BRAND-01 | — |
+| DS-03 | **Footer a pannello** sulla forma di awenlab.com (D27) | fatto (3.2.0) | `SiteFooter.tsx`; docs 09 e 10 aggiornati |
+| DS-04 | Dove va il wordmark a tutta larghezza con il retino (H3, `<WordmarkHalftone />`), uscito dal footer (D29) | in attesa del proprietario | oggi il componente resta in `src/brand/` e non lo usa nessuno: chiusura pagina altrove, pagina del design system, o si toglie |
+| DS-05 | Contatti, social e pagine di servizio del footer: oggi sono segnaposto (`[numero]`, `ciao@[dominio]`, link in home) | in attesa del proprietario | `SEGNAPOSTO` e i blocchi Contatti/Informative in `SiteFooter.tsx` |
 
 ## Copy e compliance
 
@@ -81,12 +84,13 @@ Stati: `aperto` · `in corso` · `in attesa di <chi/cosa>` · `fatto (versione)`
 
 | Id | Task | Stato | Note |
 |---|---|---|---|
-| INFRA-01 | Merge di `task/setup-contesto` su `main` | in attesa del proprietario | comando in `07-procedure.md` |
+| INFRA-01 | Merge di `task/setup-contesto` su `main` | fatto | arrivato con `v3-ambra` (INFRA-06) |
 | INFRA-02 | Cancellare i branch mergiati `ds-v2` e `v3-home-pdp` (locale e origin) | aperto, lo fa il proprietario | `git branch -d`, `git push origin --delete` |
 | INFRA-03 | Tag git `v3.0.0` su `f8378bd` | aperto, lo fa il proprietario | `git tag v3.0.0 f8378bd && git push origin v3.0.0` |
 | INFRA-04 | Carrello vero (Shopify) al posto del toast | aperto, dopo il lancio | i componenti sono pronti a diventare sezioni di un tema |
 | INFRA-05 | Dominio definitivo e meta per i social | aperto | `index.html` |
-| INFRA-06 | Merge di `v3-ambra` su `main` (porta anche `task/setup-contesto`) | in attesa del proprietario | comando nella risposta; prima LIC-01 e LIC-02 se la produzione deve mostrare Denim e il wordmark Rund |
+| INFRA-06 | Merge di `v3-ambra` su `main` (porta anche `task/setup-contesto`) | fatto | `origin/main` è a `811242c`: il proprietario l'ha lanciato. Chiude anche INFRA-01 |
+| INFRA-07 | Merge di `task/ds-footer-panel` su `main` | in attesa del proprietario | comando nella risposta |
 
 ## Licenze
 

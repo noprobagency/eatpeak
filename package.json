@@ -1,7 +1,7 @@
 {
   "name": "peak-design-system",
   "private": true,
-  "version": "3.1.0",
+  "version": "3.2.0",
   "type": "module",
   "description": "peak — design system 2.0 e sito dimostrativo. Creatina + glicina + vitamina D3 in stick monodose.",
   "scripts": {

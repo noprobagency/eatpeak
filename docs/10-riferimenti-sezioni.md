@@ -44,7 +44,7 @@ vieta.
 | H12 | Offerta | C + tier | Dosys (prezzo al giorno), TLS (modulo), Create (select your size), canvas (più punti, meno al giorno) | dosys.co · trycreate.co · Social.dc.html | tier impilati, prezzo al giorno grande, preselezione, micro-rassicurazioni, stock a punti | micro-copy |
 | H13 | Garanzia | E | Scandinavian Biolabs (money-back in 3 steps) | scandinavianbiolabs.com/pages/money-back-guarantee | 3 passi + 3 condizioni + link | passi e condizioni |
 | H14 | FAQ | E | Dosys (FAQ, il tono) | dosys.co | risposte brevi, un'idea per risposta; pallino che si riempie | risposte |
-| H15 | Footer | A | Dosys, Cure (wordmark enorme), canvas (H3 retino) | dosys.co · curehydration.com · Hover.dc.html | wordmark a tutta larghezza in chiusura | note legali |
+| H15 | Footer | A | awenlab (pannello staccato con i raggi grandi) | awenlab.com | pannello ambra, due colonne, informative e riga legale | note legali |
 
 ## PDP (`src/pages/Product.tsx`)
 
