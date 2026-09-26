@@ -57,6 +57,11 @@ function extractNumber(name) {
 }
 
 const VERTEX = extractObject('VERTEX')
+const SYMBOL_VARIANTS = extractObject('SYMBOL_VARIANTS')
+const SYMBOL_VARIANT = (pathsSource.match(/export const SYMBOL_VARIANT: SymbolVariantId = '([a-z0-9]+)'/) ?? [])[1]
+if (!SYMBOL_VARIANTS[SYMBOL_VARIANT]) throw new Error(`SYMBOL_VARIANT "${SYMBOL_VARIANT}" non e' in SYMBOL_VARIANTS`)
+const MIELE_HEX = '#FCD589'
+const MIELE_RING_HEX = '#A03B1E'
 const ICON_VARIANTS = extractObject('ICON_VARIANTS')
 const LOGO_VARIANTS = extractObject('LOGO_VARIANTS')
 const CORNER_RADIUS = extractNumber('ICON_CORNER_RADIUS')
@@ -103,11 +108,14 @@ function wordmarkSvg(fill) {
 `
 }
 
+const tokens = JSON.parse(readFileSync(resolve(root, 'src/tokens/tokens.json'), 'utf8'))
 const logoFiles = {
   white: LOGO_VARIANTS.white.fill,
-  ink: LOGO_VARIANTS.ink.fill,
+  cacao: LOGO_VARIANTS.ink.fill,
   arancia: FLAVOR_HEX.arancia,
   lime: FLAVOR_HEX.lime,
+  // La stampa a un colore: l'unico posto dove l'inchiostro compare.
+  print: tokens.color.print.ink,
 }
 
 for (const [name, fill] of Object.entries(logoFiles)) {
@@ -119,15 +127,38 @@ for (const [name, fill] of Object.entries(logoFiles)) {
 // Vertice — SVG
 // ---------------------------------------------------------------------------
 
-function vertexCircles(geometry, fill) {
-  return geometry.points
-    .map(([cx, cy]) => `  <circle cx="${cx}" cy="${cy}" r="${geometry.r}" fill="${fill}"/>`)
+/**
+ * I punti della variante attiva, come in symbolDots() di paths.ts: raggio
+ * base della geometria per la scala del punto; la geometria libera e' un po'
+ * piu' larga (1.12).
+ */
+function symbolDots(geometryName, variant = SYMBOL_VARIANT) {
+  const base = VERTEX[geometryName].r
+  const spread = geometryName === 'free' ? 1.12 : 1
+  return SYMBOL_VARIANTS[variant].dots.map((d) => ({
+    cx: round(50 + (d.x - 50) * spread),
+    cy: round(50 + (d.y - 50) * spread),
+    r: round(base * d.scale),
+    top: Boolean(d.top),
+    ghost: Boolean(d.ghost),
+  }))
+}
+
+function vertexCircles(geometryName, fill, onLight = false) {
+  const topMiele = SYMBOL_VARIANTS[SYMBOL_VARIANT].topMiele
+  return symbolDots(geometryName)
+    .sort((a, b) => b.cy - a.cy)
+    .map((d) => {
+      const miele = topMiele && d.top
+      const ring = miele && onLight ? ` stroke="${MIELE_RING_HEX}" stroke-width="${round(Math.max(2, d.r * 0.22))}"` : ''
+      return `  <circle cx="${d.cx}" cy="${d.cy}" r="${d.r}" fill="${miele ? MIELE_HEX : fill}"${d.ghost ? ' opacity="0.2"' : ''}${ring}/>`
+    })
     .join('\n')
 }
 
-function iconSvg(spec, size, dotsOverride) {
+function iconSvg(spec, size, dotsOverride, onLight = false) {
   const contained = spec.background !== null
-  const geometry = contained ? (size < SMALL_BELOW ? VERTEX.small : VERTEX.contained) : VERTEX.free
+  const geometryName = contained ? (size < SMALL_BELOW ? 'small' : 'contained') : 'free'
   const radius = Math.max(CORNER_RADIUS, Math.min((4 / size) * 100, 50))
   const dots = dotsOverride ?? spec.dots
 
@@ -136,8 +167,8 @@ function iconSvg(spec, size, dotsOverride) {
     : ''
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="${size}" height="${size}" role="img" aria-label="peak">
-  <title>peak</title>
-${container}${vertexCircles(geometry, dots)}
+  <title>peak - simbolo ${SYMBOL_VARIANT}</title>
+${container}${vertexCircles(geometryName, dots, onLight)}
 </svg>
 `
 }
@@ -145,9 +176,9 @@ ${container}${vertexCircles(geometry, dots)}
 for (const [name, spec] of Object.entries(ICON_VARIANTS)) {
   if (name === 'free') {
     // Il vertice libero esce nei tre colori possibili.
-    for (const [color, hex] of Object.entries({ ...FLAVOR_HEX, ink: '#1B1A18' })) {
+    for (const [color, hex] of Object.entries({ ...FLAVOR_HEX, cacao: '#3A2A22', white: '#FFFFFF' })) {
       for (const size of FAVICON_SIZES) {
-        writeFileSync(resolve(dirs.favicon, `peak-vertice-free-${color}-${size}.svg`), iconSvg(spec, size, hex))
+        writeFileSync(resolve(dirs.favicon, `peak-vertice-free-${color}-${size}.svg`), iconSvg(spec, size, hex, color !== 'white'))
         written.favicon++
       }
     }
@@ -172,9 +203,7 @@ function lockupSvg(dots, fill, orientation) {
   const gap = icon * LOCKUP_GAP_RATIO
   const logoW = icon * LOCKUP_WORDMARK_TO_ICON
   const logoH = (logoW * H) / W
-  const circles = VERTEX.free.points
-    .map(([cx, cy]) => `<circle cx="${cx}" cy="${cy}" r="${VERTEX.free.r}" fill="${dots}"/>`)
-    .join('')
+  const circles = vertexCircles('free', dots, dots !== '#FFFFFF').replace(/\n/g, '')
 
   if (orientation === 'horizontal') {
     const total = { w: icon + gap + logoW, h: Math.max(icon, logoH) }
@@ -204,10 +233,10 @@ function round(n) {
 }
 
 const lockups = {
-  'arancia-ink': { dots: FLAVOR_HEX.arancia, fill: '#1B1A18' },
-  'lime-ink': { dots: FLAVOR_HEX.lime, fill: '#1B1A18' },
+  'arancia-cacao': { dots: FLAVOR_HEX.arancia, fill: '#3A2A22' },
+  'lime-cacao': { dots: FLAVOR_HEX.lime, fill: '#3A2A22' },
   white: { dots: '#FFFFFF', fill: '#FFFFFF' },
-  ink: { dots: '#1B1A18', fill: '#1B1A18' },
+  cacao: { dots: '#3A2A22', fill: '#3A2A22' },
 }
 
 for (const [name, spec] of Object.entries(lockups)) {
@@ -223,11 +252,13 @@ for (const [name, spec] of Object.entries(lockups)) {
 
 function rasterSpec(variant, size) {
   const spec = ICON_VARIANTS[variant]
-  const geometry = size < SMALL_BELOW ? VERTEX.small : VERTEX.contained
+  const topMiele = SYMBOL_VARIANTS[SYMBOL_VARIANT].topMiele
   return {
     background: spec.background,
     dots: spec.dots,
-    circles: geometry.points.map(([cx, cy]) => ({ cx, cy, r: geometry.r })),
+    circles: symbolDots(size < SMALL_BELOW ? 'small' : 'contained')
+      .sort((a, b) => b.cy - a.cy)
+      .map((d) => ({ cx: d.cx, cy: d.cy, r: d.r, color: topMiele && d.top ? MIELE_HEX : undefined, opacity: d.ghost ? 0.2 : 1 })),
   }
 }
 
@@ -241,7 +272,7 @@ writeFileSync(resolve(dirs.publicDir, 'favicon.svg'), iconSvg(ICON_VARIANTS.aran
 written.publicFiles++
 
 // PNG delle tre varianti nel contenitore, a tutte le misure.
-for (const variant of ['arancia', 'lime', 'ink']) {
+for (const variant of ['arancia', 'lime', 'deep']) {
   for (const size of FAVICON_SIZES) {
     const rgba = renderIcon(rasterSpec(variant, size), size, CORNER_RADIUS)
     writeFileSync(resolve(dirs.favicon, `peak-vertice-${variant}-${size}.png`), encodePng(rgba, size))
@@ -287,5 +318,5 @@ writeFileSync(
 written.publicFiles++
 
 console.log(
-  `Asset generati — logo e lockup: ${written.logo} · vertice: ${written.favicon} · public: ${written.publicFiles}`,
+  `Asset generati — simbolo ${SYMBOL_VARIANT} (${SYMBOL_VARIANTS[SYMBOL_VARIANT].label}) · logo e lockup: ${written.logo} · vertice: ${written.favicon} · public: ${written.publicFiles}`,
 )

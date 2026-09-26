@@ -156,6 +156,131 @@ export type VertexGeometry = keyof typeof VERTEX
 /** Sotto questa misura resa i punti passano a r=13. */
 export const VERTEX_SMALL_BELOW_PX = 24
 
+// ---------------------------------------------------------------------------
+// Le varianti del simbolo (3.0): tre punti uguali a triangolo ricordano Asana.
+// Basta un cambio minimo. La scelta finale e' del brand: qui c'e' il flag.
+// ---------------------------------------------------------------------------
+
+/**
+ * Ogni variante e' una lista di punti sul viewBox 100x100, con la scala del
+ * raggio rispetto alla geometria base (contained r=12, free r=14) e il ruolo.
+ * `top` e' la vetta; `ghost` sono i punti fantasma della griglia (20%).
+ * Gli script leggono questo literal come testo: niente calcoli qui.
+ */
+export const SYMBOL_VARIANTS = {
+  v0: {
+    label: 'Base',
+    note: 'Tre punti uguali a triangolo. Il riferimento da cui allontanarsi: ricorda Asana.',
+    topMiele: false,
+    dots: [
+      { x: 50, y: 33, scale: 1, top: true },
+      { x: 33, y: 64, scale: 1 },
+      { x: 67, y: 64, scale: 1 },
+    ],
+  },
+  v1: {
+    label: 'Crescendo',
+    note: 'Stessi tre punti, diametri diversi: 0,8 in basso a sinistra, 1,0 a destra, 1,2 in alto. Il retino che cresce: l accumulo.',
+    topMiele: false,
+    dots: [
+      { x: 50, y: 32, scale: 1.2, top: true },
+      { x: 32, y: 65, scale: 0.8 },
+      { x: 67, y: 64, scale: 1 },
+    ],
+  },
+  v2: {
+    label: 'Punta miele',
+    note: 'Triangolo uguale, il punto in alto e miele: e oggi, il giorno fatto.',
+    topMiele: true,
+    dots: [
+      { x: 50, y: 33, scale: 1, top: true },
+      { x: 33, y: 64, scale: 1 },
+      { x: 67, y: 64, scale: 1 },
+    ],
+  },
+  v3: {
+    label: 'Su griglia',
+    note: 'Griglia 3x3: sei punti fantasma al 20% e tre pieni che formano la salita.',
+    topMiele: false,
+    dots: [
+      { x: 72, y: 28, scale: 0.85, top: true },
+      { x: 50, y: 50, scale: 0.85 },
+      { x: 28, y: 72, scale: 0.85 },
+      { x: 28, y: 28, scale: 0.85, ghost: true },
+      { x: 50, y: 28, scale: 0.85, ghost: true },
+      { x: 28, y: 50, scale: 0.85, ghost: true },
+      { x: 72, y: 50, scale: 0.85, ghost: true },
+      { x: 50, y: 72, scale: 0.85, ghost: true },
+      { x: 72, y: 72, scale: 0.85, ghost: true },
+    ],
+  },
+  v4: {
+    label: 'Pendio',
+    note: 'Il punto alto spostato a destra: si legge come salita, non come triangolo.',
+    topMiele: false,
+    dots: [
+      { x: 63, y: 31, scale: 1, top: true },
+      { x: 31, y: 66, scale: 1 },
+      { x: 67, y: 66, scale: 1 },
+    ],
+  },
+  v5: {
+    label: 'Crescendo, punta miele',
+    note: 'V1 + V2: il retino che cresce e la vetta di oggi. La candidata consigliata.',
+    topMiele: true,
+    dots: [
+      { x: 50, y: 32, scale: 1.2, top: true },
+      { x: 32, y: 65, scale: 0.8 },
+      { x: 67, y: 64, scale: 1 },
+    ],
+  },
+  v6: {
+    label: 'Pendio in crescendo',
+    note: 'V4 + V1, monocolore: per la stampa a un colore.',
+    topMiele: false,
+    dots: [
+      { x: 64, y: 30, scale: 1.2, top: true },
+      { x: 31, y: 66, scale: 0.8 },
+      { x: 66, y: 66, scale: 1 },
+    ],
+  },
+} as const
+
+export type SymbolVariantId = keyof typeof SYMBOL_VARIANTS
+
+/**
+ * La variante attiva, dietro un flag. V5 e' il default proposto; la scelta
+ * finale e' del brand, dopo #/lab/simbolo. Cambiandola qui cambiano favicon,
+ * lockup, sigilli e header (npm run assets:generate per gli asset statici).
+ */
+export const SYMBOL_VARIANT: SymbolVariantId = 'v5'
+
+export const MIELE_HEX = '#FCD589'
+export const MIELE_RING_HEX = '#A03B1E'
+
+export interface SymbolDot {
+  cx: number
+  cy: number
+  r: number
+  top: boolean
+  ghost: boolean
+}
+
+/** I punti di una variante, con il raggio assoluto della geometria chiesta. */
+export function symbolDots(variant: SymbolVariantId = SYMBOL_VARIANT, geometry: VertexGeometry = 'contained'): SymbolDot[] {
+  const base = VERTEX[geometry].r
+  const spec = SYMBOL_VARIANTS[variant]
+  // La geometria libera e' un po' piu' larga: si riscala dal contenitore.
+  const spread = geometry === 'free' ? 1.12 : 1
+  return spec.dots.map((d) => ({
+    cx: 50 + (d.x - 50) * spread,
+    cy: 50 + (d.y - 50) * spread,
+    r: base * d.scale,
+    top: Boolean('top' in d && d.top),
+    ghost: Boolean('ghost' in d && d.ghost),
+  }))
+}
+
 /**
  * Il raggio del contenitore non deve mai scendere sotto i 4px assoluti.
  * A 16px il nominale vale 4.16px, quindi la clamp non morde quasi mai.

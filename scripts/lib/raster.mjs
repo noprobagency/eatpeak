@@ -103,7 +103,7 @@ function blend(dst, offset, [r, g, b], alpha) {
  * Disegna il vertice su un buffer RGBA di lato `size`.
  * Le coordinate della spec sono su viewBox 0..100 e vengono scalate qui.
  *
- * @param {object} spec  { background, dots, circles: [{cx, cy, r}], polygon? }
+ * @param {object} spec  { background, dots, circles: [{cx, cy, r, color?, opacity?}], polygon? }
  * @param {number} size  lato in pixel
  * @param {number} radiusUnits raggio del contenitore in unita' di viewBox
  */
@@ -113,13 +113,20 @@ export function renderIcon(spec, size, radiusUnits = 26) {
 
   const bg = spec.background ? parseHex(spec.background) : null
   const dots = parseHex(spec.dots)
-  const circles = spec.circles ?? []
+  // Ogni cerchio puo' avere il suo colore e la sua opacita' (la punta miele,
+  // i punti fantasma della griglia). Si disegnano in ordine, uno sopra l'altro.
+  const circles = (spec.circles ?? []).map((c) => ({
+    ...c,
+    rgb: c.color ? parseHex(c.color) : dots,
+    alpha: c.opacity ?? 1,
+  }))
   const poly = spec.polygon ? parsePolygon(spec.polygon) : null
 
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       let bgHits = 0
-      let dotHits = 0
+      let polyHits = 0
+      const circleHits = new Array(circles.length).fill(0)
 
       for (let sy = 0; sy < SS; sy++) {
         for (let sx = 0; sx < SS; sx++) {
@@ -128,13 +135,10 @@ export function renderIcon(spec, size, radiusUnits = 26) {
           const uy = (y + (sy + 0.5) / SS) / scale
 
           if (bg && insideRoundedRect(ux, uy, 2, 2, 96, 96, radiusUnits)) bgHits++
-
-          let inDot = false
-          for (const c of circles) {
-            if (insideCircle(ux, uy, c.cx, c.cy, c.r)) { inDot = true; break }
-          }
-          if (!inDot && poly && pointInPolygon(ux, uy, poly)) inDot = true
-          if (inDot) dotHits++
+          circles.forEach((c, i) => {
+            if (insideCircle(ux, uy, c.cx, c.cy, c.r)) circleHits[i]++
+          })
+          if (poly && pointInPolygon(ux, uy, poly)) polyHits++
         }
       }
 
@@ -142,7 +146,10 @@ export function renderIcon(spec, size, radiusUnits = 26) {
       const offset = (y * size + x) * 4
 
       if (bg && bgHits > 0) blend(px, offset, bg, bgHits / total)
-      if (dotHits > 0) blend(px, offset, dots, dotHits / total)
+      if (polyHits > 0) blend(px, offset, dots, polyHits / total)
+      circles.forEach((c, i) => {
+        if (circleHits[i] > 0) blend(px, offset, c.rgb, (circleHits[i] / total) * c.alpha)
+      })
     }
   }
 

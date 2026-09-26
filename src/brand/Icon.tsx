@@ -1,18 +1,19 @@
 /**
- * <Icon /> — il vertice di peak.
+ * <Icon /> — il simbolo di peak.
  *
- * Tre cerchi pieni e uguali disposti a triangolo: uno sopra, due sotto. E' il
- * picco senza disegnare una montagna, i 3 ingredienti, i 3 grammi, e un segno
- * a "particella" che porta il lato scientifico del brand.
+ * Tre punti disposti a triangolo, uno sopra e due sotto: il picco senza
+ * disegnare una montagna, i tre ingredienti, i tre grammi. Dalla 3.0 la
+ * geometria e' una variante (SYMBOL_VARIANTS): la default e' V5, crescendo
+ * con la punta miele, dietro il flag SYMBOL_VARIANT. La scelta finale e' del
+ * brand: #/lab/simbolo le mostra tutte.
  *
  * QUANDO USARLO: favicon, app icon, avatar social, sigillo sullo stick, lockup,
  * e come seme del pattern <DotField />.
- * QUANDO NO: come icona funzionale dentro l'interfaccia. Il vertice e' il
- * marchio; se ti serve un pittogramma per "tre" o "ingredienti", disegnane un
- * altro — riusare il marchio come icona lo svaluta.
+ * QUANDO NO: come icona funzionale dentro l'interfaccia. Il simbolo e' il
+ * marchio; per i giorni e gli stati c'e' <DayDot />, per il segno a mano
+ * <HandDot />.
  *
- * Sotto i 24px resi i punti passano a r=13: a 12 si fondono. La variante
- * geometrica attiva e' SYMBOL_VARIANT in paths.ts (vedi #/lab/simbolo).
+ * Sotto i 24px resi i punti passano a r=13: a 12 si fondono.
  */
 
 import type { CSSProperties } from 'react'
@@ -20,11 +21,16 @@ import {
   DEFAULT_ICON_VARIANT,
   ICON_VARIANTS,
   ICON_VIEWBOX,
-  VERTEX,
+  MIELE_HEX,
+  MIELE_RING_HEX,
+  SYMBOL_VARIANT,
+  SYMBOL_VARIANTS,
   VERTEX_SMALL_BELOW_PX,
   cornerRadiusFor,
   flavorHex,
+  symbolDots,
   type IconVariant,
+  type SymbolVariantId,
 } from './paths'
 import type { FlavorId } from '../lib/copy'
 
@@ -32,8 +38,15 @@ export interface IconProps {
   /** Lato reso in px. Governa la clamp del raggio e la misura dei punti. */
   size?: number
   variant?: IconVariant
-  /** Per la variante `free`: il colore dei punti. Un gusto, o inchiostro. */
+  /** Per la variante `free`: il colore dei punti. Un gusto, cacao, o bianco. */
   color?: FlavorId | 'cacao' | 'white'
+  /** La geometria del simbolo. Default: SYMBOL_VARIANT. Solo il laboratorio la forza. */
+  symbol?: SymbolVariantId
+  /**
+   * Il simbolo sta su un fondo chiaro: la punta miele, se c'e', porta un
+   * anello arancia 700 perche' da sola non si vede.
+   */
+  onLight?: boolean
   /** Testo alternativo. Se vuoto l'icona diventa decorativa (aria-hidden). */
   title?: string
   className?: string
@@ -46,22 +59,28 @@ export function Icon({
   size = 64,
   variant = DEFAULT_ICON_VARIANT,
   color = 'arancia',
+  symbol = SYMBOL_VARIANT,
+  onLight,
   title = 'peak',
   className,
   style,
 }: IconProps) {
   const spec = ICON_VARIANTS[variant]
   const contained = spec.background !== null
-  const geometry = contained ? (size < VERTEX_SMALL_BELOW_PX ? VERTEX.small : VERTEX.contained) : VERTEX.free
+  const geometry = contained ? (size < VERTEX_SMALL_BELOW_PX ? 'small' : 'contained') : 'free'
+  const dots = symbolDots(symbol, geometry)
   const radius = cornerRadiusFor(size)
   const decorative = title.trim() === ''
+  const light = onLight ?? (!contained && color !== 'white')
 
-  const dots =
+  const base =
     spec.dots === 'flavor'
       ? color === 'cacao' || color === 'white'
         ? FREE_COLORS[color]
         : flavorHex(color)
       : spec.dots
+
+  const topMiele = SYMBOL_VARIANTS[symbol].topMiele
 
   return (
     <svg
@@ -75,14 +94,29 @@ export function Icon({
       aria-label={decorative ? undefined : title}
       focusable="false"
       data-variant={variant}
+      data-symbol={symbol}
     >
       {!decorative && <title>{title}</title>}
 
       {spec.background && <rect x={2} y={2} width={96} height={96} rx={radius} fill={spec.background} />}
 
-      {geometry.points.map(([cx, cy]) => (
-        <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r={geometry.r} fill={dots} />
-      ))}
+      {/* Dal basso alla vetta: e' l'ordine del respiro (H1). */}
+      {[...dots].sort((a, b) => b.cy - a.cy).map((d, i) => {
+        const miele = topMiele && d.top
+        return (
+          <circle
+            key={i}
+            cx={d.cx}
+            cy={d.cy}
+            r={d.r}
+            fill={miele ? MIELE_HEX : base}
+            opacity={d.ghost ? 0.2 : 1}
+            stroke={miele && light ? MIELE_RING_HEX : undefined}
+            strokeWidth={miele && light ? Math.max(2, d.r * 0.22) : undefined}
+            data-top={d.top || undefined}
+          />
+        )
+      })}
     </svg>
   )
 }

@@ -14,6 +14,7 @@
 
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
 import { cn } from '../lib/cn'
+import '../brand/dots.css'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'link' | 'inverse'
 export type ButtonSize = 'sm' | 'md' | 'lg'
@@ -30,6 +31,8 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   href?: string
   iconLeft?: ReactNode
   iconRight?: ReactNode
+  /** Il pallino davanti al testo, che si riempie al passaggio (H4). */
+  dot?: boolean
 }
 
 const VARIANTS: Record<ButtonVariant, string> = {
@@ -69,7 +72,7 @@ function Spinner() {
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   {
     children, variant = 'primary', size = 'md', loading = false, fullWidth = false,
-    as = 'button', href, iconLeft, iconRight, disabled, className, ...rest
+    as = 'button', href, iconLeft, iconRight, dot = false, disabled, className, ...rest
   },
   ref,
 ) {
@@ -88,7 +91,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 
   const content = (
     <>
-      {loading ? <Spinner /> : iconLeft}
+      {loading ? <Spinner /> : dot ? <span className="peak-cta-dot" aria-hidden="true" /> : iconLeft}
       <span>{children}</span>
       {!loading && iconRight}
     </>

@@ -1,0 +1,92 @@
+/* ---------------------------------------------------------------------------
+ * Le micro-interazioni dei pallini (3.0). Il movimento risponde a un gesto,
+ * non decora: durate brevi, una volta per passaggio, niente loop.
+ * ------------------------------------------------------------------------ */
+
+/* H1 · respiro: i punti del simbolo si accendono dal basso alla vetta in 520ms. */
+.peak-breath circle {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.peak-breath:hover circle,
+.peak-breath:focus-visible circle {
+  animation: peak-breath 520ms var(--easing-standard) 1 both;
+}
+.peak-breath:hover circle:nth-of-type(2),
+.peak-breath:focus-visible circle:nth-of-type(2) { animation-delay: 110ms; }
+.peak-breath:hover circle:nth-of-type(3),
+.peak-breath:focus-visible circle:nth-of-type(3) { animation-delay: 220ms; }
+@keyframes peak-breath {
+  0% { opacity: 0.35; transform: scale(0.72); }
+  60% { opacity: 1; transform: scale(1.12); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* H4 · CTA: il punto si riempie. */
+.peak-cta-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  background: transparent;
+  transition: background-color 200ms var(--easing-standard), transform 200ms var(--easing-standard);
+}
+a:hover .peak-cta-dot,
+button:hover .peak-cta-dot,
+a:focus-visible .peak-cta-dot,
+button:focus-visible .peak-cta-dot {
+  background-color: currentColor;
+  transform: scale(1.15);
+}
+
+/* H4 · link: la sottolineatura a pallini si riempie da sinistra. */
+.peak-link {
+  --dot: currentColor;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  padding-bottom: 6px;
+  background-image:
+    radial-gradient(circle, var(--dot) 1.6px, transparent 1.9px),
+    radial-gradient(circle, color-mix(in srgb, var(--dot) 35%, transparent) 1.6px, transparent 1.9px);
+  background-size: 0% 6px, 100% 6px;
+  background-position: left bottom, left bottom;
+  background-repeat: repeat-x;
+  transition: background-size 380ms var(--easing-standard);
+}
+.peak-link:hover,
+.peak-link:focus-visible {
+  background-size: 100% 6px, 100% 6px;
+}
+
+/* H3 · retino: il wordmark si scompone in punti; dove passi torna pieno. */
+.peak-halftone {
+  --x: 50%;
+  --y: 50%;
+  position: relative;
+  display: block;
+}
+.peak-halftone__solid {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 240ms ease;
+  -webkit-mask-image: radial-gradient(circle at var(--x) var(--y), #000 0, #000 18%, transparent 34%);
+  mask-image: radial-gradient(circle at var(--x) var(--y), #000 0, #000 18%, transparent 34%);
+}
+.peak-halftone:hover .peak-halftone__solid {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .peak-breath:hover circle,
+  .peak-breath:focus-visible circle {
+    animation: none;
+  }
+  .peak-cta-dot,
+  .peak-link,
+  .peak-halftone__solid {
+    transition: none;
+  }
+}

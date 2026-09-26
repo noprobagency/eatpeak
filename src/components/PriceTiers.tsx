@@ -18,6 +18,17 @@
 import { cn } from '../lib/cn'
 import { PRICE_TIERS, PRODUCT, formatEur, pricePerDay, pricePerDayShipped, type PriceTier } from '../lib/copy'
 
+/** "Piu' punti, meno al giorno": una riga di micro-punti, uno per giorno. */
+function DayDots({ days, accent }: { days: number; accent: boolean }) {
+  return (
+    <svg viewBox={`0 0 ${days * 6} 6`} className="block h-[6px] w-full max-w-[420px]" aria-hidden="true" focusable="false">
+      {Array.from({ length: days }, (_, i) => (
+        <circle key={i} cx={i * 6 + 3} cy={3} r={2.2} fill={accent ? 'var(--dot-done)' : 'var(--color-cacao-300)'} />
+      ))}
+    </svg>
+  )
+}
+
 export type { PriceTier }
 
 export interface PriceTiersProps {
@@ -102,6 +113,8 @@ export function PriceTiers({
                   {tier.units} {tier.units === 1 ? 'busta' : 'buste'} · {tier.days} giorni
                   {savedPct > 0 && <span className="text-lime-700"> · risparmi {savedPct}%</span>}
                 </span>
+
+                <DayDots days={tier.days} accent={selected} />
 
                 <span className="flex flex-col gap-1 text-body-sm text-text-secondary">
                   {freeShipping ? (

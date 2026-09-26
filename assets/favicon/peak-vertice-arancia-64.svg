@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="64" height="64" role="img" aria-label="peak">
-  <title>peak</title>
+  <title>peak - simbolo v5</title>
   <rect x="2" y="2" width="96" height="96" rx="26" fill="#E4572E"/>
-  <circle cx="50" cy="33" r="12" fill="#FFFFFF"/>
-  <circle cx="33" cy="64" r="12" fill="#FFFFFF"/>
+  <circle cx="32" cy="65" r="9.6" fill="#FFFFFF"/>
   <circle cx="67" cy="64" r="12" fill="#FFFFFF"/>
+  <circle cx="50" cy="32" r="14.4" fill="#FCD589"/>
 </svg>

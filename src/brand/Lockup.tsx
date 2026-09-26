@@ -15,7 +15,7 @@
 import type { CSSProperties } from 'react'
 import { Icon } from './Icon'
 import { Logo } from './Logo'
-import { LOCKUP_GAP_RATIO, LOCKUP_WORDMARK_TO_ICON, useWordmark, wordmarkHeightFor } from './paths'
+import { LOCKUP_GAP_RATIO, LOCKUP_WORDMARK_TO_ICON, useWordmark, wordmarkHeightFor, type SymbolVariantId } from './paths'
 import type { FlavorId } from '../lib/copy'
 
 export interface LockupProps {
@@ -36,6 +36,8 @@ export interface LockupProps {
   style?: CSSProperties
   /** Forza un candidato del laboratorio font (solo per #/lab/font). */
   fontId?: string
+  /** Forza una variante del simbolo (solo per #/lab/simbolo). */
+  symbol?: SymbolVariantId
 }
 
 export function Lockup({
@@ -48,6 +50,7 @@ export function Lockup({
   className,
   style,
   fontId,
+  symbol,
 }: LockupProps) {
   const wordmark = useWordmark(fontId)
   const gap = iconSize * LOCKUP_GAP_RATIO
@@ -69,7 +72,7 @@ export function Lockup({
         ...style,
       }}
     >
-      <Icon size={iconSize} variant="free" color={onLight ? flavor : 'white'} title="" />
+      <Icon size={iconSize} variant="free" color={onLight ? flavor : 'white'} symbol={symbol} title="" />
       <Logo size={logoWidth} variant={onLight ? 'ink' : 'white'} title="" fontId={fontId} />
     </div>
   )

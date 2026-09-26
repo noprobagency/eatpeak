@@ -212,6 +212,54 @@ senza `<foreignObject>`, che contaminerebbe la tela nell'export.
 
 ---
 
+## Il sistema a pallini (3.0)
+
+Il punto non decora: **conta**. In peak ogni pallino è un giorno fatto. La
+creatina lavora per accumulo e il sistema lo rende visibile con tre formati,
+uno per compito. Il logo resta pieno: i punti lavorano intorno.
+
+| Formato | Cosa fa | Dove |
+|---|---|---|
+| **Simbolo** (firma) | Tre punti: la vetta, tre ingredienti, 3 g. L'unico simbolo, accanto al logo, mai dentro le lettere. | favicon, sigillo, lockup, loader |
+| **Griglia** (conta) | Punti uguali su passo fisso, tre stati. La disciplina resa visibile. `<DayDot />` | calendario, stick 01–30, tier 30/60/90, stock |
+| **Retino** (accumula) | Punti che crescono da radi a densi, in una sola direzione. `<DotField />` | pack, hero, footer (H3) |
+
+**Due famiglie.** I punti **geometrici** — il simbolo, l'interfaccia, il
+retino — restano perfetti. I punti **a mano** (`<HandDot />`) sono il segno
+del cliente: il calendario da segnare, il rituale dei 30 punti, il retro
+busta, le numerazioni 01/02/03, i divisori. Il sistema è preciso, il segno è
+a mano.
+
+**I tre stati, sempre gli stessi:** da fare (anello cacao 500 al 40%) · fatto
+(arancia 500 su chiaro, bianco su colore) · oggi (miele pieno con anello
+arancia 700). Mai inchiostro.
+
+### Le varianti del simbolo
+
+Tre punti uguali a triangolo ricordano Asana. In `SYMBOL_VARIANTS` ci sono sei
+cambi minimi — crescendo, punta miele, su griglia, pendio, e le due somme — e
+il flag `SYMBOL_VARIANT` sceglie quella attiva (default proposto: **V5**,
+crescendo con la punta miele). `#/lab/simbolo` le mostra tutte a 16/32/64/256
+px, sui quattro fondi, nel lockup e accanto al "test Asana". **La scelta
+finale è del brand.** Cambiato il flag, `npm run assets:generate` rigenera
+favicon, lockup e PNG.
+
+### Le sei regole anti-eccesso
+
+1. **Il master "peak" non si puntina mai.** Il wordmark resta pieno; il retino
+   lo attraversa solo nel footer, in grande, al passaggio (H3).
+2. **Un solo formato di punti per superficie.** Simbolo, griglia o retino: mai
+   due insieme.
+3. **Retino al massimo su 1/3, mai sotto il testo.**
+4. **Un solo punto miele per vista: è sempre "oggi".**
+5. **Passo fisso, un colore, un livello: niente moiré.**
+6. **Si muove solo se tu fai qualcosa. Mai loop.** Le micro-interazioni
+   (respiro del simbolo, punta miele alla conferma, retino al passaggio, il
+   punto della CTA che si riempie, la sottolineatura a pallini) durano meno di
+   mezzo secondo e partono da un gesto.
+
+---
+
 ## Usi vietati
 
 Lo Showcase li mostra barrati nei dettagli tecnici. Qui l'elenco.
