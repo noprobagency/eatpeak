@@ -1,11 +1,16 @@
 /**
  * DesignSystem — la scheda del brand, leggibile in due minuti.
  *
- * Nella 1.0 lo Showcase era una mappa tecnica esaustiva. Nella 2.0 sopra la
- * piega ci sono nove sezioni corte — la scheda, il logo, il simbolo, il
- * colore, la tipografia, i gusti, il packaging, cinque componenti chiave, la
- * voce — e tutto il dettaglio tecnico sta in fondo, in un solo blocco
- * <details> chiuso di default.
+ * Nella 1.0 lo Showcase era una mappa tecnica esaustiva. Dalla 2.0 sopra la
+ * piega ci sono dieci sezioni corte — la scheda, il logo, il simbolo, il
+ * colore, la tipografia, i gusti, il packaging, i componenti chiave, la
+ * voce, i laboratori — e tutto il dettaglio tecnico sta in fondo, in un solo
+ * blocco <details> chiuso di default.
+ *
+ * La 3.0 umanizza: niente nero (i neutri del testo sono cacao), titoli 700–800
+ * con una parola in corsivo, occhielli in display 600, il mono solo per numeri
+ * e codici, il font display dal laboratorio (?font=<id>), il simbolo dietro
+ * SYMBOL_VARIANT. In fondo, i quattro laboratori dove si decide.
  *
  * Regola per chi la estende: se aggiungi un componente e non lo aggiungi qui
  * — anche dentro i dettagli tecnici — per il sistema quel componente non
@@ -14,18 +19,20 @@
 
 import { useEffect, useRef, useState } from 'react'
 import {
-  Accordion, Badge, BrandSheet, BustaPack, Button, Card, Checkbox, Container, Divider,
-  DoseSeal, FaqAccordion, FlavorCard, FlavorSelector, Grid, IngredientPanel, Input, LabTag,
+  Accordion, Badge, BrandSheet, BustaBack, BustaPack, Button, Card, Checkbox, Container, Divider,
+  DoseSeal, Em, FaqAccordion, FlavorCard, FlavorSelector, Glass, Grid, IngredientPanel, Input, LabTag,
   Marquee, MediaPlaceholder, Modal, PackBack, PriceTiers, ProductCard, QuantityStepper,
   RadioGroup, ReviewCard, Section, SectionHeader, Select, Stack, StickPack, StickyAddToCart,
   Tabs, Tag, Toast, ToastStack, Tooltip, TrustRow, WeekTimeline,
 } from '../components'
-import { DotField, Icon, Lockup, Logo } from '../brand'
+import { DayDot, DotField, HandDot, Icon, Lockup, Logo } from '../brand'
 import {
   CLEARSPACE_RATIO, FAVICON_SIZES, HEADER_LOGO_WIDTH, ICON_VARIANTS, LOGO_FORBIDDEN_USES,
-  WORDMARK_MIN_WIDTH_MM, WORDMARK_MIN_WIDTH_PX, WORDMARK_TRACKING_EM, wordmarkHeightFor,
+  SYMBOL_VARIANT, WORDMARK_MIN_WIDTH_MM, WORDMARK_MIN_WIDTH_PX, WORDMARK_TRACKING_EM, wordmarkHeightFor,
   type IconVariant,
 } from '../brand/paths'
+import { FONT_CANDIDATES, candidate, fontLabHref, useFontLab } from '../lib/fontlab'
+import { to } from '../lib/routes'
 import tokens, { palette, radius, semantic, shadow, space, typeScale } from '../tokens/tokens'
 import { contrastRatio, readableOn, verdict } from '../lib/contrast'
 import { CLAIMS, CLAIM_HIERARCHY, DEFAULT_TIER, FLAVORS, PRODUCT, REVIEWS } from '../lib/copy'
@@ -46,11 +53,12 @@ const NAV = [
   { id: 'packaging', label: '06 · Packaging' },
   { id: 'componenti', label: '07 · Componenti chiave' },
   { id: 'voce', label: '08 · Voce in breve' },
+  { id: 'laboratori', label: '09 · Laboratori' },
   { id: 'dettagli', label: 'Dettagli tecnici' },
 ] as const
 
 function Block({ id, number, title, intro, children }: {
-  id: string; number: string; title: string; intro?: string; children: React.ReactNode
+  id: string; number: string; title: React.ReactNode; intro?: string; children: React.ReactNode
 }) {
   return (
     <section id={id} className="scroll-mt-24 border-b border-border-subtle py-10 last:border-0">
@@ -77,9 +85,9 @@ function Swatch({ name, hex }: { name: string; hex: string }) {
   return (
     <div className="overflow-hidden rounded-md border border-border-subtle">
       <div className="flex h-16 items-end p-2" style={{ background: hex, color: ink }}>
-        <span className="font-mono text-mono-sm uppercase opacity-80">{name}</span>
+        <span className="type-label opacity-80">{name}</span>
       </div>
-      <div className="bg-bg-surface px-2 py-2 font-mono text-mono-sm uppercase text-text-muted">{hex}</div>
+      <div className="bg-bg-surface px-2 py-2 font-mono text-mono-md text-text-muted">{hex}</div>
     </div>
   )
 }
@@ -94,7 +102,9 @@ const CORE_COLORS = [
   { name: 'cacao', hex: palette.cacao['900'], use: 'Il testo e il logo su chiaro. Caldo, mai nero: le superfici scure sono arancia 600.' },
   { name: 'arancia', hex: palette.arancia['500'], use: 'Colore-gusto 01 e primario del brand. Campi pieni, pulsanti.' },
   { name: 'lime', hex: palette.lime['500'], use: 'Colore-gusto 02. Campi pieni delle comunicazioni del gusto.' },
-  { name: 'miele', hex: palette.miele['300'], use: 'L unico accento: bollino della dose, badge, evidenziazioni. Mai testo su chiaro.' },
+  { name: 'miele', hex: palette.miele['300'], use: 'L unico accento: bollino della dose, badge, il punto di oggi. Mai testo su chiaro.' },
+  { name: 'arancia 600', hex: palette.arancia['600'], use: 'Il profondo: pulsante primario, footer, i campi con testo corrente bianco.' },
+  { name: 'lime 700', hex: palette.lime['700'], use: 'Il profondo del gusto 02: il rituale dei 30 punti.' },
 ] as const
 
 // ---------------------------------------------------------------------------
@@ -127,7 +137,7 @@ function ContrastTable() {
         <thead>
           <tr className="border-b border-border-default bg-bg-raised">
             {['Coppia', 'Anteprima', 'Rapporto', 'Esito', 'Regola'].map((h) => (
-              <th key={h} scope="col" className="px-4 py-3 font-mono text-mono-sm uppercase font-normal text-text-muted">{h}</th>
+              <th key={h} scope="col" className="px-4 py-3 type-label text-text-muted">{h}</th>
             ))}
           </tr>
         </thead>
@@ -140,7 +150,7 @@ function ContrastTable() {
               <tr key={p.label} className="border-b border-border-subtle last:border-0">
                 <td className="px-4 py-3 text-body-sm text-text-primary">{p.label}</td>
                 <td className="px-4 py-3">
-                  <span className={cn('inline-block rounded-sm px-3 py-2', p.large ? 'font-display text-heading-lg font-black' : 'text-body-sm')} style={{ background: p.bg, color: p.fg }}>
+                  <span className={cn('inline-block rounded-sm px-3 py-2', p.large ? 'font-display text-heading-lg font-extrabold' : 'text-body-sm')} style={{ background: p.bg, color: p.fg }}>
                     {p.large ? 'peak' : 'Uno stick. Tre grammi.'}
                   </span>
                 </td>
@@ -179,8 +189,8 @@ function StickyDemo({ enabled, onAdd }: { enabled: boolean; onAdd: () => void })
   return (
     <>
       <div ref={anchor} className="flex h-24 items-center justify-center rounded-lg border border-dashed border-border-strong bg-bg-raised">
-        <span className="font-mono text-mono-sm uppercase text-text-muted">
-          {inView ? 'ancora nella viewport: la barra e montata' : 'ancora osservata'}
+        <span className="text-body-sm text-text-muted">
+          {inView ? 'Ancora nella viewport: la barra è montata.' : 'Ancora osservata.'}
         </span>
       </div>
       {enabled && inView && (
@@ -207,6 +217,8 @@ export function DesignSystem() {
   const [modalOpen, setModalOpen] = useState(false)
   const [toastOpen, setToastOpen] = useState(false)
   const [detailsOpen, setDetailsOpen] = useState(false)
+  const lab = useFontLab()
+  const font = candidate(lab.font)
 
   return (
     <>
@@ -216,11 +228,11 @@ export function DesignSystem() {
           <div className="flex flex-col gap-4 pt-10">
             <Logo size={220} variant="ink" title="" className="h-auto max-w-full" />
             <header className="flex flex-col gap-2">
-              <h1 className="type-display-md text-text-primary">peak — design system 2.0</h1>
+              <h1 className="type-display-md text-text-primary">peak — design system <Em>3.0</Em></h1>
               <p className="max-w-prose text-body-lg text-text-secondary">
                 {CLAIMS.brand.it} Creatina + glicina + vitamina D3 in stick monodose.
               </p>
-              <p className="type-mono-md text-text-muted">{CLAIMS.product.it}</p>
+              <p className="text-body-md text-text-muted">{CLAIMS.product.it}</p>
             </header>
           </div>
         </Container>
@@ -250,7 +262,7 @@ export function DesignSystem() {
             </Block>
 
             {/* ---------------------------------------------------------- */}
-            <Block id="logo" number="01 — logo" title="il wordmark: bianco, pieno, grande" intro={`Un tracciato, non un testo: Gabarito 900 vettorializzato, tracking ${WORDMARK_TRACKING_EM}em. Un solo colore, nessun contorno. Bianco su ogni campo colore-gusto e su inchiostro; inchiostro su bianco e carta.`}>
+            <Block id="logo" number="01 — logo" title={<>il wordmark: bianco, pieno, <Em>grande</Em></>} intro={`Un tracciato, non un testo: il candidato attivo del laboratorio font (${font.family} ${font.wordmarkWeight}) vettorializzato, tracking ${WORDMARK_TRACKING_EM}em. Un solo colore, nessun contorno. Bianco su ogni campo colore-gusto e sul profondo; cacao su bianco e carta. Il tracciato di ogni candidato sta in src/brand/wordmarks/.`}>
               <div className="flex flex-col gap-4">
                 {([
                   { bg: 'bg-bg-flavor-arancia', variant: 'white', label: 'bianco su arancia 500 — primaria, il logo del packaging' },
@@ -259,29 +271,29 @@ export function DesignSystem() {
                 ] as const).map((t) => (
                   <div key={t.label} className={cn('flex flex-col gap-6 rounded-xl p-8 md:p-12', t.bg)}>
                     <Logo size={520} variant={t.variant} title="" className="h-auto w-full max-w-[520px]" />
-                    <span className={cn('type-mono-sm', t.variant === 'white' ? 'text-neutral-0/80' : 'text-text-muted')}>{t.label}</span>
+                    <span className={cn('type-label', t.variant === 'white' ? 'text-neutral-0/80' : 'text-text-muted')}>{t.label}</span>
                   </div>
                 ))}
               </div>
 
               <div className="mt-6 grid gap-4 md:grid-cols-3">
                 <Card padding="sm">
-                  <p className="type-mono-sm text-text-muted">misura minima</p>
+                  <p className="type-label text-text-muted">Misura minima</p>
                   <p className="mt-2 font-mono text-heading-lg text-text-primary">{WORDMARK_MIN_WIDTH_PX}px · {WORDMARK_MIN_WIDTH_MM}mm</p>
                   <div className="mt-3 flex items-end gap-4">
                     <Logo size={WORDMARK_MIN_WIDTH_PX} variant="ink" title="" />
-                    <span className="type-mono-sm text-text-muted">{WORDMARK_MIN_WIDTH_PX}px di larghezza</span>
+                    <span className="text-body-sm text-text-muted"><span className="font-mono">{WORDMARK_MIN_WIDTH_PX}</span>px di larghezza</span>
                   </div>
                 </Card>
                 <Card padding="sm">
-                  <p className="type-mono-sm text-text-muted">area di rispetto</p>
+                  <p className="type-label text-text-muted">Area di rispetto</p>
                   <p className="mt-2 text-body-sm text-text-secondary">L’altezza della “e” minuscola su tutti i lati: il {Math.round(CLEARSPACE_RATIO * 100)}% dell’altezza del blocco.</p>
                   <div className="mt-3 inline-block bg-bg-raised outline-dashed outline-1 outline-border-brand" style={{ padding: wordmarkHeightFor(140) * CLEARSPACE_RATIO }}>
                     <Logo size={140} variant="ink" title="" />
                   </div>
                 </Card>
                 <Card padding="sm">
-                  <p className="type-mono-sm text-text-muted">scala</p>
+                  <p className="type-label text-text-muted">Scala</p>
                   <ul className="mt-2 flex flex-col gap-1 text-body-sm text-text-secondary">
                     <li>Busta: 82% della larghezza, a sinistra, in alto.</li>
                     <li>Stick: lungo la lunghezza, ruotato di 90°.</li>
@@ -294,12 +306,12 @@ export function DesignSystem() {
             </Block>
 
             {/* ---------------------------------------------------------- */}
-            <Block id="simbolo" number="02 — simbolo" title="il vertice" intro="Tre cerchi pieni e uguali a triangolo: il picco senza disegnare una montagna, i tre ingredienti, i tre grammi. Favicon, avatar, sigillo sullo stick, seme del pattern. Mai come icona funzionale nell’interfaccia.">
+            <Block id="simbolo" number="02 — simbolo" title={<>il <Em>vertice</Em></>} intro={`Tre punti a triangolo: il picco senza disegnare una montagna, i tre ingredienti, i tre grammi. La geometria attiva è la variante ${SYMBOL_VARIANT.toUpperCase()}, dietro il flag SYMBOL_VARIANT; le altre stanno in #/lab/simbolo e la scelta è del brand. Favicon, avatar, sigillo sullo stick, seme del pattern. Mai come icona funzionale nell’interfaccia.`}>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {(Object.keys(ICON_VARIANTS) as IconVariant[]).map((v) => (
                   <div key={v} className="flex flex-col items-center gap-3 rounded-md border border-border-subtle bg-bg-surface p-5">
                     <Icon size={88} variant={v} color="arancia" title="" />
-                    <span className="text-center type-mono-sm text-text-primary">{ICON_VARIANTS[v].label}</span>
+                    <span className="text-center type-label text-text-primary">{ICON_VARIANTS[v].label}</span>
                     <span className="text-center text-body-sm text-text-secondary">{ICON_VARIANTS[v].note}</span>
                   </div>
                 ))}
@@ -310,13 +322,13 @@ export function DesignSystem() {
                   {FAVICON_SIZES.filter((s) => s <= 96).map((size) => (
                     <div key={size} className="flex flex-col items-center gap-2">
                       <Icon size={size} title="" />
-                      <span className="type-mono-sm text-text-muted">{size}px</span>
+                      <span className="font-mono text-mono-md text-text-muted">{size}px</span>
                     </div>
                   ))}
                 </div>
               </Sub>
 
-              <Sub title="lockup" note="Vertice libero e wordmark: lo spazio è la metà dell’altezza del simbolo. Su chiaro il vertice è nel colore-gusto e la parola in inchiostro; su colore e su inchiostro è tutto bianco.">
+              <Sub title="lockup" note="Vertice libero e wordmark: lo spazio è la metà dell’altezza del simbolo. Su chiaro il vertice è nel colore-gusto e la parola in cacao; sul colore e sul profondo è tutto bianco.">
                 <div className="grid gap-4 lg:grid-cols-3">
                   <Card padding="lg" className="flex items-center justify-center"><Lockup iconSize={56} /></Card>
                   <Card padding="lg" className="flex items-center justify-center"><Lockup iconSize={56} orientation="vertical" flavor="lime" /></Card>
@@ -326,14 +338,14 @@ export function DesignSystem() {
             </Block>
 
             {/* ---------------------------------------------------------- */}
-            <Block id="colore" number="03 — colore" title="tre neutri, due colori-gusto, un accento" intro="Tutto il resto esce o finisce nei dettagli tecnici. I campi colore-gusto sono pieni e a tutto campo; su di essi stanno solo il logo e il testo grande. Il testo corrente va inchiostro sul tint.">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            <Block id="colore" number="03 — colore" title={<>carta, cacao, due colori-gusto, <Em>un</Em> accento</>} intro="Niente nero, da nessuna parte: il testo è cacao, le superfici scure sono arancia 600 e lime 700. I campi 500 sono pieni e a tutto campo e portano solo il logo, il testo grande e le chip di vetro; il testo corrente va cacao sul tint o bianco sul profondo. La grana (3–5%) si posa sui campi e sul vetro.">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 {CORE_COLORS.map((c) => (
                   <div key={c.name} className="flex flex-col overflow-hidden rounded-lg border border-border-subtle">
                     <div className="h-24" style={{ background: c.hex }} aria-hidden="true" />
                     <div className="flex flex-col gap-1 bg-bg-surface p-3">
-                      <span className="type-mono-md text-text-primary">{c.name}</span>
-                      <span className="type-mono-sm text-text-muted">{c.hex}</span>
+                      <span className="type-label text-text-primary">{c.name}</span>
+                      <span className="font-mono text-mono-md text-text-muted">{c.hex}</span>
                       <span className="text-body-sm text-text-secondary">{c.use}</span>
                     </div>
                   </div>
@@ -342,33 +354,51 @@ export function DesignSystem() {
             </Block>
 
             {/* ---------------------------------------------------------- */}
-            <Block id="tipografia" number="04 — tipografia" title="quattro famiglie, tutte libere" intro="Gabarito 900 per i display e il wordmark, sempre in minuscolo. Inter per il testo. DM Mono per ogni numero e ogni dato. Fraunces Italic solo per i nomi dei gusti: mai titoli, mai testo.">
+            <Block id="tipografia" number="04 — tipografia" title={<>quattro famiglie, <Em>tutte</Em> libere</>} intro={`Il display viene dal laboratorio font: ${font.family} ${font.titleWeight} per i titoli (mai 900), sempre in minuscolo, con una sola parola in corsivo. Gli occhielli sono display 600 in frase normale. Inter per il testo. DM Mono solo per numeri e codici. Fraunces Italic solo per i nomi dei gusti: mai titoli, mai testo.`}>
               <div className="grid gap-4 md:grid-cols-2">
                 {([
-                  { role: 'display', sample: 'la creatina, evoluta', cls: 'type-display-md', note: 'Gabarito 900 · minuscolo' },
+                  { role: 'display', sample: <>la creatina, <Em>evoluta</Em></>, cls: 'type-display-md', note: `${font.family} ${font.titleWeight} · minuscolo · una parola in corsivo` },
+                  { role: 'occhiello', sample: 'Il gesto, in tre passi', cls: 'type-eyebrow text-text-brand', note: 'Display 600 · frase normale, mai maiuscolo' },
                   { role: 'testo', sample: 'Tre grammi di creatina in uno stick. Da aprire, non da misurare.', cls: 'text-body-lg', note: 'Inter 400 / 500 / 600' },
-                  { role: 'dati', sample: '3 G · 30 STICK · 90 GIORNI', cls: 'type-mono-md', note: 'DM Mono 500 · maiuscolo · tracking 0.14em' },
+                  { role: 'dati', sample: '3 g · 30 stick · 90 giorni', cls: 'font-mono text-heading-lg', note: 'DM Mono 500 · solo numeri e codici' },
                   { role: 'accento', sample: `${FLAVORS[0].number} ${FLAVORS[0].name}`, cls: 'type-flavor-lg', note: 'Fraunces Italic 500 · solo i nomi dei gusti' },
                 ] as const).map((f) => (
                   <Card key={f.role} padding="md">
-                    <p className="type-mono-sm text-text-muted">{f.role} · {f.note}</p>
+                    <p className="type-label text-text-muted">{f.role} · {f.note}</p>
                     <p className={cn('mt-4 text-text-primary', f.cls)}>{f.sample}</p>
                   </Card>
                 ))}
               </div>
 
-              <Sub title="cinque stili chiave">
+              <Sub title="il laboratorio font" note="Sette candidati OFL da Google Fonts. Il parametro ?font=<id> cambia display e wordmark in tutto il sito, ?italic=0 spegne la parola in corsivo. La scelta la fa il brand, nella scorecard di #/lab/font.">
+                <div className="flex flex-wrap gap-2">
+                  {FONT_CANDIDATES.map((c) => (
+                    <a
+                      key={c.id}
+                      href={fontLabHref({ font: c.id })}
+                      aria-current={c.id === font.id ? 'true' : undefined}
+                      className={cn('rounded-full border px-4 py-2 text-body-sm font-bold transition-colors', c.id === font.id ? 'border-arancia-600 bg-bg-brand-soft text-text-brand' : 'border-border-default text-text-secondary hover:border-arancia-600')}
+                      style={{ fontFamily: c.stack }}
+                    >
+                      {c.family}
+                    </a>
+                  ))}
+                  <Button variant="link" as="a" href={to('/lab/font')}>La scorecard →</Button>
+                </div>
+              </Sub>
+
+              <Sub title="sei stili chiave">
                 <div className="rounded-lg border border-border-subtle bg-bg-surface">
-                  {(['display-xl', 'display-md', 'heading-lg', 'body-md', 'mono-md'] as const).map((name) => {
+                  {(['display-xl', 'display-md', 'heading-lg', 'eyebrow', 'body-md', 'mono-md'] as const).map((name) => {
                     const s = typeScale[name]
                     return (
                       <div key={name} className="flex flex-col gap-3 border-b border-border-subtle p-6 last:border-0 lg:flex-row lg:items-baseline lg:gap-8">
                         <div className="w-[176px] shrink-0">
-                          <p className="type-mono-md text-text-primary">{name}</p>
-                          <p className="type-mono-sm text-text-muted">{s.size} / {s.lineHeight} / {s.tracking}</p>
+                          <p className="type-label text-text-primary">{name}</p>
+                          <p className="font-mono text-mono-md text-text-muted">{s.size} / {s.lineHeight} / {s.tracking}</p>
                         </div>
                         <p className={cn(`type-${name}`, 'min-w-0 flex-1 break-words text-text-primary')}>
-                          {s.family === 'mono' ? 'uno stick · tre grammi · 30 giorni' : name === 'display-xl' ? 'evoluta' : 'la creatina, evoluta'}
+                          {s.family === 'mono' ? '3 g · 30 stick · 90 giorni' : name === 'display-xl' ? 'evoluta' : name === 'eyebrow' ? 'Il gesto, in tre passi' : 'la creatina, evoluta'}
                         </p>
                       </div>
                     )
@@ -378,7 +408,7 @@ export function DesignSystem() {
             </Block>
 
             {/* ---------------------------------------------------------- */}
-            <Block id="gusti" number="05 — gusti" title="due al lancio, letti da FLAVORS" intro="Numero, nome in corsivo, colore, profondo e tint. Aggiungere un gusto è aggiungere una riga in src/lib/copy.ts; il nome del gusto 02 vive in una sola costante.">
+            <Block id="gusti" number="05 — gusti" title={<>due al lancio, letti da <Em>FLAVORS</Em></>} intro="Numero, nome in corsivo, colore, profondo e tint. Aggiungere un gusto è aggiungere una riga in src/lib/copy.ts; il nome del gusto 02 vive in una sola costante.">
               <div className="grid gap-6 md:grid-cols-2">
                 {FLAVORS.map((f) => (
                   <FlavorCard key={f.id} flavor={f} showSwatches showAroma />
@@ -387,44 +417,49 @@ export function DesignSystem() {
             </Block>
 
             {/* ---------------------------------------------------------- */}
-            <Block id="packaging" number="06 — packaging (anteprima)" title="il fronte della busta e lo stick" intro="Parametrici e provvisori: le proporzioni sono un segnaposto della fustella. La gerarchia del fronte è la stessa per i due gusti, cambia solo il campo.">
+            <Block id="packaging" number="06 — packaging (anteprima)" title={<>la busta, il retro e lo <Em>stick</Em></>} intro="Parametrici e provvisori: le proporzioni sono un segnaposto della fustella. La frutta è un placeholder piatto con il suo brief, il Neutro sta su bianco, il retro conta trenta cerchi. Le tre varianti, i retri e gli stick sono in #/lab/pack.">
               <div className="mb-4 flex flex-wrap gap-3">
                 <LabTag size="md" what="fustella">provvisorio: in attesa della fustella del laboratorio</LabTag>
               </div>
-              <div className="grid gap-8 lg:grid-cols-[1fr_1fr_auto_auto_1fr] lg:items-end">
+              <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4 xl:items-end">
                 {FLAVORS.map((f) => (
                   <div key={`b-${f.id}`} className="flex justify-center rounded-xl bg-bg-raised p-6">
-                    <BustaPack flavor={f.id} width={240} className="max-w-full" />
+                    <BustaPack flavor={f.id} width={220} className="max-w-full" />
                   </div>
                 ))}
                 {FLAVORS.map((f) => (
                   <div key={`s-${f.id}`} className="flex justify-center rounded-xl bg-bg-raised p-6">
-                    <StickPack flavor={f.id} height={360} />
+                    <StickPack flavor={f.id} height={330} />
                   </div>
                 ))}
-                <ol className="m-0 flex list-none flex-col gap-3 p-0">
+              </div>
+              <ol className="m-0 mt-6 grid list-none gap-3 p-0 sm:grid-cols-2">
                   {[
+                    'Frutta stilizzata, sovradimensionata, dietro e sopra il wordmark, tagliata dai bordi (placeholder con il brief)',
                     'Wordmark bianco, 82% della larghezza, a sinistra',
                     `Descrittore “${PRODUCT.descriptor}”`,
                     'Nome del gusto in corsivo',
                     'Blocco numero: “3 g” + “DI CREATINA AL GIORNO · 30 STICK”',
-                    'Pattern a pallini nel terzo inferiore, sotto il blocco numero',
+                    'Retino a pallini nel terzo inferiore, sotto il blocco numero',
                     'Piede in mono: formula e vegan; lotto e numero di serie',
                   ].map((line, i) => (
-                    <li key={line} className="flex gap-3 text-body-sm text-text-secondary">
-                      <span className="type-mono-sm text-text-muted">{i + 1}</span>
-                      {line}
-                    </li>
-                  ))}
-                </ol>
-              </div>
-              <Sub title="il retro" note="Non ora. Solo l’elenco di cosa deve contenere, con i valori dal laboratorio.">
-                <PackBack />
+                  <li key={line} className="flex gap-3 text-body-sm text-text-secondary">
+                    <span className="font-mono text-mono-md text-text-muted">{i + 1}</span>
+                    {line}
+                  </li>
+                ))}
+              </ol>
+              <Sub title="il retro" note="Trenta cerchi a mano, uno per stick, da segnare a penna: al giorno 75 la foto dei tre retri è la prova della garanzia. I contenuti di legge restano un elenco con i valori dal laboratorio.">
+                <div className="grid gap-8 lg:grid-cols-[auto_1fr] lg:items-start">
+                  <BustaBack flavor="arancia" width={260} marked={12} className="max-w-full" />
+                  <PackBack />
+                </div>
+                <div className="mt-4"><Button variant="link" as="a" href={to('/lab/pack')}>Il laboratorio pack →</Button></div>
               </Sub>
             </Block>
 
             {/* ---------------------------------------------------------- */}
-            <Block id="componenti" number="07 — componenti brand chiave" title="cinque, gli altri nei dettagli" intro="Quelli che portano il posizionamento: il prezzo al giorno, il numero, le quattro settimane, le prove, il pattern.">
+            <Block id="componenti" number="07 — componenti brand chiave" title={<>sette, gli altri nei <Em>dettagli</Em></>} intro="Quelli che portano il posizionamento: il prezzo al giorno, il numero, i punti che contano i giorni, il vetro sul colore, le quattro settimane, le prove, il retino.">
               <Sub title="PriceTiers" note="Prezzo al giorno in grande, totale in piccolo. Il risparmio è calcolato, non scritto. Il Rituale Completo parte selezionato ed è l’unico con la garanzia.">
                 <PriceTiers value={tier} onChange={setTier} />
               </Sub>
@@ -449,16 +484,44 @@ export function DesignSystem() {
                   <div className="h-32 rounded-lg border border-border-subtle bg-bg-surface p-4"><DotField direction="down" color="#3A2A22" opacity={[0.08, 0.35]} stretch className="h-full w-full" /></div>
                 </div>
               </Sub>
+              <Sub title="DayDot e HandDot" note="I tre stati, sempre gli stessi: da fare (anello cacao), fatto (arancia, bianco sul colore), oggi (miele con l’anello arancia 700). Il punto a mano è il segno del cliente: calendario, retro busta, numerazioni.">
+                <div className="flex flex-wrap items-center gap-10">
+                  <div className="flex items-center gap-4">
+                    <DayDot state="todo" size={28} label="da fare" />
+                    <DayDot state="done" size={28} label="fatto" />
+                    <DayDot state="today" size={28} label="oggi" />
+                  </div>
+                  <div className="flex items-center gap-4 text-arancia-500">
+                    <HandDot seed="ds-1" size={28} />
+                    <HandDot seed="ds-2" size={28} />
+                    <HandDot seed="ds-3" size={28} />
+                  </div>
+                </div>
+              </Sub>
+              <Sub title="Glass" note="Solo sopra colore o immagine: chip, card prezzo, switch gusto, barra sticky. Mai su carta. Con i fallback per chi non ha backdrop-filter o riduce la trasparenza.">
+                <div className="flex flex-wrap items-center gap-4 rounded-xl bg-bg-flavor-arancia p-6">
+                  <Glass tone="light" liquid radius="xl">
+                    <p className="type-label text-text-brand">Rituale Completo</p>
+                    <p className="mt-1 font-mono text-display-md text-text-primary">€0,94 <span className="text-body-sm font-display font-semibold text-text-muted">al giorno</span></p>
+                  </Glass>
+                  <Glass tone="onColor" radius="full" padding="sm">
+                    <div className="flex items-center gap-3 px-2 text-body-sm font-display font-bold">
+                      <HandDot seed="chip" size={14} className="text-neutral-0" />
+                      Giulia, <span className="font-mono">47</span> · Bologna
+                    </div>
+                  </Glass>
+                </div>
+              </Sub>
             </Block>
 
             {/* ---------------------------------------------------------- */}
-            <Block id="voce" number="08 — voce in breve" title="cinque claim, sei regole" intro="La gerarchia dei claim con i ruoli, e la colonna sì / no. Per esteso: docs/05 (voce) e docs/06 (compliance).">
+            <Block id="voce" number="08 — voce in breve" title={<>cinque claim, <Em>sei</Em> regole</>} intro="La gerarchia dei claim con i ruoli, e la colonna sì / no. Per esteso: docs/05 (voce) e docs/06 (compliance).">
               <div className="grid gap-6 lg:grid-cols-2">
                 <Card padding="md">
                   <ol className="m-0 flex list-none flex-col gap-4 p-0">
                     {CLAIM_HIERARCHY.map((c) => (
                       <li key={c.key} className="flex flex-col gap-1">
-                        <span className="type-mono-sm text-text-muted">{c.role}</span>
+                        <span className="type-label text-text-muted">{c.role}</span>
                         <span className="text-body-md text-text-primary">{CLAIMS[c.key].it}</span>
                         <span className="text-body-sm text-text-muted">{c.note}</span>
                       </li>
@@ -469,8 +532,8 @@ export function DesignSystem() {
                   <table className="w-full border-collapse text-left">
                     <thead>
                       <tr>
-                        <th className="pb-3 type-mono-sm font-normal text-lime-700">sì</th>
-                        <th className="pb-3 type-mono-sm font-normal text-errore-700">no</th>
+                        <th className="pb-3 type-label text-lime-700">Sì</th>
+                        <th className="pb-3 type-label text-errore-700">No</th>
                       </tr>
                     </thead>
                     <tbody className="text-body-sm">
@@ -494,8 +557,25 @@ export function DesignSystem() {
                 </Card>
               </div>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Button variant="link" as="a" href="https://github.com/noprobagency/eatpeak/blob/ds-v2/docs/05-voice-and-copy.md">docs/05 — voce e copy →</Button>
-                <Button variant="link" as="a" href="https://github.com/noprobagency/eatpeak/blob/ds-v2/docs/06-compliance.md">docs/06 — compliance →</Button>
+                <Button variant="link" as="a" href="https://github.com/noprobagency/eatpeak/blob/main/docs/05-voice-and-copy.md">docs/05 — voce e copy →</Button>
+                <Button variant="link" as="a" href="https://github.com/noprobagency/eatpeak/blob/main/docs/06-compliance.md">docs/06 — compliance →</Button>
+              </div>
+            </Block>
+
+            {/* ---------------------------------------------------------- */}
+            <Block id="laboratori" number="09 — laboratori" title={<>quattro laboratori, <Em>una</Em> scelta ciascuno</>} intro="Le decisioni ancora aperte non si prendono nel codice: si guardano. Ogni laboratorio mette le alternative fianco a fianco e lascia la scelta al brand.">
+              <div className="grid gap-4 sm:grid-cols-2">
+                {[
+                  { href: to('/lab/font'), title: 'Font', body: 'Sette candidati per titoli e wordmark, con ?font=<id> che cambia tutto il sito e la scorecard da compilare.' },
+                  { href: to('/lab/simbolo'), title: 'Simbolo', body: 'Le sei varianti del vertice a 16, 32, 64 e 256 px, sui quattro fondi, nel lockup e accanto al test Asana.' },
+                  { href: to('/lab/box'), title: 'Sezioni', body: 'I sei archetipi di sezione, uno sotto l’altro, e la stessa sequenza a 390 px.' },
+                  { href: to('/lab/pack'), title: 'Pack', body: 'La busta nei due gusti con la frutta, il Neutro, il retro con i trenta cerchi e gli stick.' },
+                ].map((l) => (
+                  <a key={l.href} href={l.href} className="flex flex-col gap-2 rounded-2xl border border-border-subtle bg-bg-surface p-6 transition-colors duration-fast hover:border-arancia-600">
+                    <span className="flex items-center gap-3 text-heading-md text-text-primary"><HandDot seed={l.title} size={12} className="text-arancia-500" />{l.title}</span>
+                    <span className="text-body-sm text-text-secondary">{l.body}</span>
+                  </a>
+                ))}
               </div>
             </Block>
 
@@ -508,10 +588,10 @@ export function DesignSystem() {
             >
               <summary className="flex cursor-pointer list-none items-center justify-between gap-6 rounded-lg border border-border-default bg-bg-surface px-6 py-5 [&::-webkit-details-marker]:hidden">
                 <span className="flex flex-col gap-1">
-                  <span className="type-mono-md text-text-muted">dettagli tecnici</span>
+                  <span className="type-label text-text-muted">Dettagli tecnici</span>
                   <span className="text-heading-md text-text-primary">Per lo sviluppo: token, scale, tutti i componenti in tutti gli stati</span>
                 </span>
-                <span className="type-mono-sm text-text-muted">{detailsOpen ? 'chiudi' : 'apri'}</span>
+                <span className="text-body-sm text-text-muted">{detailsOpen ? 'chiudi' : 'apri'}</span>
               </summary>
 
               <div className="mt-8 flex flex-col gap-2">
@@ -528,8 +608,8 @@ export function DesignSystem() {
                         <div key={name} className="flex items-center gap-3 rounded-md border border-border-subtle bg-bg-surface p-3">
                           <span className="h-control-sm w-control-sm shrink-0 rounded-sm border border-border-subtle" style={{ background: hex }} aria-hidden="true" />
                           <span className="min-w-0">
-                            <span className="block truncate type-mono-md text-text-primary">{name}</span>
-                            <span className="block truncate type-mono-sm text-text-muted">{ref} · {hex}</span>
+                            <span className="block truncate type-label text-text-primary">{name}</span>
+                            <span className="block truncate font-mono text-mono-md text-text-muted">{ref} · {hex}</span>
                           </span>
                         </div>
                       )
@@ -540,7 +620,7 @@ export function DesignSystem() {
                 <Sub title="Le scale complete">
                   {(Object.keys(palette) as Array<keyof typeof palette>).map((scale) => (
                     <div key={scale} className="mb-6">
-                      <p className="mb-2 type-mono-sm text-text-muted">{scale}</p>
+                      <p className="mb-2 type-label text-text-muted">{scale}</p>
                       <div className="grid grid-cols-3 gap-2 sm:grid-cols-6 lg:grid-cols-11">
                         {Object.entries(palette[scale]).map(([step, hex]) => (
                           <Swatch key={step} name={step} hex={hex as string} />
@@ -548,7 +628,7 @@ export function DesignSystem() {
                       </div>
                     </div>
                   ))}
-                  <p className="mb-2 type-mono-sm text-text-muted">stato</p>
+                  <p className="mb-2 type-label text-text-muted">stato</p>
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                     {Object.entries(tokens.color.state).map(([name, hex]) => (
                       <Swatch key={name} name={name} hex={hex} />
@@ -561,7 +641,7 @@ export function DesignSystem() {
                     {Object.entries(space).map(([token, value]) => (
                       <div key={token} className="flex flex-col items-center gap-2">
                         <div className="bg-bg-brand" style={{ width: value, height: 24, minWidth: 2 }} aria-hidden="true" />
-                        <span className="type-mono-sm text-text-muted">{token}</span>
+                        <span className="font-mono text-mono-md text-text-muted">{token}</span>
                       </div>
                     ))}
                   </div>
@@ -569,7 +649,7 @@ export function DesignSystem() {
                     {Object.entries(radius).map(([token, value]) => (
                       <div key={token} className="flex flex-col items-center gap-2">
                         <div className="h-20 w-20 border border-border-brand bg-bg-brand-soft" style={{ borderRadius: value }} aria-hidden="true" />
-                        <span className="type-mono-sm text-text-muted">{token} · {value}</span>
+                        <span className="font-mono text-mono-md text-text-muted">{token} · {value}</span>
                       </div>
                     ))}
                   </div>
@@ -577,7 +657,7 @@ export function DesignSystem() {
                     {Object.entries(shadow).map(([token, value]) => (
                       <div key={token} className="flex flex-col items-center gap-3">
                         <div className="h-20 w-32 rounded-lg bg-bg-surface" style={{ boxShadow: value }} aria-hidden="true" />
-                        <span className="type-mono-sm text-text-muted">{token}</span>
+                        <span className="font-mono text-mono-md text-text-muted">{token}</span>
                       </div>
                     ))}
                   </div>
@@ -593,7 +673,7 @@ export function DesignSystem() {
                   <Stack gap="6">
                     {(['primary', 'secondary', 'ghost', 'link'] as const).map((variant) => (
                       <div key={variant} className="flex flex-wrap items-center gap-4">
-                        <span className="w-24 type-mono-sm text-text-muted">{variant}</span>
+                        <span className="w-24 type-label text-text-muted">{variant}</span>
                         {(['sm', 'md', 'lg'] as const).map((size) => (
                           <Button key={size} variant={variant} size={size}>Aggiungi</Button>
                         ))}
@@ -602,7 +682,7 @@ export function DesignSystem() {
                       </div>
                     ))}
                     <div className="flex flex-wrap items-center gap-4 rounded-lg bg-bg-brand-deep p-4">
-                      <span className="w-24 type-mono-sm text-neutral-0">inverse</span>
+                      <span className="w-24 type-label text-neutral-0">inverse</span>
                       {(['sm', 'md', 'lg'] as const).map((size) => (
                         <Button key={size} variant="inverse" size={size}>Aggiungi</Button>
                       ))}
@@ -674,11 +754,11 @@ export function DesignSystem() {
                   </Stack>
                 </Sub>
 
-                <Sub title="Card" note="I toni colore-gusto pieni portano il testo inchiostro di default.">
+                <Sub title="Card" note="I toni profondi portano il testo bianco; i tint e i pieni portano il cacao.">
                   <Grid cols={4}>
                     {(['surface', 'raised', 'warm', 'brand-deep', 'lime-deep', 'arancia', 'lime', 'arancia-tint', 'lime-tint'] as const).map((tone) => (
                       <Card key={tone} tone={tone} elevation={tone === 'surface' ? 'md' : 'none'}>
-                        <p className="type-mono-sm opacity-70">{tone}</p>
+                        <p className="type-label opacity-70">{tone}</p>
                         <p className="mt-3 text-heading-md">{CLAIMS.product.it}</p>
                       </Card>
                     ))}
@@ -706,7 +786,7 @@ export function DesignSystem() {
                   <div className="mt-6 flex items-center gap-3">
                     <span className="text-body-md text-text-secondary">Creatina monoidrato</span>
                     <Tooltip content="La forma più studiata, e quella a cui si riferisce il claim autorizzato.">
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full border border-border-default type-mono-sm text-text-muted">?</span>
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full border border-border-default text-body-sm text-text-muted">?</span>
                     </Tooltip>
                   </div>
                 </Sub>
@@ -720,7 +800,7 @@ export function DesignSystem() {
                   <div className="mt-6 flex flex-col gap-3">
                     {(['default', 'success', 'warning', 'error'] as const).map((tone) => (
                       <Toast key={tone} tone={tone} duration={null}>
-                        Toast <span className="font-mono uppercase">{tone}</span> — aggiunto al carrello.
+                        Toast <span className="font-display font-bold">{tone}</span> — aggiunto al carrello.
                       </Toast>
                     ))}
                   </div>
@@ -737,15 +817,15 @@ export function DesignSystem() {
                 <Sub title="SectionHeader" note="Con genericBenefit il claim autorizzato diventa obbligatorio per tipo.">
                   <div className="grid gap-8 lg:grid-cols-2">
                     <Card padding="lg">
-                      <SectionHeader eyebrow="il protocollo" title={CLAIMS.noLoading.it.toLowerCase()} body={CLAIMS.againstTheTub.it} />
+                      <SectionHeader eyebrow="Il protocollo" title={CLAIMS.noLoading.it.toLowerCase()} body={CLAIMS.againstTheTub.it} />
                     </Card>
                     <Card padding="lg">
-                      <SectionHeader eyebrow="il sign-off" title="il piacere di sentirsi al picco" genericBenefit authorizedClaim="physical-performance" />
+                      <SectionHeader eyebrow="Il sign-off" title={<>il piacere di sentirsi al <Em>picco</Em></>} genericBenefit authorizedClaim="physical-performance" />
                     </Card>
                   </div>
                 </Sub>
 
-                <Sub title="Marquee" note="Sui campi colore-gusto il mono è inchiostro; il bianco sta sulla banda inchiostro.">
+                <Sub title="Marquee" note="Sui campi colore-gusto il mono è cacao; il bianco sta sulla banda profonda (arancia 600).">
                   <div className="-mx-6 md:-mx-[28px]">
                     <Marquee />
                     <div className="mt-3"><Marquee tone="lime" /></div>
@@ -815,7 +895,7 @@ export function DesignSystem() {
                         <div className="flex h-20 items-center" style={t.style}>
                           <Logo size={130} variant="ink" title="" />
                         </div>
-                        <span className="type-mono-sm text-errore-700">no · {t.label}</span>
+                        <span className="type-label text-errore-700">no · {t.label}</span>
                         <span aria-hidden="true" className="pointer-events-none absolute inset-0" style={{
                           background: 'linear-gradient(to top right, transparent calc(50% - 1px), rgba(192,57,43,.5) 50%, transparent calc(50% + 1px))',
                         }} />
@@ -824,7 +904,7 @@ export function DesignSystem() {
                   </div>
                   <ul className="mt-4 grid gap-2 sm:grid-cols-2">
                     {LOGO_FORBIDDEN_USES.map((u) => (
-                      <li key={u.label} className="text-body-sm text-text-secondary"><span className="type-mono-sm text-errore-700">no · {u.label}</span> — {u.reason}</li>
+                      <li key={u.label} className="text-body-sm text-text-secondary"><span className="type-label text-errore-700">no · {u.label}</span> — {u.reason}</li>
                     ))}
                   </ul>
                 </Sub>

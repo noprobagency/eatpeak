@@ -13,8 +13,8 @@ seconda parte è la più utile: un design system si degrada quando i componenti
 vengono usati fuori dal loro scopo, non quando ne mancano.
 
 Tutti i componenti compaiono nella pagina [Design system](../src/pages/DesignSystem.tsx):
-i cinque chiave nella sezione 07, gli altri nel blocco **Dettagli tecnici**, in
-fondo, chiuso di default. **Se aggiungi un componente e non lo aggiungi lì —
+i sette chiave nella sezione 07, i laboratori nella 09, gli altri nel blocco
+**Dettagli tecnici**, in fondo, chiuso di default. **Se aggiungi un componente e non lo aggiungi lì —
 anche dentro i dettagli — per il sistema non esiste.**
 
 ---
@@ -31,9 +31,13 @@ Valgono per tutto e non hanno prop per essere disattivate.
 | `outline: none` senza sostituto è un bug | — |
 | I pulsanti hanno sempre raggio `full` | `<Button>` non espone `radius` |
 | Ogni dato oggettivo passa dal mono | dosaggi, prezzi al giorno, lotti, conteggi |
-| I `display-*` sono sempre minuscoli | classi `.type-display-*` |
+| I `display-*` sono sempre minuscoli, 700–800, mai 900 | classi `.type-display-*`, `--display-weight` |
+| Una parola in corsivo per titolo, mai due | `<Em>`, `.peak-em` |
+| Occhielli ed etichette in display 600, mai mono maiuscolo | `.type-eyebrow`, `.type-label` |
 | Il corsivo è solo per i nomi dei gusti | classi `.type-flavor*` |
-| Sui campi colore il testo corrente è inchiostro | `Section`, `Card`, `Marquee` con toni `arancia`/`lime` |
+| Sui campi 500 niente testo corrente: cacao sul tint, bianco sul profondo | `Section`, `Card`, `ColorField` con i toni `*-tint` e `*-deep` |
+| Il vetro solo sopra colore o immagine | `<Glass>` |
+| Recensioni, numeri, rating: mai finti in pubblico | `REVIEWS[].example`, `<LabTag>` esempio, `<StockCounter>` |
 | I gusti si leggono da `FLAVORS` | `FlavorCard`, `FlavorSelector`, `BustaPack`, `StickPack`, `ProductCard` |
 | I valori mancanti sono `[dal laboratorio]` | `LabTag`, `IngredientPanel`, `PackBack` |
 | Ogni animazione rispetta reduced-motion | `tokens.css` + `<Marquee>` |
@@ -51,9 +55,9 @@ Valgono per tutto e non hanno prop per essere disattivate.
 | `<Grid>` | Cataloghi, elenchi di prove, timeline. | Colonne di larghezze diverse. Scrivila a mano. |
 | `<Divider>` | Tra due sezioni dello stesso tono, dentro liste lunghe. | Come decorazione. |
 
-`<Section tone>` accetta `page | surface | warm | inverse | arancia | lime |
-arancia-tint | lime-tint`. Sui toni pieni il testo di default è inchiostro; il
-bianco lo si sceglie a mano per titoli e numeri grandi. **Un solo colore-gusto
+`<Section tone>` accetta `page | surface | warm | brand-deep | lime-deep |
+arancia | lime | arancia-tint | lime-tint`. Sui profondi il testo è bianco; sui
+pieni 500 il default è cacao e ci stanno solo titoli, numeri grandi e vetro. **Un solo colore-gusto
 per composizione.**
 
 ---
@@ -205,5 +209,26 @@ tabella.**
 3. Solo token semantici. Se mostra un gusto, legge da `FLAVORS`.
 4. Export in `src/components/index.ts`.
 5. **Una sezione nella pagina Design system**, nei dettagli tecnici se non è uno
-   dei cinque chiave.
+   dei sette chiave.
 6. `npm test`.
+
+---
+
+## Nuovi nella 3.0
+
+| Componente | Quando | Quando no |
+|---|---|---|
+| `<Em>` | La parola in corsivo di un titolo. Una per titolo. | Nel testo, o due volte. |
+| `<Glass tone liquid>` | Chip, card prezzo, switch gusto, barra sticky, sopra colore o immagine. Ha i fallback per chi non ha `backdrop-filter` o riduce la trasparenza. | Su carta o su bianco. |
+| `<Grain>` | Sopra i campi colore e il vetro, al 3–5%. Si spegne sotto i 480px. | Sotto il testo corrente, su carta. |
+| `<DayDot state>` | Il giorno: da fare, fatto, oggi. Tier, confronto, accordion, riga di fiducia. | Come pallino decorativo. |
+| `<HandDot seed>` | Il punto a mano del cliente: passi, numerazioni, garanzia, il rituale, il retro. Deterministico dal seed. | Nel simbolo o nell'interfaccia di sistema. |
+| `<VertexBreath>`, `<WordmarkHalftone>` | Le micro-interazioni del simbolo e del wordmark nel footer: partono da un gesto, durano meno di mezzo secondo. | In loop. |
+| `<StockCounter>` | La disponibilità del lotto a punti, sopra i tier. È un esempio e porta il tag. | Con un numero vero senza fonte. |
+| `<BustaBack flavor marked>` | Il retro della busta con i trenta cerchi da segnare: galleria del PDP, laboratorio pack, design system. | Come etichetta di legge: quella resta `<PackBack>`. |
+| `pack/Fruit` | La frutta placeholder della busta e delle tile dei gusti, con il brief. | Come illustrazione definitiva. |
+| `<Ritual>` (`src/site`) | Il rituale dei 30 punti che si riempiono allo scroll, con il contatore di vetro. | Più di una volta per pagina. |
+| `sections/*` | I sei archetipi A–F: `ColorField`, `Editorial`, `Numbers`, `Statement`, `Rows`, più `Glass`. Le pagine usano solo questi. | Mai due consecutivi uguali. |
+| `<Tabs>` | Sottolineatura a pallini, niente mono. | Per un percorso a passi. |
+| `<PriceTiers legend>` | La legend è il passo del buy box: "2. Quanti giorni". | — |
+| `<LabTag>` esempio | Accanto a recensioni, rating e stock: dice che sono esempi. | Per nascondere un dato mancante che va chiesto al laboratorio (quello è il tag grigio). |

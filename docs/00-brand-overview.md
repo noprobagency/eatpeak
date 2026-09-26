@@ -4,7 +4,7 @@
   Lo stesso contenuto alimenta il componente <BrandOverview />.
 -->
 
-# peak — Design System 2.0
+# peak — Design System 3.0
 
 La creatina, evoluta. Creatina + glicina + vitamina D3 in stick monodose, con formula CreaVida™. Due gusti, una busta da 30 stick per 30 giorni, tre grammi al giorno senza fase di carico.
 

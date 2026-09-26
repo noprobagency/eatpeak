@@ -4,9 +4,15 @@
  *   npm run docs:screens                 usa http://localhost:5173 (dev server acceso)
  *   npm run docs:screens -- --url=https://drinkpeak.vercel.app
  *
- * Le viste sono quelle dei criteri di accettazione della 2.0: la prima
- * schermata del design system a 1440x900, logo e simbolo, busta e stick dei
- * due gusti, piu' home e PDP per il sito.
+ * Le viste sono quelle dei criteri di accettazione della 3.0: home e PDP
+ * desktop, per intero e strette; la home con le etichette dei reference; il
+ * design system; i quattro laboratori (il font con tre candidati); i pack
+ * isolati dal fronte al retro.
+ *
+ * Due limiti di Chrome headless: sotto i 500px la finestra non si stringe
+ * (le viste "mobile" sono a 500px), e una pagina scorsa sotto la barra di
+ * vetro (backdrop-filter) esce vuota, quindi si allunga la finestra invece di
+ * scorrere e non si usano le ancore.
  */
 
 import { execFileSync } from 'node:child_process'
@@ -32,24 +38,34 @@ if (!existsSync(CHROME)) {
   process.exit(1)
 }
 
-/** Nome del file, rotta, dimensioni della finestra, id da cui scorrere (opzionale). */
+/** Nome del file, rotta, query (prima dell'hash), dimensioni della finestra. */
 const SHOTS = [
-  { name: 'showcase-v2-top', route: '#/design-system', width: 1440, height: 900 },
-  // Senza ancora: Chrome headless rende vuota una pagina scorsa sotto la barra di
-  // vetro (backdrop-filter), quindi si allunga la finestra invece di scorrere.
-  { name: 'showcase-v2-logo-simbolo', route: '#/design-system', width: 1440, height: 3000 },
   { name: 'home', route: '#/', width: 1440, height: 900 },
-  { name: 'home-mobile', route: '#/', width: 390, height: 844 },
+  { name: 'home-full', route: '#/', width: 1440, height: 9000 },
+  { name: 'home-ref', route: '#/', query: 'ref=1', width: 1440, height: 9000 },
+  { name: 'home-mobile', route: '#/', width: 500, height: 7000 },
   { name: 'pdp', route: '#/prodotto', width: 1440, height: 1100 },
-  { name: 'prototipi-v2', route: '#/prototipi', width: 1440, height: 1500 },
+  { name: 'pdp-full', route: '#/prodotto', width: 1440, height: 9600 },
+  { name: 'pdp-mobile', route: '#/prodotto', width: 500, height: 7000 },
+  { name: 'design-system', route: '#/design-system', width: 1440, height: 3200 },
+  { name: 'formula', route: '#/formula', width: 1440, height: 2400 },
+  { name: 'prototipi', route: '#/prototipi', width: 1440, height: 1500 },
+  { name: 'lab-font-nunito', route: '#/lab/font', query: 'font=nunito', width: 1440, height: 2600 },
+  { name: 'lab-font-gabarito', route: '#/lab/font', query: 'font=gabarito', width: 1440, height: 2600 },
+  { name: 'lab-font-mplus', route: '#/lab/font', query: 'font=mplus', width: 1440, height: 2600 },
+  { name: 'lab-simbolo', route: '#/lab/simbolo', query: 'font=nunito', width: 1440, height: 2600 },
+  { name: 'lab-box', route: '#/lab/box', query: 'font=nunito', width: 1440, height: 3200 },
+  { name: 'lab-pack', route: '#/lab/pack', query: 'font=nunito', width: 1440, height: 2600 },
 ]
 
 /** I singoli pack, isolati: escono da export:pack, che rende il componente da solo. */
 const PACK_SHOTS = [
-  { name: 'busta-arancia', flavor: 'arancia', kind: 'busta', size: 900 },
-  { name: 'busta-lime', flavor: 'lime', kind: 'busta', size: 900 },
-  { name: 'stick-arancia', flavor: 'arancia', kind: 'stick', size: 1200 },
-  { name: 'stick-lime', flavor: 'lime', kind: 'stick', size: 1200 },
+  { name: 'busta-arancia', flavor: 'arancia', args: ['--busta', '--size=900'] },
+  { name: 'busta-lime', flavor: 'lime', args: ['--busta', '--size=900'] },
+  { name: 'busta-neutro', flavor: 'arancia', args: ['--busta', '--neutro', '--size=900'], file: 'peak-busta-neutro-fronte.png' },
+  { name: 'retro-arancia', flavor: 'arancia', args: ['--retro', '--marked=12', '--size=900'], file: 'peak-retro-arancia-retro.png' },
+  { name: 'stick-arancia', flavor: 'arancia', args: ['--stick', '--size=1200'] },
+  { name: 'stick-lime', flavor: 'lime', args: ['--stick', '--size=1200'] },
 ]
 
 function shoot(url, out, width, height) {
@@ -57,7 +73,7 @@ function shoot(url, out, width, height) {
     CHROME,
     [
       '--headless=new', '--disable-gpu', '--no-sandbox', '--hide-scrollbars',
-      '--virtual-time-budget=6000', `--window-size=${width},${height}`,
+      '--virtual-time-budget=8000', `--window-size=${width},${height}`,
       `--screenshot=${out}`, url,
     ],
     { stdio: ['ignore', 'ignore', 'ignore'] },
@@ -66,7 +82,7 @@ function shoot(url, out, width, height) {
 
 for (const s of SHOTS) {
   const out = resolve(outDir, `${s.name}.png`)
-  shoot(`${base}/${s.route}`, out, s.width, s.height)
+  shoot(`${base}/${s.query ? `?${s.query}` : ''}${s.route}`, out, s.width, s.height)
   console.log(`docs/screens/${s.name}.png  (${s.width}x${s.height})`)
 }
 
@@ -74,12 +90,12 @@ for (const s of SHOTS) {
 for (const p of PACK_SHOTS) {
   execFileSync(
     process.execPath,
-    [resolve(root, 'scripts/export-pack.mjs'), p.flavor, `--${p.kind}`, `--size=${p.size}`],
+    [resolve(root, 'scripts/export-pack.mjs'), p.flavor, ...p.args],
     { stdio: ['ignore', 'ignore', 'inherit'] },
   )
-  const from = resolve(root, `assets/export/pack/peak-${p.kind}-${p.flavor}-fronte.png`)
-  copyFileSync(from, resolve(outDir, `${p.name}.png`))
-  console.log(`docs/screens/${p.name}.png  (da export:pack, ${p.size}px)`)
+  const kind = p.args.includes('--stick') ? 'stick' : 'busta'
+  const from = resolve(root, `assets/export/pack/${p.file ?? `peak-${kind}-${p.flavor}-fronte.png`}`)
+  const to = resolve(outDir, `${p.name}.png`)
+  copyFileSync(from, to)
+  console.log(`docs/screens/${p.name}.png  (da export:pack)`)
 }
-
-console.log('\nFatto.')

@@ -8,7 +8,7 @@
  */
 
 import {
-  Card, Container, IngredientPanel, LabTag, MediaPlaceholder, Section, SectionHeader,
+  Card, Container, Em, IngredientPanel, LabTag, MediaPlaceholder, Section, SectionHeader,
   WeekTimeline, Button,
 } from '../components'
 import { Icon } from '../brand'
@@ -26,7 +26,7 @@ export function Formula() {
             as="h1"
             size="lg"
             eyebrow={PRODUCT.formulaLine}
-            title="creatina, glicina, vitamina d3"
+            title={<>creatina, glicina, <Em>vitamina</Em> d3</>}
             body={`${CLAIMS.brand.it} La formula CreaVida™ mette insieme la dose dello studio, un amminoacido semplice e una vitamina vegana. Sul pack è un sigillo di qualità, non una promessa di risultato.`}
           />
           <div className="mt-12">
@@ -87,7 +87,7 @@ export function Formula() {
       <Section tone="arancia-tint" id="protocollo">
         <Container>
           <SectionHeader
-            eyebrow="il protocollo"
+            eyebrow="Il protocollo"
             title={CLAIMS.noLoading.it.toLowerCase()}
             body="Tre grammi al giorno portano alla saturazione in tre o quattro settimane. La fase di carico — venti grammi al giorno per una settimana — arriva prima allo stesso punto, ma è il motivo per cui la creatina ha fama di essere scomoda. Noi partiamo da uno stick al giorno, dal primo giorno."
             authorizedClaim="physical-performance"
@@ -106,7 +106,7 @@ export function Formula() {
             <div className="flex flex-col gap-8">
               <SectionHeader
                 eyebrow={`${EXPERT.role} · ${EXPERT.title}`}
-                title="le domande che mi fanno"
+                title={<>le domande che mi <Em>fanno</Em></>}
                 body={`“${EXPERT.intro}”`}
               />
               <div className="flex flex-col gap-4">
@@ -146,7 +146,7 @@ export function Formula() {
       {/* --- la tabella --------------------------------------------------- */}
       <Section tone="surface" id="tabella">
         <Container width="narrow">
-          <SectionHeader eyebrow="la tabella" title="i numeri, dove ci sono" body="Tutto in mono. I placeholder in grigio sono i valori che aspettiamo dal laboratorio." />
+          <SectionHeader eyebrow="La tabella" title={<>i numeri, <Em>dove</Em> ci sono</>} body="I numeri in mono. I placeholder in grigio sono i valori che aspettiamo dal laboratorio." />
           <div className="mt-10">
             <IngredientPanel />
           </div>

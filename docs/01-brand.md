@@ -42,7 +42,7 @@ La riga sul target, quando serve:
 
 Due parole che tirano in direzioni opposte, e vanno tenute insieme.
 
-**Clinical.** La base è bianco e carta con l'inchiostro. Griglia pulita, dati in
+**Clinical.** La base è bianco e carta con il cacao, mai il nero. Griglia pulita, dati in
 mono, tabelle asciutte, il claim letterale accanto al beneficio. La dottoressa
 come esperta che spiega, non come testimonial che raccomanda.
 
@@ -55,12 +55,14 @@ occupa l'82% del fronte. Il nome del gusto in corsivo, che è il tocco italiano.
 1. **Un solo colore-gusto per composizione.** Una pagina, una busta, una
    creatività: un colore. L'unica eccezione è il Duo, dove i due gusti stanno
    insieme di proposito.
-2. **Campi colore sempre piatti.** Niente gradienti, niente sfumature, niente
-   trasparenze sul colore. Il pieno è pieno.
+2. **Campi colore piatti, con la grana.** Niente gradienti né sfumature. Sul
+   pieno si posano solo una grana al 3–5% e il vetro — chip, card prezzo,
+   switch — che lasciano il pieno pieno.
 3. **Le foto stanno su carta o dentro un campo colore.** Mai il logo su una
    fotografia senza un campo pieno sotto.
-4. **Il pattern a pallini solo nel terzo inferiore o nelle bande.** Mai sotto
-   il testo, mai come texture di una pagina intera.
+4. **Un solo formato di punti per superficie, il retino al massimo su un
+   terzo.** Mai sotto il testo, mai come texture di una pagina intera. Le sei
+   regole anti-eccesso sono in [03-logo.md](03-logo.md).
 
 ## Il tono
 
@@ -74,14 +76,35 @@ Questo si traduce in scelte concrete e verificabili:
 | Scelta | Perché |
 |---|---|
 | Palette arancia / lime / miele | Colori da frutta, non da farmacia. Uno per gusto, più un accento. |
-| Neutri caldi, mai freddi | Un solo grigio neutro spezza la temperatura di tutto. Carta `#FAF7F2`, non bianco sporco. |
+| Cacao, mai nero | Il testo è cacao `#3A2A22`, le superfici scure sono arancia 600 e lime 700. Il nero fa farmacia; il cacao è caldo come il resto. Carta `#FAF7F2`, non bianco sporco. |
 | Il vertice come simbolo | Tre punti a triangolo: il picco senza una montagna, i tre ingredienti, i tre grammi. |
 | Il pattern a pallini | Deriva dal vertice; porta il lato "particella", scientifico, senza disegnare molecole. |
-| Rounded in minuscolo | Gabarito 900, sempre minuscolo. Il minuscolo toglie solennità. |
-| Mono per tutti i numeri | Il contrappeso: impedisce al rounded di diventare infantile. |
+| Rounded in minuscolo, una parola in corsivo | Il candidato del laboratorio font (default Nunito), 700–800 e mai 900, sempre minuscolo. Il minuscolo toglie solennità; la parola in corsivo mette la voce. |
+| Mono solo per numeri e codici | Il contrappeso: impedisce al rounded di diventare infantile. Mai per occhielli ed etichette, che sono display 600 in frase normale. |
 | Corsivo solo per i gusti | Fraunces Italic: una voce sola, per una cosa sola. Mai titoli, mai testo. |
 | Raggi generosi, pulsanti a pillola | Morbidezza coerente col resto. |
 | Ombre minime, mai glow | Il brand è piatto. Niente estetica "supplement tech". |
+| I punti contano | Ogni pallino è un giorno fatto: il simbolo, la griglia, il retino, il segno a mano del cliente. |
+| Vetro solo sul colore | Chip e card di vetro stanno sopra un campo o una foto, mai su carta. |
+
+## La 3.0: più umano
+
+La 2.0 aveva chiuso il sistema; la 3.0 lo rende umano senza aprirlo. Quattro
+mosse:
+
+1. **Niente nero.** Cacao per il testo, i profondi dei gusti per le superfici
+   scure. L'inchiostro resta solo in stampa.
+2. **Il punto conta.** Il pallino non decora: è un giorno fatto. La griglia dei
+   trenta, il segno a mano del cliente, il retino che accumula, il simbolo a
+   tre punti (V1–V6 nel laboratorio, V5 proposta).
+3. **Una voce nei titoli.** Pesi 700–800, mai 900; una parola in corsivo per
+   titolo; occhielli in frase normale; il mono torna a fare solo i numeri.
+4. **Materia.** La grana sui campi, il vetro sopra il colore, la frutta
+   sovradimensionata sul pack. Il piatto resta piatto, ma non è più un PNG.
+
+Le decisioni ancora aperte — il font, il simbolo, il fondo del rituale — non si
+prendono qui: si guardano nei laboratori (`#/lab/font`, `#/lab/simbolo`,
+`#/lab/box`, `#/lab/pack`) e le prende il brand.
 
 ## Le tensioni da tenere
 
@@ -99,7 +122,7 @@ tre da non risolvere mai del tutto:
 ## Il segno
 
 Il wordmark è la parola **peak**, sempre minuscola, **bianca e piena**, in
-tracciati. Il simbolo è il **vertice**: tre cerchi pieni disposti a triangolo.
+tracciati. Il simbolo è il **vertice**: tre punti a triangolo, nella variante attiva del laboratorio (V5, crescendo con la punta miele, dietro `SYMBOL_VARIANT`).
 
 Per tutto il resto — varianti, misure, usi vietati — vedi [03-logo.md](03-logo.md).
 

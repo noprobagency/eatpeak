@@ -1,5 +1,5 @@
 /**
- * peak — la scheda del brand (2.0).
+ * peak — la scheda del brand (3.0).
  *
  * Sorgente unica del documento di posizionamento. Da qui nascono due cose:
  * il componente <BrandSheet /> (la versione corta, in una card) e
@@ -55,12 +55,12 @@ export const BRAND_SHEET = [
   },
   {
     label: 'direzione visiva',
-    text: 'Clinical Joy: base bianco, carta e inchiostro con i dati in mono; colore-gusto pieno a tutto campo, logo bianco grande, nome del gusto in corsivo.',
+    text: 'Clinical Joy, umanizzato: base bianco e carta con il testo cacao e i numeri in mono; colore-gusto pieno a tutto campo con una grana leggera, logo bianco grande, nome del gusto in corsivo, i punti che contano i giorni.',
   },
 ] as const
 
 export const BRAND_OVERVIEW: BrandOverviewContent = {
-  title: 'peak — Design System 2.0',
+  title: 'peak — Design System 3.0',
 
   intro:
     'La creatina, evoluta. Creatina + glicina + vitamina D3 in stick monodose, con formula CreaVida™. Due gusti, una busta da 30 stick per 30 giorni, tre grammi al giorno senza fase di carico.',

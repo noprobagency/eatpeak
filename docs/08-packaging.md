@@ -5,8 +5,11 @@
 > `[dal laboratorio]`, e la 2.0 esiste perché il passo successivo — lo sviluppo
 > grafico del packaging con i prototipi finali — parta da un sistema chiuso.
 
-I componenti stanno in [`src/components/BustaPack.tsx`](../src/components/BustaPack.tsx)
-e [`StickPack.tsx`](../src/components/StickPack.tsx). Leggono il gusto da
+I componenti stanno in [`src/components/BustaPack.tsx`](../src/components/BustaPack.tsx),
+[`BustaBack.tsx`](../src/components/BustaBack.tsx) (il retro),
+[`StickPack.tsx`](../src/components/StickPack.tsx) e
+[`pack/Fruit.tsx`](../src/components/pack/Fruit.tsx) (la frutta placeholder).
+Tutto è in `#/lab/pack`. Leggono il gusto da
 `FLAVORS` e le proporzioni dai token `pack.*` di `tokens.json`. Cambiare il nome
 del gusto 02 in `FLAVOR_02_NAME` lo cambia sulla busta, sullo stick, nelle card e
 nei prototipi.
@@ -25,11 +28,15 @@ nei prototipi.
 
 ### La gerarchia del fronte, dall'alto
 
+0. **La frutta**, sovradimensionata, dietro e sopra il wordmark, tagliata dai
+   bordi (stile Cure): metà arancia e spicchio per il gusto 01, metà lime e
+   foglia di menta per il 02. Oggi è un placeholder SVG piatto con il brief per
+   la generazione (`FLAVORS[].fruitBrief`); il Neutro non la porta.
 1. **Wordmark bianco**, 82% della larghezza, allineato a sinistra, sotto la
-   banda di saldatura.
+   banda di saldatura, nel font candidato attivo (`fontId`).
 2. **Descrittore** "creatina + glicina + vitamina D3", Inter 500.
 3. **Nome del gusto** "Nº01 Arancia Rossa", Fraunces Italic 500.
-4. **Blocco numero**: "3 g" grande (Gabarito 900) + "DI CREATINA AL GIORNO · 30
+4. **Blocco numero**: "3 g" grande (display 800) + "DI CREATINA AL GIORNO · 30
    STICK" (DM Mono).
 5. **Pattern a pallini** nel terzo inferiore, sotto il blocco numero, senza
    attraversarlo. Raggio crescente verso destra.
@@ -45,6 +52,17 @@ nei prototipi.
 `showGuides` disegna i margini di sicurezza, la banda di saldatura e il limite
 superiore del pattern: serve nello Showcase e nella pagina prototipi.
 
+### Le tre varianti
+
+| Variante | Fondo | Wordmark | Frutta | Retino |
+|---|---|---|---|---|
+| Nº01 Arancia Rossa | arancia 500 | bianco | metà arancia e spicchio | sì |
+| Nº02 Lime & Menta | lime 500 | bianco | metà lime e foglia di menta | sì |
+| Neutro, senza aroma | bianco, bordo neutral 200 | arancia 600 | no | no |
+
+`<BustaPack variant="neutro" />`. Il Neutro è la busta "senza gusto" del
+sistema: la stessa gerarchia, senza il colore.
+
 ### Il testo piccolo sul pack
 
 Sul pack il descrittore, il mono e il piede sono **bianchi sul campo colore**.
@@ -52,9 +70,16 @@ Sul pack il descrittore, il mono e il piede sono **bianchi sul campo colore**.
 prova colore con il laboratorio, non con WCAG. **Sul web vale la regola del
 tint**: il testo corrente su colore è inchiostro sul tint del gusto.
 
-### Il retro
+### Il retro — `<BustaBack flavor marked />`
 
-Non ora. `<PackBack />` è il segnaposto con l'elenco dei contenuti obbligatori:
+Il fronte accumula, il retro conta: **trenta cerchi a mano, uno per stick, da
+segnare a penna**, numerati finché sono vuoti. Sotto, lo spazio per la foto
+della garanzia: al giorno 75 si fotografano i retri delle tre buste con i punti
+segnati. È così che la garanzia si prova, non con un kit. `marked` (0–30) simula
+i giorni segnati; il laboratorio pack ha il cursore.
+
+I contenuti di legge restano un elenco, `<PackBack />`, con i valori dal
+laboratorio:
 
 - denominazione "integratore alimentare" e nome esteso;
 - ingredienti in ordine decrescente di peso `[dal laboratorio]`;
@@ -97,6 +122,9 @@ laboratorio e con chi segue la notifica al Ministero, non partendo da qui.
 ```bash
 npm run export:pack -- arancia --busta --size=3000
 npm run export:pack -- lime --stick --size=2000
+npm run export:pack -- arancia --retro --marked=12       # il retro, con 12 giorni segnati
+npm run export:pack -- arancia --neutro                  # la variante senza aroma
+npm run export:pack -- lime --busta --font=gabarito      # con un altro candidato
 ```
 
 Esce in `assets/export/pack/`, fuori dal versionamento:
@@ -110,7 +138,7 @@ Esce in `assets/export/pack/`, fuori dal versionamento:
 Come funziona: lo script carica i componenti React con il server di Vite in
 modalità SSR (nessuna dipendenza in più), li rende in markup statico e scrive
 l'SVG; poi passa da Chrome headless, che carica i font da Google, disegna l'SVG
-su una tela e ritaglia sull'alfa. Il pattern è fatto di cerchi inline — non di
+su una tela e ritaglia sull'alfa. Il pattern e la frutta sono fatti di forme inline — non di
 un `<foreignObject>`, che contaminerebbe la tela.
 
 **Il PNG è per far vedere. L'SVG è il file di lavoro.**

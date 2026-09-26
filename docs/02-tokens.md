@@ -29,18 +29,24 @@ file.
 
 ## Colore
 
-La regola della 2.0: **3 neutri + 2 colori-gusto + 1 accento**. Tutto il resto è
-uscito (terracotta, bosco, plum, amber, cream, honey) o è finito nei dettagli
-tecnici (il rosso di stato).
+La regola della 3.0: **carta e cacao + 2 colori-gusto + 1 accento, e niente
+nero**. I neutri del testo sono la scala **cacao**; le superfici scure sono i
+profondi dei due gusti, arancia 600 e lime 700. L'inchiostro `#1B1A18`
+sopravvive solo come `color.print.ink`, per la stampa a un colore, e non
+arriva a Tailwind.
 
 | | Nome | Hex | Quando |
 |---|---|---|---|
 | neutro | **bianco** | `#FFFFFF` | superfici, pieni, il logo su colore |
 | neutro | **carta** | `#FAF7F2` | il fondo del sito e della stampa (`neutral.50`) |
-| neutro | **inchiostro** | `#1B1A18` | testo, il logo su chiaro, pulsanti scuri (`neutral.900`) |
-| colore-gusto 01 | **arancia** | `#E4572E` | campi pieni, pulsanti; è anche il **primario del brand** |
-| colore-gusto 02 | **lime** | `#5E9E1F` | campi pieni delle comunicazioni del gusto 02 |
-| accento | **miele** | `#FCD589` | DoseSeal, badge, evidenziazioni. Mai testo su chiaro |
+| neutro | **cacao** | `#3A2A22` | testo, il logo su chiaro (`cacao.900`) |
+| colore-gusto 01 | **arancia** | `#E4572E` | campi pieni; il **profondo** `#C24926` (600) per pulsanti, footer e ogni campo con testo corrente bianco |
+| colore-gusto 02 | **lime** | `#5E9E1F` | campi pieni del gusto 02; il profondo `#406D15` (700) per il rituale |
+| accento | **miele** | `#FCD589` | il punto di oggi, DoseSeal, badge. Mai testo su chiaro |
+
+Sui campi 500 stanno solo il logo, il testo grande e le chip di vetro. Sopra i
+campi e sul vetro si posa una **grana** al 3–5% (`grain`, sotto), spenta sotto
+i 480px e con `prefers-reduced-transparency`.
 
 ### Arancia — colore-gusto 01 e primario
 
@@ -83,21 +89,42 @@ Base **300 `#FCD589`**. È l'unico accento. Vive come riempimento (DoseSeal,
 badge solid) e fondo (`bg-warm` è il 50). **Mai come colore di testo su fondo
 chiaro.**
 
-### Neutri caldi
+### Cacao — i neutri del testo
 
-| Step | Hex | | Step | Hex |
-|---|---|---|---|---|
-| 0 | `#FFFFFF` | | 500 | `#928C84` |
-| **50** | **`#FAF7F2`** carta | | 600 | `#6E6862` |
-| 100 | `#F5F4F2` | | 700 | `#4A443E` |
-| 200 | `#E8E5E0` | | 800 | `#33312E` |
-| 300 | `#DFDCD7` | | **900** | **`#1B1A18`** inchiostro |
-| 400 | `#BDB8B0` | | 1000 | `#0F0E0D` |
+| Step | Hex | Uso |
+|---|---|---|
+| 50 | `#F6F0EB` | — |
+| 100 | `#EDE3DB` | — |
+| 200 | `#DCCDC2` | — |
+| 300 | `#C4B0A3` | i punti spenti nei tier |
+| 400 | `#A08B7E` | l'anello del giorno da fare; **mai testo** (3,24:1) |
+| **500** | **`#7A6A5F`** | `text-muted`, `dot-todo` — 4,85:1 su carta |
+| **600** | **`#6E5F55`** | `text-secondary` — 5,73:1 su carta |
+| 700 | `#55463D` | — |
+| 800 | `#47372E` | — |
+| **900** | **`#3A2A22`** | `text-primary`, `logo-on-light` — 12,8:1 su carta |
 
-I neutri sono **caldi di proposito**. Non usare mai grigi neutri puri o freddi:
-un solo `#888888` in mezzo a questi spezza la temperatura di tutto il resto.
-`tailwind.config.js` **sostituisce** la palette di default invece di estenderla:
-i grigi di Tailwind non sono raggiungibili per sbaglio.
+### Neutri caldi — solo superfici e bordi
+
+| Step | Hex | Uso |
+|---|---|---|
+| 0 | `#FFFFFF` | `bg-surface` |
+| **50** | **`#FAF7F2`** | carta, `bg-page` |
+| 100 | `#F5F4F2` | `bg-raised` |
+| 200 | `#E8E5E0` | `border-subtle` |
+| 300 | `#DFDCD7` | `border-default` |
+| 400 | `#BDB8B0` | `border-strong` |
+
+La scala si ferma al 400: **non esistono più neutri da testo**, e i grigi di
+Tailwind non sono raggiungibili per sbaglio (`tailwind.config.js` sostituisce
+la palette). I neutri restano caldi di proposito: un solo grigio freddo spezza
+la temperatura di tutto.
+
+### L'inchiostro di stampa
+
+`color.print.ink` = `#1B1A18`. Solo per il wordmark a un colore in stampa
+(l'export `print` di `generate-assets.mjs`). Non è un token semantico, non è in
+Tailwind, e `npm run tokens:contrast` fallisce se compare in una coppia.
 
 ### Errore
 
@@ -106,7 +133,7 @@ Solo il rosso che serve a `state.error`: `errore.50 #FDECEA`, `errore.500
 
 ### Stato
 
-`success #406D15` (lime 700) · `warning #D9922A` (miele 600) · `error #C0392B` · `info #4A443E`
+`success #406D15` (lime 700) · `warning #D9922A` (miele 600) · `error #C0392B` · `info #6E5F55` (cacao 600)
 
 ---
 
@@ -120,40 +147,44 @@ Gli unici che i componenti devono conoscere.
 | `--bg-surface` | neutral 0 | |
 | `--bg-raised` | neutral 100 | |
 | `--bg-warm` | miele 50 | |
-| `--bg-inverse` | neutral 900 | |
-| `--bg-brand` | arancia 500 | |
+| `--bg-brand` | arancia 500 | il campo: logo, testo grande, vetro |
+| `--bg-brand-deep` | arancia 600 | **il profondo**: pulsante primario, footer, toast, ogni campo con testo corrente bianco |
 | `--bg-brand-soft` | arancia 50 | |
-| `--bg-flavor-arancia` | arancia 500 | il campo pieno del gusto 01 |
-| `--bg-flavor-arancia-tint` | arancia 50 | |
-| `--bg-flavor-lime` | lime 500 | il campo pieno del gusto 02 |
-| `--bg-flavor-lime-tint` | lime 50 | |
+| `--bg-flavor-arancia` / `-tint` | arancia 500 / 50 | il campo pieno del gusto 01 e il suo tint |
+| `--bg-flavor-lime` / `-tint` | lime 500 / 50 | il campo pieno del gusto 02 e il suo tint |
+| `--bg-lime-deep` | lime 700 | il profondo del gusto 02: il rituale dei 30 punti |
 | `--bg-danger` | errore 50 | |
-| `--text-primary` | neutral 900 | |
-| `--text-secondary` | neutral 700 | |
-| `--text-muted` | neutral 600 | il 500 non arriva a 4,5:1 |
-| `--text-inverse` | neutral 0 | |
-| `--text-brand` | arancia 600 | 4,91:1 su bianco |
-| `--text-on-brand` | neutral 900 | inchiostro sui pulsanti arancia: 4,72:1 |
-| `--text-on-flavor` | neutral 0 | **solo testo grande** sui campi colore |
-| `--text-on-flavor-small` | neutral 900 | il testo piccolo, sul tint |
+| `--text-primary` | cacao 900 | 12,8:1 su carta |
+| `--text-secondary` | cacao 600 | 5,7:1 su carta |
+| `--text-muted` | cacao 500 | 4,85:1 su carta; il 400 non arriva a 4,5:1 |
+| `--text-inverse` | neutral 0 | il bianco sui profondi |
+| `--text-brand` | arancia 600 | 4,91:1 su bianco: occhielli, link |
+| `--text-on-brand` | neutral 0 | bianco sul pulsante arancia 600: 4,91:1 |
+| `--text-on-flavor` | neutral 0 | **solo testo grande** sui campi 500 |
+| `--text-on-flavor-small` | cacao 900 | il testo piccolo, sul tint |
 | `--text-danger` | errore 700 | |
 | `--border-subtle` / `-default` / `-strong` | neutral 200 / 300 / 400 | |
 | `--border-brand` | arancia 500 | |
 | `--border-danger` | errore 500 | |
 | `--logo-on-flavor` | neutral 0 | |
-| `--logo-on-light` | neutral 900 | |
+| `--logo-on-light` | cacao 900 | |
+| `--dot-todo` | cacao 500 | l'anello del giorno da fare, al 40% |
+| `--dot-done` | arancia 500 | il giorno fatto; bianco sul colore |
+| `--dot-today` / `--dot-today-ring` | miele 300 / arancia 700 | oggi: un solo punto miele per vista |
 | `--focus-ring` | arancia 700 | |
 
-**Rimossi dalla 1.0:** `logo-fill`, `logo-stroke`, `logo-stroke-deep`,
-`bg-forest`, `text-on-brand-large` e ogni token `bosco`.
+**Rimossi dalla 2.0:** `bg-inverse`, il `text-on-brand` inchiostro e ogni
+neutro dal 500 in su. **Nuovi:** i profondi, i quattro `dot-*`, i gruppi
+`glass`, `grain` e `section`.
 
-### Perché i pulsanti hanno il testo inchiostro
+### Perché il pulsante primario è arancia 600
 
-Il bianco su arancia 500 dà **3,68:1**: passa per il testo grande (≥ 24px in
-grassetto), non per l'etichetta di un pulsante. L'inchiostro sullo stesso
-fondo dà **4,72:1**. Il colore del brand resta identico: cambia l'inchiostro
-sopra, non il fondo. Sui campi colore e su inchiostro il pulsante è la pillola
-bianca (`variant="inverse"`).
+Il bianco su arancia 500 dà **3,68:1**: passa per il testo grande, non per
+l'etichetta di un pulsante. Invece di scurire il testo, la 3.0 scurisce il
+fondo: il pulsante primario sta su **arancia 600** (`bg-brand-deep`) con il
+testo bianco, **4,91:1**, e resta un pieno del brand. Sui campi 500 e sui
+profondi il pulsante è la pillola bianca con il testo arancia 700
+(`variant="inverse"`, 6,69:1).
 
 ---
 
@@ -164,14 +195,18 @@ Non sono consigli. Un componente che le viola è un bug.
 1. **Su un campo colore-gusto (arancia 500, lime 500) sono ammessi solo il logo
    e il testo grande** — ≥ 24px in grassetto o ≥ 32px regular. Bianco su
    arancia 500 = 3,68:1, bianco su lime 500 = 3,29:1.
-2. **Il testo corrente su un campo colore è vietato:** si usa inchiostro sul
-   `tint` del gusto (`bg-flavor-*-tint` + `text-on-flavor-small`).
-3. **Il testo piccolo sui pieni arancia** — pulsanti, badge — è inchiostro
-   (`text-on-brand`), mai bianco.
+2. **Il testo corrente su un campo 500 è vietato:** cacao sul `tint` del gusto
+   (`bg-flavor-*-tint` + `text-on-flavor-small`) o bianco sul profondo
+   (`bg-brand-deep` arancia 600, `bg-lime-deep` lime 700).
+3. **Il testo piccolo sui pulsanti** è bianco su arancia 600 (`text-on-brand`,
+   4,91:1); sui campi 500 e sui profondi la pillola è bianca con il testo
+   arancia 700.
 4. **Arancia 500, lime 500 e miele 300 non sono mai colore di testo su fondo
    chiaro.** Per il testo brand su chiaro si usa arancia 600 o 700; per il
    verde, lime 700.
 5. Ogni testo sotto i 18px deve raggiungere almeno **4,5:1**.
+6. **Niente nero.** `color.print.ink` non è esposto a Tailwind e il report
+   fallisce se compare in una coppia.
 
 > Sul **pack** il testo piccolo è bianco sul campo colore: è stampa, non
 > interfaccia, e la leggibilità si verifica sulla prova colore con il
@@ -235,51 +270,62 @@ accettazione.
 
 | Ruolo | Font | Pesi | Note |
 |---|---|---|---|
-| Display + wordmark | **Gabarito** | 900 (700/800 dove serve) | sempre minuscolo. Rund è uscito dal sistema. |
+| Display + wordmark | **il candidato del laboratorio font**, default **Nunito** | 700 / 800 nei titoli, mai 900 | sempre minuscolo, una parola in corsivo per titolo. `?font=<id>` lo cambia in tutto il sito; la scelta è del brand (`#/lab/font`) |
+| Occhielli ed etichette | lo stesso display | 600 | frase normale: mai maiuscolo, mai mono |
 | Testo | **Inter** | 400 / 500 / 600 | |
-| Numeri e dati | **DM Mono** | 400 / 500 | tutti i numeri, maiuscolo, tracking 0.14em |
-| **Accento** | **Fraunces Italic** | 500 | **solo i nomi dei gusti**: pack, card gusto, selettore. Mai titoli, mai testo. |
+| Numeri e codici | **DM Mono** | 500 | dosaggi, prezzi, lotti, hex, token. Mai occhielli |
+| Accento | **Fraunces Italic** | 500 | **solo i nomi dei gusti**: pack, card gusto, selettore. Mai titoli, mai testo |
 
-Tutte e quattro sono su Google Fonts con licenza SIL OFL: nessun file locale,
-nessuna licenza da comprare. Vedi [`assets/fonts/README.md`](../assets/fonts/README.md).
+I sette candidati, tutti SIL OFL su Google Fonts: Gabarito (il controllo, senza
+il 900), Nunito, M PLUS Rounded 1c, Fredoka, Baloo 2, Rubik, Varela Round. Lo
+stack sta in `font.display`; a runtime `src/lib/fontlab.ts` imposta
+`--font-display` e `--display-weight`, e le classi `.type-display-*` li
+leggono. Ogni candidato ha il suo wordmark in tracciati
+(`src/brand/wordmarks/<id>.json`).
 
 ### Il ruolo del mono
 
-Il mono **non è decorativo**. Porta tutti i dati oggettivi: dosaggi, grammi,
-numero di stick, lotti, prezzi al giorno, conteggi. È il contrappeso che
-impedisce al rounded di diventare infantile. Sempre maiuscolo, `letter-spacing:
-0.14em`, mai sotto i 10px.
+Il mono **non è decorativo**, ma nella 3.0 fa una cosa sola: **i numeri e i
+codici**. Dosaggi, grammi, stick, lotti, prezzi al giorno, hex, token. Non porta
+più occhielli, etichette e didascalie: quelle sono display 600 in frase normale
+(`type-eyebrow`, `type-label`). `mono-md` non è più maiuscolo; `mono-sm` (11px,
+maiuscolo) resta per le micro-etichette di codice. Le occorrenze di mono
+maiuscolo nel sorgente sono passate da 97 a 11.
 
 ### Il ruolo del corsivo
 
-Fraunces Italic è il tocco "italiano" del sistema, ed esiste per una cosa sola:
-il nome del gusto. `Nº01 Arancia Rossa`. Se compare in un titolo o in un
-paragrafo, è un errore.
+Due corsivi, due compiti. **Fraunces Italic** per il nome del gusto: `Nº01
+Arancia Rossa`. **Il corsivo del display** (`<Em>`, classe `.peak-em`) per una
+parola sola in ogni titolo: "la creatina, *evoluta*". Mai due, mai nel testo.
+`?italic=0` lo spegne per confrontare.
 
 ### La scala
 
-| Token | Size | Line-height | Tracking | Uso |
-|---|---|---|---|---|
-| `display-xl` | 84px | 0.92 | -0.05em | Hero desktop |
-| `display-lg` | 60px | 0.96 | -0.045em | Hero mobile, titoli sezione grandi |
-| `display-md` | 42px | 1.0 | -0.04em | Titoli sezione |
-| `display-sm` | 32px | 1.05 | -0.035em | Sottotitoli forti |
-| `heading-lg` | 26px | 1.15 | -0.03em | Titoli card |
-| `heading-md` | 21px | 1.2 | -0.02em | Titoli minori |
-| `heading-sm` | 18px | 1.3 | -0.015em | Etichette forti |
-| `body-lg` | 18px | 1.6 | 0 | Introduzioni |
-| `body-md` | 16px | 1.6 | 0 | Corpo |
-| `body-sm` | 14px | 1.55 | 0 | Note, didascalie |
-| `mono-md` | 12px | 1.4 | 0.14em | Dati |
-| `mono-sm` | 10px | 1.4 | 0.16em | Micro-etichette |
-| `flavor-lg` | 32px | 1.15 | -0.01em | Il nome del gusto, sul pack e nelle hero |
-| `flavor` | 24px | 1.2 | -0.01em | Il nome del gusto, nelle card |
-| `flavor-sm` | 20px | 1.25 | 0 | Il nome del gusto, nei selettori |
+| Token | Size | Line-height | Tracking | Peso | Uso |
+|---|---|---|---|---|---|
+| `display-xl` | clamp(48px, 7.6vw, 112px) | 1.02 | -0.02em | 800 | Hero |
+| `display-lg` | clamp(40px, 4.6vw, 64px) | 1.06 | -0.02em | 800 | Titoli sezione grandi, statement |
+| `display-md` | clamp(30px, 3vw, 40px) | 1.1 | -0.02em | 700 | Titoli sezione |
+| `display-sm` | 28px | 1.1 | -0.02em | 700 | Sottotitoli forti |
+| `heading-lg` | 24px | 1.2 | -0.015em | 700 | Titoli card |
+| `heading-md` | 20px | 1.25 | -0.01em | 700 | Titoli minori |
+| `heading-sm` | 17px | 1.3 | 0 | 700 | Righe, tab |
+| `eyebrow` | 15px | 1.3 | 0 | 600 | Occhielli, in frase normale |
+| `label` | 13px | 1.4 | 0 | 600 | Etichette |
+| `body-lg` | 18px | 1.6 | 0 | 400 | Introduzioni |
+| `body-md` | 17px | 1.6 | 0 | 400 | Corpo |
+| `body-sm` | 15px | 1.55 | 0 | 400 | Note, didascalie |
+| `mono-lg` | clamp(40px, 4vw, 64px) | 1 | -0.02em | 500 | I numeri grandi |
+| `mono-md` | 13px | 1.4 | 0.06em | 500 | Numeri e codici |
+| `mono-sm` | 11px | 1.4 | 0.1em | 500 | Micro-etichette di codice, maiuscolo |
+| `flavor-lg` | 32px | 1.15 | -0.01em | 500 | Il nome del gusto, sul pack e nelle hero |
+| `flavor` | 24px | 1.2 | -0.01em | 500 | Il nome del gusto, nelle card |
+| `flavor-sm` | 20px | 1.25 | 0 | 500 | Il nome del gusto, nei selettori |
 
-I `display-*` usano sempre **Gabarito 900** e sono sempre in **minuscolo**. I
-`flavor-*` sono sempre **Fraunces Italic 500**. Le classi `.type-display-xl`,
-`.type-flavor` e simili sono generate in `tokens.css` e portano già famiglia,
-peso, stile e `text-transform`.
+I `display-*` sono sempre in **minuscolo** e prendono il peso da
+`--display-weight` (700 o 800 secondo il candidato). I `flavor-*` sono sempre
+**Fraunces Italic 500**. Le classi `.type-*` sono generate in `tokens.css` e
+portano già famiglia, peso, stile e `text-transform`.
 
 ---
 
@@ -315,11 +361,11 @@ che compila sempre ed è visibilmente un'eccezione.
 
 ## Forma
 
-**Raggi** — `sm` 8px · `md` 14px · `lg` 22px · `xl` 30px · `2xl` 44px · `full`.
+**Raggi** — `sm` 8px · `md` 14px · `lg` 22px · `xl` 30px · `2xl` 40px · `full`.
 I pulsanti usano **sempre** `full`. Le card `lg` o `xl`. Spigoli vivi solo nelle
 bande a tutta larghezza.
 
-**Ombre** — `sm` · `md` · `lg`, tutte inchiostro a bassa opacità. Mai ombre
+**Ombre** — `sm` · `md` · `lg`, tutte cacao a bassa opacità. Mai ombre
 colorate, mai glow.
 
 ---
@@ -328,7 +374,8 @@ colorate, mai glow.
 
 `fast` 120ms · `base` 200ms · `slow` 360ms · `marquee` 24s. Easing
 `cubic-bezier(.2,.8,.2,1)`. **Ogni animazione rispetta
-`prefers-reduced-motion: reduce`.** Il pattern a pallini è statico per scelta.
+`prefers-reduced-motion: reduce`.** Le micro-interazioni dei punti (`dots.css`)
+durano meno di mezzo secondo e partono da un gesto: niente loop.
 
 ---
 
@@ -343,6 +390,34 @@ Nuovo gruppo `pack` in `tokens.json`, provvisorio finché non arriva la fustella
 | `pack.wordmarkWidth` | 0.82 | il wordmark sul fronte: l'82% della larghezza |
 | `pack.bustaRatio` | 2:3 | segnaposto della fustella della busta |
 | `pack.stickRatio` | 1:5 | segnaposto dello stick |
+
+---
+
+## Vetro
+
+Gruppo `glass` in `tokens.json`, esposto come `--glass-*`: blur 21px, saturate
+140%, un gradiente da bianco 40% a bianco 5%, bordo bianco 10%, highlight 35%,
+un velo bianco al 62% sotto il testo cacao, fallback bianco 85% senza
+`backdrop-filter`, raggio 14px. `<Glass tone="light|onColor" liquid>` lo
+disegna. **Solo sopra colore o immagine, mai su carta.** Il cacao sul velo:
+12,0:1.
+
+---
+
+## Grana
+
+`grain.opacity` 0.04 (3–5%), `grain.minWidthPx` 480. `<Grain />` è un
+`feTurbulence` in multiply sopra i campi colore e il vetro; si spegne sotto i
+480px e con `prefers-reduced-transparency`. È il modo in cui la 3.0 toglie al
+pieno l'aria di "supplement tech" senza rinunciare al piatto.
+
+---
+
+## Sezione
+
+`section.desktop` 144px, `section.mobile` 88px: il passo verticale delle
+sezioni (`p-section`, `p-section-mobile` in Tailwind). I sei archetipi di
+sezione stanno in `src/site/sections/` e in `#/lab/box`.
 
 ---
 

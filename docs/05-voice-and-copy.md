@@ -120,6 +120,10 @@ CON FORMULA CREAVIDA™ · VEGAN · SPEDIZIONE GRATUITA DA 2 BUSTE
 Tutte **prove verificabili**, non benefici. Se una voce non è controllabile da
 un terzo, non ci va.
 
+Nella 3.0 la home non usa il marquee: sotto l'hero ci sono tre prove secche —
+Made in Italy · Vegan · Nessun abbonamento — con il punto davanti. Il componente
+resta per le bande.
+
 ---
 
 ## I prezzi, come si dicono
@@ -133,7 +137,12 @@ la spedizione dentro: **1,30 €**. I tier 2 e 3 sono già a spedizione inclusa:
 |---|---|---|---|---|
 | 1 | Inizio | 1 | 32,00 € + 6,90 € di spedizione | — |
 | 2 | Abitudine | 2 (anche Duo) | 59,00 € | spedizione gratuita |
-| 3 | Rituale Completo | 3 | 85,00 € | il più scelto · preselezionato · Kit Rituale · Garanzia 90 giorni |
+| 3 | Rituale Completo | 3 | 85,00 € | il più scelto · preselezionato · Garanzia 90 giorni |
+
+Il Kit Rituale in omaggio è rimandato a **dopo il lancio**: non compare nel
+sito né nei materiali. La garanzia si prova con la foto dei tre retri segnati,
+non con un kit. Sotto i tier, la disponibilità del lotto (`<StockCounter />`)
+è un esempio e porta il tag.
 
 ---
 
@@ -184,3 +193,25 @@ articoli, risponde alle domande sulla formula, insegna a leggere un'etichetta.
 La colonna di destra non è sbagliata perché è falsa. È sbagliata perché è vaga,
 o perché è una promessa, e in questa categoria entrambe sono il primo sintomo di
 un claim che non regge.
+
+---
+
+## La 3.0, in breve
+
+- **Una parola in corsivo per titolo**, mai due, mai nel testo: `<Em>`. "La
+  creatina, *evoluta*." Gli occhielli sono frasi normali in display 600, mai
+  maiuscolo, mai mono.
+- **Il mono fa i numeri.** Prezzi, grammi, giorni, lotti. Non porta più
+  etichette né didascalie.
+- **Recensioni, numeri, rating: mai finti in pubblico.** `REVIEWS` porta
+  `example: true` e ogni recensione, il rating accanto al titolo e il contatore
+  del lotto mostrano il tag "esempio" (`<LabTag>`). Quando arriveranno le
+  recensioni vere, si toglie il flag e il tag sparisce.
+- **Niente quiz, niente kit.** Il percorso è: gusto, giorni, pulsante.
+- **La struttura dei testi viene dai reference** (docs/10), il testo no: è
+  riscritto, e sta in `copy.ts` — `STEPS`, `RITUAL_CAPTIONS`, `COMPARISON`,
+  `EXPERT_VIDEOS`, `STANDARDS`, `GUARANTEE`, `OFFER_NOTES`, `PROFILES`.
+- **La co-fondatrice spiega ed educa.** Nei video per tema e nella citazione;
+  la riga "Non raccomanda il prodotto" sta sotto, sempre.
+- **La garanzia si prova con una foto**: al giorno 75, i retri delle tre buste
+  con i punti segnati a penna. È scritto sul retro della busta.

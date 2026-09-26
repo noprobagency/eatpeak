@@ -16,8 +16,8 @@ npm run assets:generate      # rigenera logo, lockup, favicon, PNG, ICO, manifes
 
 ## Il wordmark
 
-La parola è **`peak`**, sempre minuscola, **Gabarito 900**, **vettorializzata in
-tracciati**. Il logo non dipende più da nessun font: si apre ovunque, si stampa
+La parola è **`peak`**, sempre minuscola, **nel font candidato attivo** (default
+**Nunito 900**; Gabarito 800 è il controllo), **vettorializzata in tracciati**. Il logo non dipende più da nessun font: si apre ovunque, si stampa
 ovunque, si vede uguale ovunque.
 
 **Un solo colore, pieno, senza contorno.** Via il riempimento miele con il
@@ -26,15 +26,18 @@ contorno terracotta, via i tre spessori, via le undici varianti della 1.0.
 ### Il tracciato
 
 Generato da `scripts/vectorize-wordmark.mjs` con opentype.js, a partire dal TTF
-statico di Gabarito 900 (SIL OFL, scaricato da Google Fonts). Il file del font
-non si committa; il tracciato sì.
+statico del candidato (`--font-id=<id>`, `--all` per tutti, `--download` li
+scarica da Google Fonts; tutti SIL OFL). Il file del font non si committa; i
+tracciati sì, uno per candidato in `src/brand/wordmarks/<id>.json`. `<Logo>`
+legge quello attivo con `useWordmark()`, e `npm run assets:generate` esporta
+gli SVG con il default e il simbolo di `SYMBOL_VARIANT`.
 
 | | |
 |---|---|
-| Font | Gabarito Black 900 |
+| Font | il candidato attivo: Nunito Black 900 di default, Gabarito 800 come controllo |
 | Tracking | **-0.04em** |
-| viewBox | 201.8 × 87.1 |
-| Altezza della "e" | 51.3 (il 59% del blocco) |
+| viewBox | per candidato (Gabarito: 201.8 × 87.1) |
+| Altezza della "e" | 51.3 (il 59% del blocco, Gabarito) |
 
 ### La scelta del tracking
 
@@ -50,19 +53,19 @@ in prova (`npm run brand:vectorize -- --compare`):
 A -0.03 la "k" galleggia. A -0.05 le pance di "e" e "a" si toccano fino a
 fondersi. **-0.04** tiene "p", "e" e "a" quasi a contatto — com'è nella
 direzione — e lascia alla "k" l'aria che le serve per le sue aste. È il default
-ed è quello nel tracciato.
+ed è quello nel tracciato di ogni candidato (le misure qui sono di Gabarito).
 
 ### Le tre varianti
 
 | Variante | Colore | Quando |
 |---|---|---|
-| `white` | `#FFFFFF` | **Primaria.** Su ogni campo colore-gusto (arancia, lime) e su inchiostro. È il logo del packaging. |
-| `ink` | `#1B1A18` | Su bianco e carta: header del sito, documenti, stampa a un colore. |
+| `white` | `#FFFFFF` | **Primaria.** Su ogni campo colore-gusto (arancia, lime) e sui profondi (arancia 600, lime 700). È il logo del packaging. |
+| `ink` | `#3A2A22` (cacao 900) | Su bianco e carta: header del sito, documenti. Per la stampa a un colore c'è l'export `print` in `#1B1A18`, fuori dal sito. |
 | `flavor` | arancia 500 o lime 500 | Solo su bianco o carta, solo sopra i 48px di altezza. Uso raro: pubblicità su fondo chiaro. |
 
 `<Logo>` accetta `size` (larghezza in px), `variant`, `flavor` e `align`.
 `background` (`light | flavor | dark`) sceglie la variante da solo:
-`flavor`/`dark` → bianco, `light` → inchiostro. In sviluppo avvisa se il logo
+`flavor`/`dark` → bianco, `light` → cacao. In sviluppo avvisa se il logo
 bianco finisce su un fondo chiaro, se la variante colore-gusto scende sotto i
 48px o se la misura è sotto la minima.
 
@@ -282,7 +285,7 @@ Lo Showcase li mostra barrati nei dettagli tecnici. Qui l'elenco.
 
 ```bash
 npm run export:logo -- white --size=2400            # bianco su campo arancia, con area di rispetto
-npm run export:logo -- ink --size=1200              # inchiostro su trasparente, ritagliato
+npm run export:logo -- ink --size=1200              # cacao su trasparente, ritagliato
 npm run export:logo -- lime --bg=#FFFFFF
 npm run export:logo -- --list
 ```

@@ -20,7 +20,7 @@ export const ROUTES: readonly RouteSpec[] = [
   { path: '/', label: 'Home', group: 'sito', title: 'peak — la creatina, evoluta' },
   { path: '/prodotto', label: 'Prodotto', group: 'sito', title: 'peak — Creatina + Glicina + Vitamina D3' },
   { path: '/formula', label: 'La formula', group: 'sito', title: 'peak — la formula CreaVida™' },
-  { path: '/design-system', label: 'Design system', group: 'studio', title: 'peak — design system 2.0' },
+  { path: '/design-system', label: 'Design system', group: 'studio', title: 'peak — design system 3.0' },
   { path: '/prototipi', label: 'Prototipi', group: 'studio', title: 'peak — prototipi' },
   { path: '/lab/font', label: 'Lab · font', group: 'lab', title: 'peak — laboratorio font' },
   { path: '/lab/simbolo', label: 'Lab · simbolo', group: 'lab', title: 'peak — laboratorio simbolo' },
@@ -46,7 +46,7 @@ export const SITE_NAV = [
 ] as const
 
 export const STUDIO_NAV = [
-  { href: to('/design-system'), label: 'Design system 2.0' },
+  { href: to('/design-system'), label: 'Design system 3.0' },
   { href: to('/prototipi'), label: 'Prototipi' },
 ] as const
 

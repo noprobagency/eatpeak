@@ -1,4 +1,4 @@
-# peak — design system 2.0 e sito
+# peak — design system 3.0 e sito
 
 Il sistema di design di **peak**, brand DTC di integratori, e il sito che lo
 mette alla prova. Primo prodotto: **peak — Creatina + Glicina + Vitamina D3**,
@@ -7,9 +7,11 @@ giorni. Tre grammi al giorno, senza fase di carico. Due gusti.
 
 Il posizionamento non è la potenza, è **la costanza**: il prodotto funziona
 perché lo prendi tutti i giorni, e il brand esiste per rendere quel gesto facile
-e piacevole. La direzione visiva è **Clinical Joy**: base bianco, carta e
-inchiostro con i dati in mono; colore-gusto pieno a tutto campo, logo bianco
-grande, nome del gusto in corsivo.
+e piacevole. La direzione visiva è **Clinical Joy**: base bianco e carta con il
+testo cacao e i numeri in mono; colore-gusto pieno a tutto campo con una grana
+leggera, logo bianco grande, nome del gusto in corsivo, i punti che contano i
+giorni. La 3.0 la umanizza: niente nero, una parola in corsivo per titolo, il
+font e il simbolo si scelgono nei laboratori.
 
 > La 1.0 — logo con contorno, saetta, palette terracotta e bosco, tre gusti —
 > è archiviata intera in [`v1/`](v1/) e gira da sola.
@@ -52,15 +54,19 @@ npm install
 npm run dev
 ```
 
-Cinque pagine, sull'hash:
+Cinque pagine e quattro laboratori, sull'hash:
 
 | Rotta | Pagina |
 |---|---|
 | `#/` | **Home** — la prima pagina del sito |
 | `#/prodotto` | **Prodotto** — il PDP con gusto, formati, tabella |
 | `#/formula` | **La formula** — CreaVida™ ingrediente per ingrediente |
-| `#/design-system` | **Design system 2.0** — la scheda del brand, i dettagli tecnici in fondo |
+| `#/design-system` | **Design system 3.0** — la scheda del brand, i laboratori, i dettagli tecnici in fondo |
 | `#/prototipi` | **Prototipi** — busta e stick dai componenti, la shot list, l'archivio 1.0 |
+| `#/lab/font` · `#/lab/simbolo` · `#/lab/box` · `#/lab/pack` | **Laboratori** — font, simbolo, sezioni, pack: le alternative fianco a fianco, la scelta al brand |
+
+Gli interruttori nell'URL: `?font=<id>`, `?italic=0`, `?body=display`, `?ref=1`
+(vedi [docs/09-sito.md](docs/09-sito.md)).
 
 ---
 
@@ -75,7 +81,7 @@ Cinque pagine, sull'hash:
 | `npm run tokens:contrast` | Calcola i rapporti e aggiorna la tabella nei doc |
 | `npm run tokens:build` | Rigenera `tokens.css` da `tokens.json` |
 | `npm run check:utilities` | Verifica che ogni utility usata generi davvero CSS |
-| `npm run brand:vectorize` | Rigenera il tracciato del wordmark da Gabarito 900 |
+| `npm run brand:vectorize` | Rigenera il tracciato del wordmark di un candidato (`-- --font-id=nunito`, `--all`) |
 | `npm run assets:generate` | Rigenera logo, lockup, favicon, PNG, ICO, manifest |
 | `npm run export:logo` | Esporta il wordmark in PNG ad alta risoluzione |
 | `npm run export:pack` | Esporta busta o stick in SVG piatto + PNG, per il designer |
@@ -123,10 +129,11 @@ il percorso.
 
 ## Font
 
-Gabarito, Inter, DM Mono e Fraunces Italic, tutti SIL OFL da Google Fonts.
-Nessun file locale, nessuna licenza da comprare. Rund è uscito dal sistema. Il
-TTF di Gabarito serve solo in locale per rigenerare il wordmark, e non si
-committa.
+Il display viene dal laboratorio font: sette candidati SIL OFL da Google Fonts
+(Nunito di default; Gabarito, M PLUS Rounded 1c, Fredoka, Baloo 2, Rubik, Varela
+Round), più Inter, DM Mono e Fraunces Italic. Nessun file locale, nessuna
+licenza da comprare. I TTF servono solo in locale per rigenerare i wordmark, e
+non si committano.
 
 **→ [assets/fonts/README.md](assets/fonts/README.md)**
 
@@ -143,7 +150,7 @@ committa.
 │   ├── compliance-lint.mjs  cerca claim non autorizzati, con auto-test
 │   ├── contrast-report.mjs  calcola i rapporti, aggiorna i doc, fallisce se serve
 │   ├── check-utilities.mjs  scova le classi fuori scala
-│   ├── vectorize-wordmark.mjs  Gabarito 900 → wordmark.json
+│   ├── vectorize-wordmark.mjs  font candidato → brand/wordmarks/<id>.json
 │   ├── generate-assets.mjs  logo, lockup, favicon, PNG, ICO, manifest
 │   ├── export-logo.mjs      il wordmark in PNG
 │   ├── export-pack.mjs      busta e stick in SVG + PNG (Vite SSR + Chrome)
@@ -173,7 +180,7 @@ committa.
 | # | Documento | Cosa contiene |
 |---|---|---|
 | 00 | [**Scheda del brand**](docs/00-brand-overview.md) | Claim, posizionamento, target, tono. **Comincia da qui.** |
-| 01 | [Brand](docs/01-brand.md) | Posizionamento, target, Clinical Joy, le tensioni da tenere |
+| 01 | [Brand](docs/01-brand.md) | Posizionamento, target, Clinical Joy, la 3.0 più umana, le tensioni da tenere |
 | 02 | [Token](docs/02-tokens.md) | Colore, tipografia, spazio, forma, contrasto, packaging |
 | 03 | [Logo e simbolo](docs/03-logo.md) | Wordmark in tracciati, vertice, lockup, pattern, usi vietati |
 | 04 | [Componenti](docs/04-components.md) | Quando usarli e quando no |
@@ -181,8 +188,10 @@ committa.
 | 06 | [**Compliance**](docs/06-compliance.md) | I sei claim EFSA, i termini vietati, il linter, la dottoressa |
 | 07 | [Setup Claude Design e Higgsfield](docs/07-claude-design-setup.md) | Testi pronti da incollare |
 | 08 | [Packaging](docs/08-packaging.md) | Busta, stick, retro, export, cosa chiedere al laboratorio |
-| 09 | [Il sito](docs/09-sito.md) | Le pagine, la navigazione, la shot list |
-| — | [Changelog 2.0](docs/CHANGELOG-v2.md) | Cosa è cambiato, per fase |
+| 09 | [Il sito](docs/09-sito.md) | Le pagine, gli interruttori, home H1–H15, PDP P1–P14, gli archetipi |
+| 10 | [Riferimenti delle sezioni](docs/10-riferimenti-sezioni.md) | Per ogni sezione il reference, cosa si copia e cosa no |
+| — | [Changelog 3.0](docs/CHANGELOG-v3.md) | Home e PDP sui reference, i laboratori, le tre decisioni aperte |
+| — | [Changelog 2.0](docs/CHANGELOG-v2.md) | La 2.0, per fase |
 
 ---
 
