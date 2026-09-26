@@ -1,7 +1,7 @@
 {
   "name": "peak",
   "short_name": "peak",
-  "description": "Creatina monoidrato in stickpack monodose.",
+  "description": "La creatina, evoluta. Creatina + glicina + vitamina D3 in stick monodose.",
   "icons": [
     {
       "src": "/icon-192.png",
@@ -14,7 +14,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#E9724C",
-  "background_color": "#FAF9F7",
+  "theme_color": "#E4572E",
+  "background_color": "#FAF7F2",
   "display": "standalone"
 }

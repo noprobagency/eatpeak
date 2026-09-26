@@ -1,13 +1,16 @@
 /**
- * Genera tutti gli asset statici del marchio.
+ * Genera tutti gli asset statici del marchio (2.0).
  *
- *   assets/logo/      un SVG per variante, nelle tre versioni di filo
- *   assets/favicon/   un SVG per variante, a ogni misura prevista
+ *   assets/logo/      il wordmark in tracciati: bianco, inchiostro, arancia,
+ *                     lime; i lockup orizzontali e verticali
+ *   assets/favicon/   il vertice nelle 4 varianti, a ogni misura prevista
  *   public/           i file che il sito serve davvero: favicon.ico,
- *                     favicon.svg, apple-touch-icon.png, le icone PWA
+ *                     favicon.svg, apple-touch-icon.png, le icone PWA, il
+ *                     manifest
  *
- * Le costanti arrivano da src/brand/paths.ts, lette come testo e valutate:
- * cosi' il generatore non puo' andare fuori sincrono col componente React.
+ * Le costanti arrivano da src/brand/paths.ts e src/brand/wordmark.json, gli
+ * stessi file dei componenti React: gli SVG statici non possono andare fuori
+ * sincrono col codice. Tutto e' in tracciati: nessun font richiesto.
  *
  *   npm run assets:generate
  */
@@ -20,10 +23,11 @@ import { encodeIco, encodePng, renderIcon } from './lib/raster.mjs'
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 
 // ---------------------------------------------------------------------------
-// Lettura delle costanti dal sorgente TypeScript
+// Lettura delle costanti dal sorgente
 // ---------------------------------------------------------------------------
 
 const pathsSource = readFileSync(resolve(root, 'src/brand/paths.ts'), 'utf8')
+const wordmark = JSON.parse(readFileSync(resolve(root, 'src/brand/wordmark.json'), 'utf8'))
 
 function extractObject(name) {
   const start = pathsSource.indexOf(`export const ${name} = {`)
@@ -42,30 +46,29 @@ function extractObject(name) {
   }
 
   const literal = pathsSource.slice(from, end + 1)
-  // Toglie i commenti di riga, che nel literal non servono.
   const cleaned = literal.replace(/^\s*\/\/.*$/gm, '')
   return new Function(`return (${cleaned})`)()
 }
 
-function extractString(name) {
-  const m = pathsSource.match(new RegExp(`export const ${name} = '([^']+)'`))
+function extractNumber(name) {
+  const m = pathsSource.match(new RegExp(`export const ${name} = ([0-9.]+)`))
   if (!m) throw new Error(`Non trovo ${name} in src/brand/paths.ts`)
-  return m[1]
+  return Number(m[1])
 }
 
-const BOLT_UP = extractString('BOLT_UP')
-const BOLT_PEAK = extractString('BOLT_PEAK')
-const BOLT_PATHS = { up: BOLT_UP, peak: BOLT_PEAK }
+const VERTEX = extractObject('VERTEX')
 const ICON_VARIANTS = extractObject('ICON_VARIANTS')
 const LOGO_VARIANTS = extractObject('LOGO_VARIANTS')
-const STROKE_RATIO = extractObject('STROKE_RATIO')
+const CORNER_RADIUS = extractNumber('ICON_CORNER_RADIUS')
+const SMALL_BELOW = extractNumber('VERTEX_SMALL_BELOW_PX')
+const LOCKUP_GAP_RATIO = extractNumber('LOCKUP_GAP_RATIO')
+const LOCKUP_WORDMARK_TO_ICON = extractNumber('LOCKUP_WORDMARK_TO_ICON')
 
 const FAVICON_SIZES = [512, 192, 96, 64, 48, 32, 16]
 const ICO_SIZES = [16, 32, 48]
-const ICON_OUTLINE_MIN_PX = 48
-const CORNER_RADIUS = 26
 
-const WORDMARK = { width: 210, height: 74, fontSize: 60, baseline: 56, tracking: -2 }
+/** I colori-gusto, per il logo `flavor` e il vertice libero. */
+const FLAVOR_HEX = { arancia: '#E4572E', lime: '#5E9E1F' }
 
 // ---------------------------------------------------------------------------
 // Cartelle
@@ -86,123 +89,177 @@ mkdirSync(dirs.publicDir, { recursive: true })
 const written = { logo: 0, favicon: 0, publicFiles: 0 }
 
 // ---------------------------------------------------------------------------
-// Wordmark
+// Wordmark — in tracciati
 // ---------------------------------------------------------------------------
 
-/**
- * Il font non e' incorporato: Rund e' in licenza trial e i file non stanno nel
- * repo. Questi SVG usano lo stack con i fallback, quindi si aprono ovunque ma
- * NON sono i file finali da mandare in stampa.
- *
- * Una volta comprata la licenza desktop, il wordmark va vettorializzato una
- * volta sola (testo convertito in tracciati) e quei file sostituiscono questi.
- */
-const FONT_STACK = "'Rund Display', Gabarito, system-ui, sans-serif"
+const { width: W, height: H } = wordmark.viewBox
 
-function wordmarkSvg(spec, strokeWidth) {
-  const stroke = spec.stroke
-    ? ` stroke="${spec.stroke}" stroke-width="${strokeWidth}" paint-order="stroke" stroke-linejoin="round"`
-    : ''
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${WORDMARK.width} ${WORDMARK.height}" role="img" aria-label="peak">
+function wordmarkSvg(fill) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="peak">
   <title>peak</title>
-  <!-- ATTENZIONE: il testo NON e' vettorializzato. Senza Rund Display installato
-       si vede il fallback. Per stampa e packaging serve la versione outlined. -->
-  <text x="${WORDMARK.width / 2}" y="${WORDMARK.baseline}" text-anchor="middle"
-        font-family="${FONT_STACK}" font-weight="900" font-size="${WORDMARK.fontSize}"
-        letter-spacing="${WORDMARK.tracking}"
-        fill="${spec.fill ?? 'none'}"${stroke}>peak</text>
+  <!-- Wordmark peak 2.0 - tracciato vettorializzato da Gabarito 900, tracking -0.04em. Nessun font richiesto. -->
+  <path d="${wordmark.path}" fill="${fill}"/>
 </svg>
 `
 }
 
-for (const [name, spec] of Object.entries(LOGO_VARIANTS)) {
-  for (const [step, ratio] of Object.entries(STROKE_RATIO)) {
-    const strokeWidth = spec.strokeWidth ?? Math.round(WORDMARK.fontSize * ratio * 100) / 100
-    writeFileSync(resolve(dirs.logo, `peak-wordmark-${name}-${step}.svg`), wordmarkSvg(spec, strokeWidth))
-    written.logo++
+const logoFiles = {
+  white: LOGO_VARIANTS.white.fill,
+  ink: LOGO_VARIANTS.ink.fill,
+  arancia: FLAVOR_HEX.arancia,
+  lime: FLAVOR_HEX.lime,
+}
 
-    // Le varianti senza filo e quelle a spessore fisso sono identiche nei tre
-    // step: se ne scrive una sola.
-    if (!spec.stroke || spec.strokeWidth) break
-  }
+for (const [name, fill] of Object.entries(logoFiles)) {
+  writeFileSync(resolve(dirs.logo, `peak-wordmark-${name}.svg`), wordmarkSvg(fill))
+  written.logo++
 }
 
 // ---------------------------------------------------------------------------
-// Icona — SVG
+// Vertice — SVG
 // ---------------------------------------------------------------------------
 
-function iconSvg(spec, size) {
-  const showOutline = Boolean(spec.outline) && size >= ICON_OUTLINE_MIN_PX
+function vertexCircles(geometry, fill) {
+  return geometry.points
+    .map(([cx, cy]) => `  <circle cx="${cx}" cy="${cy}" r="${geometry.r}" fill="${fill}"/>`)
+    .join('\n')
+}
 
-  // Il raggio nominale vale 26 su 100. La clamp protegge i rendering piu'
-  // piccoli del previsto, dove scenderebbe sotto i 4px assoluti.
+function iconSvg(spec, size, dotsOverride) {
+  const contained = spec.background !== null
+  const geometry = contained ? (size < SMALL_BELOW ? VERTEX.small : VERTEX.contained) : VERTEX.free
   const radius = Math.max(CORNER_RADIUS, Math.min((4 / size) * 100, 50))
+  const dots = dotsOverride ?? spec.dots
 
   const container = spec.background
-    ? spec.shape === 'circle'
-      ? `  <circle cx="50" cy="50" r="48" fill="${spec.background}"/>\n`
-      : `  <rect x="2" y="2" width="96" height="96" rx="${Math.round(radius * 100) / 100}" fill="${spec.background}"/>\n`
-    : ''
-
-  const outline = showOutline
-    ? ` stroke="${spec.outline}" stroke-width="${spec.outlineWidth ?? 5}" paint-order="stroke" stroke-linejoin="round"`
+    ? `  <rect x="2" y="2" width="96" height="96" rx="${Math.round(radius * 100) / 100}" fill="${spec.background}"/>\n`
     : ''
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="${size}" height="${size}" role="img" aria-label="peak">
   <title>peak</title>
-${container}  <path d="${BOLT_PATHS[spec.path]}" fill="${spec.bolt}"${outline}/>
+${container}${vertexCircles(geometry, dots)}
 </svg>
 `
 }
 
 for (const [name, spec] of Object.entries(ICON_VARIANTS)) {
+  if (name === 'free') {
+    // Il vertice libero esce nei tre colori possibili.
+    for (const [color, hex] of Object.entries({ ...FLAVOR_HEX, ink: '#1B1A18' })) {
+      for (const size of FAVICON_SIZES) {
+        writeFileSync(resolve(dirs.favicon, `peak-vertice-free-${color}-${size}.svg`), iconSvg(spec, size, hex))
+        written.favicon++
+      }
+    }
+    continue
+  }
   for (const size of FAVICON_SIZES) {
-    writeFileSync(resolve(dirs.favicon, `peak-icon-${name}-${size}.svg`), iconSvg(spec, size))
+    writeFileSync(resolve(dirs.favicon, `peak-vertice-${name}-${size}.svg`), iconSvg(spec, size))
     written.favicon++
   }
 }
 
 // ---------------------------------------------------------------------------
-// Icona — PNG e ICO per il deploy
+// Lockup — SVG
 // ---------------------------------------------------------------------------
 
-// renderIcon vuole il path gia' risolto: nella spec `path` e' una chiave.
-const withPath = (spec) => ({ ...spec, path: BOLT_PATHS[spec.path] })
+/**
+ * Vertice libero + wordmark. Lo spazio e' meta' dell'altezza del simbolo.
+ * Il simbolo e' 100 unita' di lato; il wordmark 2.4 volte tanto in larghezza.
+ */
+function lockupSvg(dots, fill, orientation) {
+  const icon = 100
+  const gap = icon * LOCKUP_GAP_RATIO
+  const logoW = icon * LOCKUP_WORDMARK_TO_ICON
+  const logoH = (logoW * H) / W
+  const circles = VERTEX.free.points
+    .map(([cx, cy]) => `<circle cx="${cx}" cy="${cy}" r="${VERTEX.free.r}" fill="${dots}"/>`)
+    .join('')
 
-const PRIMARY = withPath(ICON_VARIANTS['terracotta-honey'])
-const ROUND = withPath(ICON_VARIANTS['terracotta-honey-round'])
+  if (orientation === 'horizontal') {
+    const total = { w: icon + gap + logoW, h: Math.max(icon, logoH) }
+    const iconY = (total.h - icon) / 2
+    const logoY = (total.h - logoH) / 2
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${round(total.w)} ${round(total.h)}" role="img" aria-label="peak">
+  <title>peak</title>
+  <g transform="translate(0 ${round(iconY)})">${circles}</g>
+  <g transform="translate(${round(icon + gap)} ${round(logoY)}) scale(${round(logoW / W)})"><path d="${wordmark.path}" fill="${fill}"/></g>
+</svg>
+`
+  }
 
-// favicon.ico multi-risoluzione, partendo dalla variante primaria.
-const icoImages = ICO_SIZES.map((size) => ({ size, rgba: renderIcon(PRIMARY, size, CORNER_RADIUS) }))
+  const total = { w: Math.max(icon, logoW), h: icon + gap + logoH }
+  const iconX = (total.w - icon) / 2
+  const logoX = (total.w - logoW) / 2
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${round(total.w)} ${round(total.h)}" role="img" aria-label="peak">
+  <title>peak</title>
+  <g transform="translate(${round(iconX)} 0)">${circles}</g>
+  <g transform="translate(${round(logoX)} ${round(icon + gap)}) scale(${round(logoW / W)})"><path d="${wordmark.path}" fill="${fill}"/></g>
+</svg>
+`
+}
+
+function round(n) {
+  return Math.round(n * 100) / 100
+}
+
+const lockups = {
+  'arancia-ink': { dots: FLAVOR_HEX.arancia, fill: '#1B1A18' },
+  'lime-ink': { dots: FLAVOR_HEX.lime, fill: '#1B1A18' },
+  white: { dots: '#FFFFFF', fill: '#FFFFFF' },
+  ink: { dots: '#1B1A18', fill: '#1B1A18' },
+}
+
+for (const [name, spec] of Object.entries(lockups)) {
+  for (const orientation of ['horizontal', 'vertical']) {
+    writeFileSync(resolve(dirs.logo, `peak-lockup-${name}-${orientation}.svg`), lockupSvg(spec.dots, spec.fill, orientation))
+    written.logo++
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Vertice — PNG e ICO per il deploy
+// ---------------------------------------------------------------------------
+
+function rasterSpec(variant, size) {
+  const spec = ICON_VARIANTS[variant]
+  const geometry = size < SMALL_BELOW ? VERTEX.small : VERTEX.contained
+  return {
+    background: spec.background,
+    dots: spec.dots,
+    circles: geometry.points.map(([cx, cy]) => ({ cx, cy, r: geometry.r })),
+  }
+}
+
+// favicon.ico multi-risoluzione, dalla variante primaria (arancia).
+const icoImages = ICO_SIZES.map((size) => ({ size, rgba: renderIcon(rasterSpec('arancia', size), size, CORNER_RADIUS) }))
 writeFileSync(resolve(dirs.publicDir, 'favicon.ico'), encodeIco(icoImages))
 written.publicFiles++
 
 // La favicon vettoriale, che i browser moderni preferiscono.
-writeFileSync(resolve(dirs.publicDir, 'favicon.svg'), iconSvg(ICON_VARIANTS['terracotta-honey'], 32))
+writeFileSync(resolve(dirs.publicDir, 'favicon.svg'), iconSvg(ICON_VARIANTS.arancia, 32))
 written.publicFiles++
 
-// PNG della variante primaria a tutte le misure.
-for (const size of FAVICON_SIZES) {
-  const rgba = renderIcon(PRIMARY, size, CORNER_RADIUS)
-  writeFileSync(resolve(dirs.favicon, `peak-icon-terracotta-honey-${size}.png`), encodePng(rgba, size))
-  written.favicon++
+// PNG delle tre varianti nel contenitore, a tutte le misure.
+for (const variant of ['arancia', 'lime', 'ink']) {
+  for (const size of FAVICON_SIZES) {
+    const rgba = renderIcon(rasterSpec(variant, size), size, CORNER_RADIUS)
+    writeFileSync(resolve(dirs.favicon, `peak-vertice-${variant}-${size}.png`), encodePng(rgba, size))
+    written.favicon++
+  }
 }
 
 // Icona per iOS: senza trasparenza e senza raggio, il sistema arrotonda da se'.
-const appleTouch = renderIcon({ ...PRIMARY, shape: 'rect' }, 180, 0)
+const appleSpec = rasterSpec('arancia', 180)
+const appleTouch = renderIcon(appleSpec, 180, 0)
 writeFileSync(resolve(dirs.publicDir, 'apple-touch-icon.png'), encodePng(appleTouch, 180))
 written.publicFiles++
 
 // Icone PWA.
 for (const size of [192, 512]) {
-  writeFileSync(resolve(dirs.publicDir, `icon-${size}.png`), encodePng(renderIcon(PRIMARY, size, CORNER_RADIUS), size))
+  writeFileSync(resolve(dirs.publicDir, `icon-${size}.png`), encodePng(renderIcon(rasterSpec('arancia', size), size, CORNER_RADIUS), size))
   written.publicFiles++
 }
-
-// Avatar tondo per i social.
-writeFileSync(resolve(dirs.favicon, 'peak-icon-round-512.png'), encodePng(renderIcon(ROUND, 512, CORNER_RADIUS), 512))
-written.favicon++
 
 // ---------------------------------------------------------------------------
 // Manifest
@@ -214,13 +271,13 @@ writeFileSync(
     {
       name: 'peak',
       short_name: 'peak',
-      description: 'Creatina monoidrato in stickpack monodose.',
+      description: 'La creatina, evoluta. Creatina + glicina + vitamina D3 in stick monodose.',
       icons: [
         { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
         { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
       ],
-      theme_color: '#E9724C',
-      background_color: '#FAF9F7',
+      theme_color: '#E4572E',
+      background_color: '#FAF7F2',
       display: 'standalone',
     },
     null,
@@ -230,5 +287,5 @@ writeFileSync(
 written.publicFiles++
 
 console.log(
-  `Asset generati — logo: ${written.logo} · favicon: ${written.favicon} · public: ${written.publicFiles}`,
+  `Asset generati — logo e lockup: ${written.logo} · vertice: ${written.favicon} · public: ${written.publicFiles}`,
 )

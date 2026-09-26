@@ -1,10 +1,10 @@
 /**
  * Rasterizzatore minimo, senza dipendenze.
  *
- * Serve solo a disegnare l'icona di peak: un contenitore (rettangolo
- * arrotondato o cerchio) e una saetta poligonale, con contorno facoltativo.
- * Non e' un motore SVG generico e non prova a esserlo — i path del marchio
- * usano solo M, L e Z con coordinate assolute, e questo basta.
+ * Serve solo a disegnare il vertice di peak: un contenitore (rettangolo
+ * arrotondato, facoltativo) e tre cerchi pieni. Non e' un motore SVG generico
+ * e non prova a esserlo. Nella 2.0 sa disegnare cerchi, oltre ai poligoni
+ * M/L/Z della 1.0, con lo stesso supercampionamento.
  *
  * L'antialiasing e' per supercampionamento: ogni pixel e' la media di SS x SS
  * campioni. A SS=4 il bordo e' pulito anche a 16px.
@@ -50,25 +50,6 @@ function pointInPolygon(px, py, poly) {
   return inside
 }
 
-function distanceToSegment(px, py, ax, ay, bx, by) {
-  const dx = bx - ax
-  const dy = by - ay
-  const lenSq = dx * dx + dy * dy
-  const t = lenSq === 0 ? 0 : Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / lenSq))
-  const cx = ax + t * dx
-  const cy = ay + t * dy
-  return Math.hypot(px - cx, py - cy)
-}
-
-function distanceToPolygonEdge(px, py, poly) {
-  let min = Infinity
-  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
-    const d = distanceToSegment(px, py, poly[j][0], poly[j][1], poly[i][0], poly[i][1])
-    if (d < min) min = d
-  }
-  return min
-}
-
 function insideRoundedRect(px, py, x, y, w, h, r) {
   if (px < x || py < y || px > x + w || py > y + h) return false
   const rx = Math.min(r, w / 2)
@@ -79,6 +60,10 @@ function insideRoundedRect(px, py, x, y, w, h, r) {
 
   if (cx === px && cy === py) return true
   return Math.hypot(px - cx, py - cy) <= rx
+}
+
+function insideCircle(px, py, cx, cy, r) {
+  return Math.hypot(px - cx, py - cy) <= r
 }
 
 // ---------------------------------------------------------------------------
@@ -115,10 +100,10 @@ function blend(dst, offset, [r, g, b], alpha) {
 // ---------------------------------------------------------------------------
 
 /**
- * Disegna l'icona su un buffer RGBA di lato `size`.
+ * Disegna il vertice su un buffer RGBA di lato `size`.
  * Le coordinate della spec sono su viewBox 0..100 e vengono scalate qui.
  *
- * @param {object} spec  { background, bolt, outline, outlineWidth, shape, path }
+ * @param {object} spec  { background, dots, circles: [{cx, cy, r}], polygon? }
  * @param {number} size  lato in pixel
  * @param {number} radiusUnits raggio del contenitore in unita' di viewBox
  */
@@ -127,37 +112,29 @@ export function renderIcon(spec, size, radiusUnits = 26) {
   const scale = size / 100
 
   const bg = spec.background ? parseHex(spec.background) : null
-  const bolt = parseHex(spec.bolt)
-  const outline = spec.outline ? parseHex(spec.outline) : null
-  const outlineHalf = outline ? (spec.outlineWidth ?? 5) / 2 : 0
-
-  const poly = parsePolygon(spec.path)
+  const dots = parseHex(spec.dots)
+  const circles = spec.circles ?? []
+  const poly = spec.polygon ? parsePolygon(spec.polygon) : null
 
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       let bgHits = 0
-      let outlineHits = 0
-      let boltHits = 0
+      let dotHits = 0
 
       for (let sy = 0; sy < SS; sy++) {
         for (let sx = 0; sx < SS; sx++) {
           // punto campione, in unita' di viewBox
-          const ux = ((x + (sx + 0.5) / SS) / scale)
-          const uy = ((y + (sy + 0.5) / SS) / scale)
+          const ux = (x + (sx + 0.5) / SS) / scale
+          const uy = (y + (sy + 0.5) / SS) / scale
 
-          if (bg) {
-            const inBg = spec.shape === 'circle'
-              ? Math.hypot(ux - 50, uy - 50) <= 48
-              : insideRoundedRect(ux, uy, 2, 2, 96, 96, radiusUnits)
-            if (inBg) bgHits++
+          if (bg && insideRoundedRect(ux, uy, 2, 2, 96, 96, radiusUnits)) bgHits++
+
+          let inDot = false
+          for (const c of circles) {
+            if (insideCircle(ux, uy, c.cx, c.cy, c.r)) { inDot = true; break }
           }
-
-          const inBolt = pointInPolygon(ux, uy, poly)
-          if (inBolt) boltHits++
-
-          if (outline && !inBolt && distanceToPolygonEdge(ux, uy, poly) <= outlineHalf) {
-            outlineHits++
-          }
+          if (!inDot && poly && pointInPolygon(ux, uy, poly)) inDot = true
+          if (inDot) dotHits++
         }
       }
 
@@ -165,8 +142,7 @@ export function renderIcon(spec, size, radiusUnits = 26) {
       const offset = (y * size + x) * 4
 
       if (bg && bgHits > 0) blend(px, offset, bg, bgHits / total)
-      if (outline && outlineHits > 0) blend(px, offset, outline, outlineHits / total)
-      if (boltHits > 0) blend(px, offset, bolt, boltHits / total)
+      if (dotHits > 0) blend(px, offset, dots, dotHits / total)
     }
   }
 

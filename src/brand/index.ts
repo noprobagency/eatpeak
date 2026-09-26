@@ -1,4 +1,5 @@
 export { Logo, type LogoProps } from './Logo'
 export { Icon, type IconProps } from './Icon'
 export { Lockup, type LockupProps } from './Lockup'
+export { DotField, DotFieldGroup, dotFieldPoints, type DotFieldProps, type DotFieldGeometry } from './DotField'
 export * from './paths'
