@@ -5,7 +5,9 @@ dist-ssr
 .DS_Store
 .vite
 
-# I file dei font NON vanno committati: Rund e' in licenza trial.
+# I file dei font NON vanno committati. Gabarito, Inter, DM Mono e Fraunces
+# sono su Google Fonts e si caricano da li'; il TTF di Gabarito serve solo
+# in locale per vettorializzare il wordmark (npm run brand:vectorize).
 # Vedi assets/fonts/README.md
 assets/fonts/*.woff
 assets/fonts/*.woff2
@@ -19,6 +21,6 @@ public/fonts/*.ttf
 # artefatti di build di TypeScript
 *.tsbuildinfo
 
-# Export raster del wordmark: sono prodotti con Rund in licenza trial e si
-# rigenerano con `npm run export:logo`. Non vanno versionati.
+# Export raster e vettoriali di logo e packaging: si rigenerano con
+# `npm run export:logo` e `npm run export:pack`. Non vanno versionati.
 assets/export/

@@ -1,0 +1,332 @@
+/* ============================================================
+ * peak — design tokens 2.0
+ * FILE GENERATO. Non modificare a mano.
+ * Sorgente: src/tokens/tokens.json — rigenera con `npm run tokens:build`
+ * ============================================================ */
+
+:root {
+  /* --- colori grezzi: non usarli nei componenti, usa i semantici --- */
+  --color-arancia-50: #FDF2EE;
+  --color-arancia-100: #FAE1D9;
+  --color-arancia-200: #F5C3B4;
+  --color-arancia-300: #F0A18A;
+  --color-arancia-400: #E97958;
+  --color-arancia-500: #E4572E;
+  --color-arancia-600: #C24926;
+  --color-arancia-700: #A03B1E;
+  --color-arancia-800: #7E2E16;
+  --color-arancia-900: #5C200E;
+
+  --color-lime-50: #F2F7ED;
+  --color-lime-100: #E2EED7;
+  --color-lime-200: #C5DCAE;
+  --color-lime-300: #A5C982;
+  --color-lime-400: #7EB14C;
+  --color-lime-500: #5E9E1F;
+  --color-lime-600: #4F861A;
+  --color-lime-700: #406D15;
+  --color-lime-800: #315511;
+  --color-lime-900: #223C0C;
+
+  --color-miele-50: #FEFAF0;
+  --color-miele-100: #FDF2DC;
+  --color-miele-200: #FCE7BE;
+  --color-miele-300: #FCD589;
+  --color-miele-400: #F7C463;
+  --color-miele-500: #EFAE3D;
+  --color-miele-600: #D9922A;
+  --color-miele-700: #B0741F;
+  --color-miele-800: #855717;
+  --color-miele-900: #5A3A0F;
+
+  --color-neutral-0: #FFFFFF;
+  --color-neutral-50: #FAF7F2;
+  --color-neutral-100: #F5F4F2;
+  --color-neutral-200: #E8E5E0;
+  --color-neutral-300: #DFDCD7;
+  --color-neutral-400: #BDB8B0;
+  --color-neutral-500: #928C84;
+  --color-neutral-600: #6E6862;
+  --color-neutral-700: #4A443E;
+  --color-neutral-800: #33312E;
+  --color-neutral-900: #1B1A18;
+  --color-neutral-1000: #0F0E0D;
+
+  --color-errore-50: #FDECEA;
+  --color-errore-500: #C0392B;
+  --color-errore-700: #7F2418;
+
+  /* --- stato --- */
+  --color-success: #406D15;
+  --color-warning: #D9922A;
+  --color-error: #C0392B;
+  --color-info: #4A443E;
+
+  /* --- token semantici: SOLO questi nei componenti --- */
+  --bg-page: var(--color-neutral-50);
+  --bg-surface: var(--color-neutral-0);
+  --bg-raised: var(--color-neutral-100);
+  --bg-warm: var(--color-miele-50);
+  --bg-inverse: var(--color-neutral-900);
+  --bg-brand: var(--color-arancia-500);
+  --bg-brand-soft: var(--color-arancia-50);
+  --bg-flavor-arancia: var(--color-arancia-500);
+  --bg-flavor-arancia-tint: var(--color-arancia-50);
+  --bg-flavor-lime: var(--color-lime-500);
+  --bg-flavor-lime-tint: var(--color-lime-50);
+  --bg-danger: var(--color-errore-50);
+  --text-primary: var(--color-neutral-900);
+  --text-secondary: var(--color-neutral-700);
+  --text-muted: var(--color-neutral-600);
+  --text-inverse: var(--color-neutral-0);
+  --text-brand: var(--color-arancia-600);
+  --text-on-brand: var(--color-neutral-900);
+  --text-on-flavor: var(--color-neutral-0);
+  --text-on-flavor-small: var(--color-neutral-900);
+  --text-danger: var(--color-errore-700);
+  --border-subtle: var(--color-neutral-200);
+  --border-default: var(--color-neutral-300);
+  --border-strong: var(--color-neutral-400);
+  --border-brand: var(--color-arancia-500);
+  --border-danger: var(--color-errore-500);
+  --logo-on-flavor: var(--color-neutral-0);
+  --logo-on-light: var(--color-neutral-900);
+  --focus-ring: var(--color-arancia-700);
+
+  /* --- famiglie --- */
+  --font-display: 'Gabarito', system-ui, sans-serif;
+  --font-text: 'Inter', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-accent: 'Fraunces', Georgia, 'Times New Roman', serif;
+
+  /* --- scala tipografica --- */
+  --type-display-xl-size: 84px;
+  --type-display-xl-lh: 0.92;
+  --type-display-xl-tracking: -0.05em;
+  --type-display-lg-size: 60px;
+  --type-display-lg-lh: 0.96;
+  --type-display-lg-tracking: -0.045em;
+  --type-display-md-size: 42px;
+  --type-display-md-lh: 1.0;
+  --type-display-md-tracking: -0.04em;
+  --type-display-sm-size: 32px;
+  --type-display-sm-lh: 1.05;
+  --type-display-sm-tracking: -0.035em;
+  --type-heading-lg-size: 26px;
+  --type-heading-lg-lh: 1.15;
+  --type-heading-lg-tracking: -0.03em;
+  --type-heading-md-size: 21px;
+  --type-heading-md-lh: 1.2;
+  --type-heading-md-tracking: -0.02em;
+  --type-heading-sm-size: 18px;
+  --type-heading-sm-lh: 1.3;
+  --type-heading-sm-tracking: -0.015em;
+  --type-body-lg-size: 18px;
+  --type-body-lg-lh: 1.6;
+  --type-body-lg-tracking: 0;
+  --type-body-md-size: 16px;
+  --type-body-md-lh: 1.6;
+  --type-body-md-tracking: 0;
+  --type-body-sm-size: 14px;
+  --type-body-sm-lh: 1.55;
+  --type-body-sm-tracking: 0;
+  --type-mono-md-size: 12px;
+  --type-mono-md-lh: 1.4;
+  --type-mono-md-tracking: 0.14em;
+  --type-mono-sm-size: 10px;
+  --type-mono-sm-lh: 1.4;
+  --type-mono-sm-tracking: 0.16em;
+  --type-flavor-lg-size: 32px;
+  --type-flavor-lg-lh: 1.15;
+  --type-flavor-lg-tracking: -0.01em;
+  --type-flavor-size: 24px;
+  --type-flavor-lh: 1.2;
+  --type-flavor-tracking: -0.01em;
+  --type-flavor-sm-size: 20px;
+  --type-flavor-sm-lh: 1.25;
+  --type-flavor-sm-tracking: 0;
+
+  /* --- spazio --- */
+  --space-0: 0px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* --- altezze dei controlli: non sono spazi, hanno la loro scala --- */
+  --control-sm: 36px;
+  --control-md: 44px;
+  --control-lg: 56px;
+
+  /* --- raggi --- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
+  --radius-2xl: 44px;
+  --radius-full: 9999px;
+
+  /* --- ombre --- */
+  --shadow-sm: 0 1px 2px rgba(27,26,24,.06);
+  --shadow-md: 0 4px 12px rgba(27,26,24,.08);
+  --shadow-lg: 0 12px 32px rgba(27,26,24,.10);
+
+  /* --- movimento --- */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 360ms;
+  --duration-marquee: 24s;
+  --easing-standard: cubic-bezier(.2,.8,.2,1);
+
+  /* --- layout --- */
+  --container-max: 1200px;
+  --media-max: 1100px;
+  --container-padding: 28px;
+
+  /* --- packaging: proporzioni parametriche, in attesa della fustella --- */
+  --pack-safe: 0.08;
+  --pack-seal-band: 0.08;
+  --pack-wordmark-width: 0.82;
+}
+
+/* Le classi tipografiche riproducono la scala con famiglia, peso e case corretti.
+   I display sono sempre minuscoli: fa parte dell identita, non e uno stile.
+   Le classi flavor-* sono l accento corsivo: SOLO per i nomi dei gusti. */
+.type-display-xl {
+  font-family: var(--font-display);
+  font-size: var(--type-display-xl-size);
+  line-height: var(--type-display-xl-lh);
+  letter-spacing: var(--type-display-xl-tracking);
+  font-weight: 900;
+  text-transform: lowercase;
+}
+.type-display-lg {
+  font-family: var(--font-display);
+  font-size: var(--type-display-lg-size);
+  line-height: var(--type-display-lg-lh);
+  letter-spacing: var(--type-display-lg-tracking);
+  font-weight: 900;
+  text-transform: lowercase;
+}
+.type-display-md {
+  font-family: var(--font-display);
+  font-size: var(--type-display-md-size);
+  line-height: var(--type-display-md-lh);
+  letter-spacing: var(--type-display-md-tracking);
+  font-weight: 900;
+  text-transform: lowercase;
+}
+.type-display-sm {
+  font-family: var(--font-display);
+  font-size: var(--type-display-sm-size);
+  line-height: var(--type-display-sm-lh);
+  letter-spacing: var(--type-display-sm-tracking);
+  font-weight: 900;
+  text-transform: lowercase;
+}
+.type-heading-lg {
+  font-family: var(--font-text);
+  font-size: var(--type-heading-lg-size);
+  line-height: var(--type-heading-lg-lh);
+  letter-spacing: var(--type-heading-lg-tracking);
+  font-weight: 600;
+}
+.type-heading-md {
+  font-family: var(--font-text);
+  font-size: var(--type-heading-md-size);
+  line-height: var(--type-heading-md-lh);
+  letter-spacing: var(--type-heading-md-tracking);
+  font-weight: 600;
+}
+.type-heading-sm {
+  font-family: var(--font-text);
+  font-size: var(--type-heading-sm-size);
+  line-height: var(--type-heading-sm-lh);
+  letter-spacing: var(--type-heading-sm-tracking);
+  font-weight: 600;
+}
+.type-body-lg {
+  font-family: var(--font-text);
+  font-size: var(--type-body-lg-size);
+  line-height: var(--type-body-lg-lh);
+  letter-spacing: var(--type-body-lg-tracking);
+  font-weight: 400;
+}
+.type-body-md {
+  font-family: var(--font-text);
+  font-size: var(--type-body-md-size);
+  line-height: var(--type-body-md-lh);
+  letter-spacing: var(--type-body-md-tracking);
+  font-weight: 400;
+}
+.type-body-sm {
+  font-family: var(--font-text);
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+  letter-spacing: var(--type-body-sm-tracking);
+  font-weight: 400;
+}
+.type-mono-md {
+  font-family: var(--font-mono);
+  font-size: var(--type-mono-md-size);
+  line-height: var(--type-mono-md-lh);
+  letter-spacing: var(--type-mono-md-tracking);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.type-mono-sm {
+  font-family: var(--font-mono);
+  font-size: var(--type-mono-sm-size);
+  line-height: var(--type-mono-sm-lh);
+  letter-spacing: var(--type-mono-sm-tracking);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.type-flavor-lg {
+  font-family: var(--font-accent);
+  font-size: var(--type-flavor-lg-size);
+  line-height: var(--type-flavor-lg-lh);
+  letter-spacing: var(--type-flavor-lg-tracking);
+  font-weight: 500;
+  font-style: italic;
+}
+.type-flavor {
+  font-family: var(--font-accent);
+  font-size: var(--type-flavor-size);
+  line-height: var(--type-flavor-lh);
+  letter-spacing: var(--type-flavor-tracking);
+  font-weight: 500;
+  font-style: italic;
+}
+.type-flavor-sm {
+  font-family: var(--font-accent);
+  font-size: var(--type-flavor-sm-size);
+  line-height: var(--type-flavor-sm-lh);
+  letter-spacing: var(--type-flavor-sm-tracking);
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* Ogni animazione del sistema si spegne se l utente lo ha chiesto. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

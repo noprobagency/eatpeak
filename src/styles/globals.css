@@ -1,0 +1,81 @@
+@import './../tokens/tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+ * Font
+ *
+ * Le quattro famiglie arrivano da Google Fonts (link in index.html): Gabarito
+ * per display e wordmark, Inter per il testo, DM Mono per i dati, Fraunces
+ * Italic per i nomi dei gusti. Nessun file locale, nessuna licenza da comprare.
+ * Rund e' uscito dal sistema con la 2.0: vedi assets/fonts/README.md.
+ * ------------------------------------------------------------------------ */
+
+@layer base {
+  :root {
+    /* Sovrascritta a runtime con l'altezza misurata della barra. */
+    --header-height: 72px;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: var(--font-text);
+    font-size: var(--type-body-md-size);
+    line-height: var(--type-body-md-lh);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* peak-compliance-ignore focus — anello di focus da tastiera, non un claim */
+  /* Focus visibile su tutto. `outline: none` senza sostituto e' un bug. */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Il display e' sempre minuscolo: fa parte dell'identita'. */
+  :where(h1, h2, h3, h4, h5, h6) {
+    margin: 0;
+    font-weight: inherit;
+  }
+
+  :where(p) {
+    margin: 0;
+  }
+
+  ::selection {
+    background: var(--color-miele-300);
+    color: var(--color-neutral-900);
+  }
+}
+
+@layer components {
+  /* Contenuto per soli screen reader. Serve al Marquee, che altrimenti
+     verrebbe letto come testo scorrevole e duplicato. */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .focus-ring {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+}
