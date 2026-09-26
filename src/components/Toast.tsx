@@ -28,7 +28,7 @@ export interface ToastProps {
 
 const TONES: Record<ToastTone, string> = {
   default: 'bg-bg-inverse text-text-inverse',
-  success: 'bg-lime-500 text-neutral-0',
+  success: 'bg-success text-neutral-0',
   warning: 'bg-miele-300 text-neutral-900',
   error: 'bg-error text-neutral-0',
 }

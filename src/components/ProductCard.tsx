@@ -6,21 +6,24 @@
  * punta merita una pagina, non una card.
  *
  * Il prezzo per giorno e' obbligatorio ed e' in mono: e' il numero che rende
- * confrontabile uno stickpack con un barattolo.
+ * confrontabile uno stick con un barattolo. Il gusto arriva da FLAVORS e
+ * decide il colore del riquadro visivo.
  */
 
 import type { ReactNode } from 'react'
 import { cn } from '../lib/cn'
-import { formatEur, pricePerDay } from '../lib/copy'
+import { flavorById, flavorLabel, formatEur, pricePerDay, type FlavorId } from '../lib/copy'
+import { StickPack } from './StickPack'
 
 export interface ProductCardProps {
   name: string
-  /** Formato in chiaro: "30 stickpack monodose". */
+  flavor: FlavorId
+  /** Formato in chiaro: "30 stick monodose". */
   format: string
   priceEur: number
   /** Giorni di prodotto: serve a calcolare il prezzo per giorno. */
   days: number
-  /** Il visivo. In genere <StickPack /> o un <img>. */
+  /** Il visivo. Se omesso, lo stick del gusto. */
   visual?: ReactNode
   badge?: ReactNode
   href?: string
@@ -31,9 +34,11 @@ export interface ProductCardProps {
 }
 
 export function ProductCard({
-  name, format, priceEur, days, visual, badge, href,
+  name, flavor, format, priceEur, days, visual, badge, href,
   onAddToCart, cta = 'Aggiungi', soldOut = false, className,
 }: ProductCardProps) {
+  const f = flavorById(flavor)
+
   return (
     <article
       className={cn(
@@ -43,29 +48,25 @@ export function ProductCard({
         className,
       )}
     >
-      <div className="relative flex items-center justify-center bg-bg-warm p-8">
+      <div className={cn('relative flex items-center justify-center p-8', f.colorToken)}>
         {badge && <div className="absolute left-4 top-4">{badge}</div>}
-        {visual}
+        {visual ?? <StickPack flavor={flavor} height={180} />}
       </div>
 
-      <div className="flex flex-1 flex-col gap-3 p-6">
+      <div className="flex flex-1 flex-col gap-2 p-6">
         <h3 className="text-heading-lg text-text-primary">
           {href ? (
-            <a href={href} className="transition-colors duration-fast hover:text-text-brand">
-              {name}
-            </a>
+            <a href={href} className="transition-colors duration-fast hover:text-text-brand">{name}</a>
           ) : (
             name
           )}
         </h3>
-
+        <p className="type-flavor-sm text-text-primary">{flavorLabel(f)}</p>
         <p className="font-mono text-mono-md uppercase text-text-muted">{format}</p>
 
         <div className="mt-auto flex flex-wrap items-baseline gap-x-3 gap-y-1 pt-3">
-          <span className="text-heading-lg text-text-primary">{formatEur(priceEur)}</span>
-          <span className="font-mono text-mono-md text-text-secondary">
-            {pricePerDay(priceEur, days)} al giorno
-          </span>
+          <span className="font-mono text-heading-lg tabular-nums text-text-primary">{pricePerDay(priceEur, days)}</span>
+          <span className="font-mono text-mono-sm uppercase text-text-muted">al giorno · {formatEur(priceEur)}</span>
         </div>
 
         {onAddToCart && (

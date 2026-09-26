@@ -6,8 +6,9 @@
  * QUANDO NO: per numeri che non sono dosaggi. Un bollino "-30%" con questa
  * forma confonde un dato di prodotto con una promozione.
  *
- * Il numero e' in Rund Display, l'unita' e la didascalia in mono: e' il
- * contrappeso che impedisce al rounded di diventare infantile.
+ * Il numero e' in Gabarito, l'unita' e la didascalia in mono: e' il
+ * contrappeso che impedisce al rounded di diventare infantile. Il miele e'
+ * l'accento del sistema, ed e' il tono di default del bollino.
  */
 
 import { cn } from '../lib/cn'
@@ -20,18 +21,19 @@ export interface DoseSealProps {
   /** Riga aggiuntiva sotto l'unita'. Tienila corta. */
   caption?: string
   size?: number
-  tone?: 'brand' | 'honey' | 'forest' | 'ink'
+  tone?: 'miele' | 'arancia' | 'lime' | 'ink' | 'white'
   className?: string
 }
 
 const TONES = {
-  brand: 'bg-bg-brand text-text-on-brand',
-  honey: 'bg-miele-300 text-neutral-900',
-  forest: 'bg-bg-flavor-lime text-neutral-0',
+  miele: 'bg-miele-300 text-neutral-900',
+  arancia: 'bg-bg-flavor-arancia text-text-on-flavor',
+  lime: 'bg-bg-flavor-lime text-text-on-flavor',
   ink: 'bg-bg-inverse text-text-inverse',
+  white: 'bg-neutral-0 text-neutral-900',
 } as const
 
-export function DoseSeal({ value, unit = 'g', caption, size = 128, tone = 'honey', className }: DoseSealProps) {
+export function DoseSeal({ value, unit = 'g', caption, size = 128, tone = 'miele', className }: DoseSealProps) {
   return (
     <div
       className={cn('flex shrink-0 flex-col items-center justify-center rounded-full text-center', TONES[tone], className)}
@@ -39,11 +41,7 @@ export function DoseSeal({ value, unit = 'g', caption, size = 128, tone = 'honey
       role="img"
       aria-label={`${value} ${unit}${caption ? ` — ${caption}` : ''}`}
     >
-      <span
-        className="font-display leading-none"
-        style={{ fontSize: size * 0.4, fontWeight: 900, letterSpacing: '-0.04em' }}
-        aria-hidden="true"
-      >
+      <span className="font-display leading-none" style={{ fontSize: size * 0.4, fontWeight: 900, letterSpacing: '-0.04em' }} aria-hidden="true">
         {value}
       </span>
       <span className="font-mono uppercase" style={{ fontSize: Math.max(9, size * 0.09), letterSpacing: '0.14em' }} aria-hidden="true">

@@ -14,6 +14,9 @@
  * Con `prefers-reduced-motion: reduce` l'animazione si ferma e la banda
  * diventa una riga fissa che va a capo.
  * ─────────────────────────────────────────────────────────────────────────
+ *
+ * Il mono a 12px sui campi colore-gusto e' testo piccolo: quindi inchiostro,
+ * non bianco. Il bianco sta sulla banda inchiostro.
  */
 
 import { useEffect, useState } from 'react'
@@ -22,7 +25,7 @@ import { MARQUEE_ITEMS } from '../lib/copy'
 
 export interface MarqueeProps {
   items?: readonly string[]
-  tone?: 'brand' | 'forest' | 'ink' | 'honey'
+  tone?: 'arancia' | 'lime' | 'ink' | 'miele'
   /** Il separatore tra una voce e l'altra. */
   separator?: string
   /** Ferma lo scorrimento quando il puntatore entra nella banda. */
@@ -31,10 +34,10 @@ export interface MarqueeProps {
 }
 
 const TONES = {
-  brand: 'bg-bg-brand text-text-on-brand',
-  forest: 'bg-bg-flavor-lime text-neutral-0',
+  arancia: 'bg-bg-flavor-arancia text-text-on-flavor-small',
+  lime: 'bg-bg-flavor-lime text-text-on-flavor-small',
   ink: 'bg-bg-inverse text-text-inverse',
-  honey: 'bg-miele-300 text-neutral-900',
+  miele: 'bg-miele-300 text-neutral-900',
 } as const
 
 function usePrefersReducedMotion(): boolean {
@@ -53,7 +56,7 @@ function usePrefersReducedMotion(): boolean {
 
 export function Marquee({
   items = MARQUEE_ITEMS,
-  tone = 'brand',
+  tone = 'arancia',
   separator = '·',
   pauseOnHover = true,
   className,
@@ -87,10 +90,7 @@ export function Marquee({
           ))}
         </div>
       ) : (
-        <div
-          aria-hidden="true"
-          className={cn('flex w-max animate-marquee', pauseOnHover && 'hover:[animation-play-state:paused]')}
-        >
+        <div aria-hidden="true" className={cn('flex w-max animate-marquee', pauseOnHover && 'hover:[animation-play-state:paused]')}>
           {strip}
           {/* Il duplicato serve al loop: l'animazione trasla del 50%. */}
           {strip}

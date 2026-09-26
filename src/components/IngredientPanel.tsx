@@ -1,29 +1,33 @@
 /**
  * <IngredientPanel /> — la tabella nutrizionale.
  *
- * QUANDO USARLO: pagina prodotto, sempre visibile o dentro una tab. Mai dentro
- * un accordion chiuso di default se e' l'unico posto dove compare la
- * composizione.
+ * QUANDO USARLO: pagina prodotto e pagina formula, sempre visibile o dentro
+ * una tab. Mai dentro un accordion chiuso di default se e' l'unico posto dove
+ * compare la composizione.
  * QUANDO NO: come sostituto dell'etichetta legale. Questa e' la versione
  * leggibile; l'etichetta di legge sta sul pack e non si riscrive.
  *
  * Tutta la tabella e' in mono, intestazioni comprese: sono dati, e i dati nel
- * sistema di peak hanno una voce sola.
+ * sistema di peak hanno una voce sola. Dove il dato non c'e' ancora, il tag
+ * grigio [dal laboratorio] lo dice: non si inventa un numero.
  */
 
 import { cn } from '../lib/cn'
-import { NUTRITION_ROWS } from '../lib/copy'
+import { INGREDIENTS_LINE, NUTRITION_ROWS, isLabPlaceholder } from '../lib/copy'
+import { LabTag, renderWithPlaceholders } from './LabTag'
 
 export interface IngredientRow {
   label: string
   perStick: string
   perDay?: string
+  /** Percentuale dei valori nutritivi di riferimento, dove esiste. */
+  vnr?: string
 }
 
 export interface IngredientPanelProps {
   rows?: readonly IngredientRow[]
-  /** Intestazioni delle due colonne di valori. */
-  headers?: [string, string]
+  /** Intestazioni delle colonne di valori. */
+  headers?: [string, string, string]
   /** Elenco ingredienti in chiaro, sotto la tabella. */
   ingredients?: string
   /** Avvertenze di legge. */
@@ -31,53 +35,51 @@ export interface IngredientPanelProps {
   className?: string
 }
 
+function Cell({ value, what }: { value: string; what: string }) {
+  if (isLabPlaceholder(value)) return <LabTag what={what} />
+  return <>{value}</>
+}
+
 export function IngredientPanel({
   rows = NUTRITION_ROWS,
-  headers = ['PER STICK', 'PER GIORNO'],
-  ingredients = 'Creatina monoidrato (100%).',
+  headers = ['PER STICK', 'PER GIORNO', '%VNR*'],
+  ingredients = INGREDIENTS_LINE,
   warning = 'Non superare la dose giornaliera consigliata. Tenere fuori dalla portata dei bambini sotto i tre anni. Gli integratori non vanno intesi come sostituti di una dieta variata ed equilibrata e di uno stile di vita sano.',
   className,
 }: IngredientPanelProps) {
   return (
-    <div className={cn('rounded-lg border border-border-default bg-bg-surface', className)}>
-      <table className="w-full border-collapse text-left">
-        <caption className="border-b border-border-default px-6 py-4 text-left font-mono text-mono-md uppercase text-text-primary">
-          Valori nutrizionali
-        </caption>
-        <thead>
-          <tr className="border-b border-border-subtle">
-            <th scope="col" className="px-6 py-3 font-mono text-mono-sm uppercase font-normal text-text-muted">
-              Composizione
-            </th>
-            <th scope="col" className="px-6 py-3 text-right font-mono text-mono-sm uppercase font-normal text-text-muted">
-              {headers[0]}
-            </th>
-            <th scope="col" className="px-6 py-3 text-right font-mono text-mono-sm uppercase font-normal text-text-muted">
-              {headers[1]}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.label} className="border-b border-border-subtle last:border-0">
-              <th scope="row" className="px-6 py-3 font-mono text-mono-md uppercase font-normal text-text-primary">
-                {row.label}
-              </th>
-              <td className="px-6 py-3 text-right font-mono text-mono-md tabular-nums text-text-secondary">
-                {row.perStick}
-              </td>
-              <td className="px-6 py-3 text-right font-mono text-mono-md tabular-nums text-text-secondary">
-                {row.perDay ?? row.perStick}
-              </td>
+    <div className={cn('overflow-hidden rounded-lg border border-border-default bg-bg-surface', className)}>
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[520px] border-collapse text-left">
+          <caption className="border-b border-border-default px-6 py-4 text-left font-mono text-mono-md uppercase text-text-primary">
+            Valori nutrizionali · dose giornaliera: 1 stick
+          </caption>
+          <thead>
+            <tr className="border-b border-border-subtle">
+              <th scope="col" className="px-6 py-3 font-mono text-mono-sm uppercase font-normal text-text-muted">Composizione</th>
+              {headers.map((h) => (
+                <th key={h} scope="col" className="px-6 py-3 text-right font-mono text-mono-sm uppercase font-normal text-text-muted">{h}</th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.label} className="border-b border-border-subtle last:border-0">
+                <th scope="row" className="px-6 py-3 font-mono text-mono-md uppercase font-normal text-text-primary">{row.label}</th>
+                <td className="px-6 py-3 text-right font-mono text-mono-md tabular-nums text-text-secondary"><Cell value={row.perStick} what={row.label} /></td>
+                <td className="px-6 py-3 text-right font-mono text-mono-md tabular-nums text-text-secondary"><Cell value={row.perDay ?? row.perStick} what={row.label} /></td>
+                <td className="px-6 py-3 text-right font-mono text-mono-md tabular-nums text-text-secondary"><Cell value={row.vnr ?? '—'} what={`${row.label} %VNR`} /></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <div className="flex flex-col gap-3 border-t border-border-default px-6 py-5">
         <p className="font-mono text-mono-sm uppercase text-text-muted">Ingredienti</p>
-        <p className="text-body-sm text-text-secondary">{ingredients}</p>
+        <p className="text-body-sm leading-loose text-text-secondary">{renderWithPlaceholders(ingredients, 'ingredienti')}</p>
         <p className="text-body-sm text-text-muted">{warning}</p>
+        <p className="font-mono text-mono-sm uppercase text-text-muted">* VNR: valori nutritivi di riferimento. I claim sulla vitamina D valgono solo sopra il 15% dei VNR per dose giornaliera.</p>
       </div>
     </div>
   )

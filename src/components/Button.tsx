@@ -8,14 +8,15 @@
  * Il raggio e' sempre `full`: nel sistema di peak i pulsanti sono pillole,
  * senza eccezioni. Non esiste una prop per cambiarlo, di proposito.
  *
- * Il testo su fondo terracotta e' neutral-0, mai miele: miele-300 su
- * arancia-500 sta sotto 1.6:1 ed e' illeggibile.
+ * Il primario e' arancia 500 con testo inchiostro (4,72:1): il bianco su
+ * arancia si ferma a 3,68:1 e a questa misura non passa. Sui campi colore e su
+ * inchiostro si usa `inverse`, la pillola bianca.
  */
 
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
 import { cn } from '../lib/cn'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'link'
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'link' | 'inverse' | 'ink'
 export type ButtonSize = 'sm' | 'md' | 'lg'
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
@@ -35,16 +36,24 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
 const VARIANTS: Record<ButtonVariant, string> = {
   primary:
     'bg-bg-brand text-text-on-brand border border-transparent ' +
-    'hover:bg-arancia-400 active:bg-arancia-600',
+    'hover:bg-arancia-400 active:bg-arancia-300',
   secondary:
-    'bg-transparent text-text-brand border border-border-brand ' +
-    'hover:bg-bg-brand-soft active:bg-arancia-100',
+    'bg-transparent text-text-primary border border-border-strong ' +
+    'hover:border-neutral-900 active:bg-bg-raised',
   ghost:
     'bg-transparent text-text-primary border border-transparent ' +
     'hover:bg-bg-raised active:bg-neutral-200',
   link:
     'bg-transparent text-text-brand border border-transparent underline underline-offset-4 ' +
     'px-0 hover:text-arancia-700 active:text-arancia-800',
+  /** La pillola bianca: sui campi colore-gusto e su inchiostro. */
+  inverse:
+    'bg-neutral-0 text-neutral-900 border border-transparent ' +
+    'hover:bg-neutral-100 active:bg-neutral-200',
+  /** La pillola inchiostro: su bianco e carta, quando l arancia e gia ovunque. */
+  ink:
+    'bg-bg-inverse text-text-inverse border border-transparent ' +
+    'hover:bg-neutral-800 active:bg-neutral-700',
 }
 
 const SIZES: Record<ButtonSize, string> = {
@@ -55,13 +64,7 @@ const SIZES: Record<ButtonSize, string> = {
 
 function Spinner() {
   return (
-    <svg
-      className="h-4 w-4 animate-spin"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-      focusable="false"
-    >
+    <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
       <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="3" opacity="0.25" />
       <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
     </svg>
@@ -70,18 +73,8 @@ function Spinner() {
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   {
-    children,
-    variant = 'primary',
-    size = 'md',
-    loading = false,
-    fullWidth = false,
-    as = 'button',
-    href,
-    iconLeft,
-    iconRight,
-    disabled,
-    className,
-    ...rest
+    children, variant = 'primary', size = 'md', loading = false, fullWidth = false,
+    as = 'button', href, iconLeft, iconRight, disabled, className, ...rest
   },
   ref,
 ) {
@@ -120,14 +113,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   }
 
   return (
-    <button
-      ref={ref}
-      type="button"
-      className={classes}
-      disabled={isDisabled}
-      aria-busy={loading || undefined}
-      {...rest}
-    >
+    <button ref={ref} type="button" className={classes} disabled={isDisabled} aria-busy={loading || undefined} {...rest}>
       {content}
     </button>
   )

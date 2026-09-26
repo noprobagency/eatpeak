@@ -6,14 +6,16 @@
  * corretti: e' il punto in cui il sistema garantisce il contrasto.
  * QUANDO NO: per raggruppare elementi dentro un blocco. Li' basta <Stack />.
  *
- * Due sezioni con lo stesso `tone` non vanno mai messe una sotto l'altra senza
- * un <Divider />: il confine sparisce.
+ * Un solo colore-gusto per composizione: due sezioni arancia e lime una sotto
+ * l'altra sono il Duo, non una pagina.
  */
 
 import type { ReactNode } from 'react'
 import { cn } from '../lib/cn'
 
-export type SectionTone = 'page' | 'surface' | 'warm' | 'brand' | 'forest' | 'inverse'
+export type SectionTone =
+  | 'page' | 'surface' | 'warm' | 'inverse'
+  | 'arancia' | 'lime' | 'arancia-tint' | 'lime-tint'
 
 export interface SectionProps {
   children: ReactNode
@@ -26,16 +28,18 @@ export interface SectionProps {
 
 /**
  * Ogni tono porta con se' il colore di testo che ci si legge sopra.
- * Su terracotta il testo e' neutral-0, mai miele: e' una regola di contrasto,
- * non una scelta.
+ * Sui campi colore-gusto il testo corrente e' inchiostro: il bianco e' per il
+ * logo e per i titoli, e va scelto a mano con `text-text-on-flavor`.
  */
 const TONES: Record<SectionTone, string> = {
   page: 'bg-bg-page text-text-primary',
   surface: 'bg-bg-surface text-text-primary',
   warm: 'bg-bg-warm text-text-primary',
-  brand: 'bg-bg-brand text-text-on-brand',
-  forest: 'bg-bg-flavor-lime text-text-inverse',
   inverse: 'bg-bg-inverse text-text-inverse',
+  arancia: 'bg-bg-flavor-arancia text-text-on-flavor-small',
+  lime: 'bg-bg-flavor-lime text-text-on-flavor-small',
+  'arancia-tint': 'bg-bg-flavor-arancia-tint text-text-on-flavor-small',
+  'lime-tint': 'bg-bg-flavor-lime-tint text-text-on-flavor-small',
 }
 
 const SPACING = {
