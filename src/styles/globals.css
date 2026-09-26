@@ -114,4 +114,12 @@
     outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
   }
+
+  /* Senza header non serve lo spazio per la barra fissa. site-header.css
+     mette `padding-top` su #contenuto per la sua barra; qui lo togliamo dove
+     l'header non c'e' (design system, prototipi, laboratori), senza toccare
+     il file dell'header: basta piu' specificita'. */
+  #contenuto[data-header='0'] {
+    padding-top: 0;
+  }
 }

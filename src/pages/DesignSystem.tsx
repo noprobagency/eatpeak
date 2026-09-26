@@ -36,7 +36,7 @@ import {
   useWordmark, wordmarkHeightFor, type IconVariant,
 } from '../brand/paths'
 import { FONT_CANDIDATES, candidate, fontLabHref, useFontLab } from '../lib/fontlab'
-import { to } from '../lib/routes'
+import { SYSTEM_NAV, to } from '../lib/routes'
 import tokens, { palette, radius, semantic, shadow, space, typeScale } from '../tokens/tokens'
 import { contrastRatio, readableOn, verdict } from '../lib/contrast'
 import { CLAIMS, CLAIM_HIERARCHY, DEFAULT_TIER, FLAVORS, PRODUCT, REVIEWS } from '../lib/copy'
@@ -46,20 +46,6 @@ import { cn } from '../lib/cn'
 // ---------------------------------------------------------------------------
 // Impalcatura
 // ---------------------------------------------------------------------------
-
-const NAV = [
-  { id: 'scheda', label: '00 · La scheda' },
-  { id: 'logo', label: '01 · Logo' },
-  { id: 'simbolo', label: '02 · Simbolo' },
-  { id: 'colore', label: '03 · Colore' },
-  { id: 'tipografia', label: '04 · Tipografia' },
-  { id: 'gusti', label: '05 · Gusti' },
-  { id: 'packaging', label: '06 · Packaging' },
-  { id: 'componenti', label: '07 · Componenti chiave' },
-  { id: 'voce', label: '08 · Voce in breve' },
-  { id: 'laboratori', label: '09 · Laboratori' },
-  { id: 'dettagli', label: 'Dettagli tecnici' },
-] as const
 
 function Block({ id, number, title, intro, children }: {
   id: string; number: string; title: React.ReactNode; intro?: string; children: React.ReactNode
@@ -236,7 +222,7 @@ export function DesignSystem() {
           <div className="flex flex-col gap-4 pt-10">
             <Logo size={220} variant="ambra" title="" className="h-auto max-w-full" />
             <header className="flex flex-col gap-2">
-              <h1 className="type-display-md text-text-primary">peak — design system <Em>3.1</Em></h1>
+              <h1 className="type-display-md text-text-primary">peak — design system <Em>3.3</Em></h1>
               <p className="max-w-prose text-body-lg text-text-secondary">
                 {CLAIMS.brand.it} Creatina + glicina + vitamina D3 in stick monodose.
               </p>
@@ -250,10 +236,10 @@ export function DesignSystem() {
         <div className="flex gap-12 py-6">
           <nav aria-label="Sezioni del design system" className="sticky top-24 hidden h-fit w-[208px] shrink-0 lg:block">
             <ul className="flex flex-col gap-1 border-l border-border-subtle">
-              {NAV.map((n) => (
+              {SYSTEM_NAV.map((n) => (
                 <li key={n.id}>
                   <a
-                    href={`#/design-system#${n.id}`}
+                    href={to('/', n.id)}
                     className="-ml-px block border-l-2 border-transparent py-2 pl-4 text-body-sm text-text-secondary transition-colors duration-fast hover:border-border-brand hover:text-text-brand"
                   >
                     {n.label}
@@ -327,13 +313,13 @@ export function DesignSystem() {
 
               <Sub title="la salita" note={`Passa sopra (o arriva con la tastiera): i punti salgono in ${SALITA_MOTION.durationMs} ms, uno dopo l’altro (${SALITA_MOTION.delaysMs.join(' / ')} ms), poi compare il wordmark. All’uscita si torna giù, senza ritardi. Su touch parte da sola una volta; con il movimento ridotto compare solo il wordmark.`}>
                 <div className="grid gap-4 md:grid-cols-3">
-                  <a href="#/design-system#simbolo" className="flex h-32 items-center justify-center rounded-xl border border-border-subtle bg-bg-page" aria-label="La salita su carta">
+                  <a href={to('/', 'simbolo')} className="flex h-32 items-center justify-center rounded-xl border border-border-subtle bg-bg-page" aria-label="La salita su carta">
                     <SymbolRise style={{ fontSize: 48 }} />
                   </a>
-                  <a href="#/design-system#simbolo" className="flex h-32 items-center justify-center rounded-xl bg-bg-brand" aria-label="La salita su ambra">
+                  <a href={to('/', 'simbolo')} className="flex h-32 items-center justify-center rounded-xl bg-bg-brand" aria-label="La salita su ambra">
                     <SymbolRise symbolColor={SYMBOL_COLORS.onBrand} wordmarkColor="#FFFFFF" style={{ fontSize: 48 }} />
                   </a>
-                  <a href="#/design-system#simbolo" className="flex h-32 items-center justify-center rounded-xl bg-bg-lime-deep" aria-label="La salita su lime 700">
+                  <a href={to('/', 'simbolo')} className="flex h-32 items-center justify-center rounded-xl bg-bg-lime-deep" aria-label="La salita su lime 700">
                     <SymbolRise symbolColor={SYMBOL_COLORS.onColor} wordmarkColor="#FFFFFF" style={{ fontSize: 48 }} />
                   </a>
                 </div>

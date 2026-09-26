@@ -1,22 +1,22 @@
 # 01 — Stato del progetto
 
-Aggiornato il **2026-09-26**, sessione "footer a pannello", branch
-`task/ds-footer-panel`. Questo file è importato da `CLAUDE.md`: resta corto e
+Aggiornato il **2026-09-26**, sessione "piazza pulita", branch
+`task/ds-radice`. Questo file è importato da `CLAUDE.md`: resta corto e
 resta vero. Si aggiorna a ogni commit.
 
 ## Dove siamo
 
 | | |
 |---|---|
-| Versione | **3.2.1** in `package.json` (3.2.0 è quella su `main` e in produzione) |
+| Versione | **3.3.0** in `package.json` (3.2.0 è quella su `main` e in produzione) |
 | `main` | `588a9fa` "ds: il footer diventa un pannello, sulla forma di awenlab", in produzione su https://drinkpeak.vercel.app (deploy Vercel READY). Il merge l'ha lanciato il proprietario (INFRA-07, chiusa) |
-| Branch aperti | `task/ds-footer-panel`: mergiato, resta solo per la chiusura dello stato (3.2.1) |
+| Branch aperti | `task/ds-radice`: la radice diventa il design system (3.3.0), da `main`. `task/ds-footer-panel` è mergiato più la chiusura dello stato, che arriva con questo |
 | Branch mergiati | `ds-v2`, `v3-home-pdp`, `task/setup-contesto`, `v3-ambra`, `task/ds-footer-panel`: si possono cancellare, in locale e su origin (INFRA-02) |
-| Header | del proprietario. Non toccato in questa sessione |
+| Header | del proprietario. Non toccato: dalla 3.3 compare solo sulle tre pagine del sito, e il suo logo punta alla radice, che ora è il design system (HEADER-04) |
 | Test | `npm test` verde sul branch |
 | Identità git | `user.email` locale = hello@noprob.agency; i commit precedenti al 26/09 sono di west-marney |
 
-## Cosa c'è, oggi (3.2, su `main` e in produzione)
+## Cosa c'è, oggi (3.3, sul branch)
 
 - **Colore**: il brand è l'**ambra** `#FFAE34` (fondi, sopra solo cacao 900)
   con il profondo **ambra 700** `#A04F06` (punti, simbolo, link, testo brand).
@@ -28,13 +28,21 @@ resta vero. Si aggiorna a ogni commit.
 - **Trial**: Denim e Rund sono in licenza trial. Stanno **solo in locale**
   (file e tracciato fuori da git). Su Vercel, preview e produzione, il sito
   mostra i ripieghi: Nunito/Inter/Fraunces e il wordmark in Gabarito 900.
-- **Footer (nuovo, 3.2)**: forma awenlab.com — un **pannello staccato** in
+- **Struttura (nuova, 3.3)**: la **radice `#/` è il design system**, ed è la
+  home. Il sito simulato scende a `#/sito` (più `#/prodotto` e `#/formula`)
+  ed è l'unico gruppo che mostra l'**header**. Prototipi e quattro laboratori
+  restano dov'erano. Le rotte vecchie sono alias: niente si rompe. Il
+  **footer è l'indice del progetto** — quattro liste (Il sistema con le
+  undici sezioni, Laboratori, Il sito, Aiuto), contatti, informative, riga
+  legale — ed è uguale su ogni pagina. Regola: se una pagina o una sezione
+  non ha il suo link lì, non la trova nessuno.
+- **Footer (forma, dalla 3.2)**: awenlab.com — un **pannello staccato** in
   ambra 400, raggio 40px con 16px di carta attorno; a sinistra lockup,
   sign-off, claim autorizzati e due cerchi social; a destra tre liste e la
   riga dei contatti; sotto avvertenze, informative e riga legale con la firma
   dello studio. Tutto il testo in cacao 900 pieno (D28). Il wordmark enorme
   con il retino (H3) è uscito dal footer e non ha ancora un posto (D29).
-- Home H1–H15 e PDP P1–P14 sui reference, con l'hero in ambra; le fotografie
+- Home del sito H1–H15 e PDP P1–P14 sui reference, con l'hero in ambra; le fotografie
   sono `MediaPlaceholder` con il brief. Laboratori font, simbolo (archivio
   V0–V6), sezioni, pack.
 - **Dati**: prezzi da `PRICE_TIERS`; valori di composizione
@@ -53,13 +61,17 @@ resta vero. Si aggiorna a ogni commit.
 6. **Le licenze**: Denim web (LIC-01), Rund Display Black desktop (LIC-02).
 7. **Lo step packaging**: colori-gusto e wordmark del Neutro (PACK-05).
 
-Il dettaglio è in `03-decisioni.md` (D21–D29), la procedura in
+7. **Il logo dell'header**: punta alla radice, che ora è il design system.
+   Va portato a `to('/sito')`, ma l'header è suo (HEADER-04).
+
+Il dettaglio è in `03-decisioni.md` (D21–D32), la procedura in
 `07-procedure.md`.
 
 ## In corso e prossimo
 
-- Niente in corso. Senza le licenze la produzione mostra i ripieghi
-  (Nunito/Inter/Fraunces, wordmark Gabarito 900), non Denim e Rund.
+- Merge di `task/ds-radice` su `main` (INFRA-08): lo lancia il proprietario.
+  Senza le licenze la produzione mostra i ripieghi (Nunito/Inter/Fraunces,
+  wordmark Gabarito 900), non Denim e Rund.
 - L'header, per conto del proprietario.
 - Le 13 fotografie con Higgsfield: shot list in `#/prototipi`, brief in
   `src/lib/media.ts`.
@@ -70,5 +82,5 @@ Il dettaglio è in `03-decisioni.md` (D21–D29), la procedura in
 - Non mergiare su `main` da Claude: i permessi lo bloccano, lo fa il
   proprietario con il comando scritto nella risposta.
 - Non committare i font trial né il tracciato `rund.json`: il repo è pubblico.
-- Non toccare l'header.
+- Non toccare l'header, nemmeno per il logo che punta alla radice.
 - Non inventare valori del laboratorio, recensioni, numeri o contatti.

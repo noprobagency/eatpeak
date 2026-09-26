@@ -102,7 +102,7 @@ export function Home() {
             </p>
             <div className="flex flex-wrap items-center gap-5 pt-2">
               <Button variant="inverse" size="lg" dot as="a" href={to('/prodotto')}>Inizia il tuo rituale</Button>
-              <a href={to('/', 'gesto')} className="peak-link text-body-md font-display font-bold text-text-on-brand">Come funziona</a>
+              <a href={to('/sito', 'gesto')} className="peak-link text-body-md font-display font-bold text-text-on-brand">Come funziona</a>
             </div>
             <Trust items={['Made in Italy', 'Vegan', 'Nessun abbonamento']} />
             <p className="max-w-prose text-body-sm text-text-on-brand" data-compliance="authorized-claim">

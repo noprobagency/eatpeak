@@ -67,16 +67,21 @@ npm install
 npm run dev
 ```
 
-Cinque pagine e quattro laboratori, sull'hash:
+Nove pagine sull'hash. **La radice è il design system**: è lui il lavoro. Il
+sito simulato sta sotto, da `#/sito` in giù, ed è l'unico che porta l'header;
+tutto il resto si raggiunge dai link in fondo alla pagina.
 
 | Rotta | Pagina |
 |---|---|
-| `#/` | **Home** — la prima pagina del sito |
-| `#/prodotto` | **Prodotto** — il PDP con gusto, formati, tabella |
-| `#/formula` | **La formula** — CreaVida™ ingrediente per ingrediente |
-| `#/design-system` | **Design system 3.0** — la scheda del brand, i laboratori, i dettagli tecnici in fondo |
+| `#/` | **Design system** — la scheda del brand, i laboratori, i dettagli tecnici in fondo. È la home |
 | `#/prototipi` | **Prototipi** — busta e stick dai componenti, la shot list, l'archivio 1.0 |
 | `#/lab/font` · `#/lab/simbolo` · `#/lab/box` · `#/lab/pack` | **Laboratori** — font, simbolo, sezioni, pack: le alternative fianco a fianco, la scelta al brand |
+| `#/sito` | **Home del sito** — la prima pagina del sito simulato |
+| `#/prodotto` | **Prodotto** — il PDP con gusto, formati, tabella |
+| `#/formula` | **La formula** — CreaVida™ ingrediente per ingrediente |
+
+Le rotte vecchie restano come alias: `#/design-system` e `#/showcase` → `#/`,
+`#/landing` e `#/home` → `#/sito`, `#/product` → `#/prodotto`.
 
 Gli interruttori nell'URL: `?font=<id>`, `?italic=0`, `?body=display`, `?ref=1`
 (vedi [docs/09-sito.md](docs/09-sito.md)).

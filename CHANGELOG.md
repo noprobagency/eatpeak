@@ -8,6 +8,39 @@ componente nuovo, major per un cambio di sistema. I racconti per fase della
 qui c'è il registro. Ogni commit aggiunge la sua riga qui, nello stesso
 commit.
 
+## [3.3.0] · 2026-09-26 · piazza pulita: la radice è il design system
+
+Branch `task/ds-radice`.
+
+- **ds** · **la home è il design system.** La radice `#/` non è più la home
+  del sito simulato ma la scheda del brand per intero: è lei il lavoro. Il
+  sito scende a `#/sito` (Home), con `#/prodotto` e `#/formula`; prototipi e
+  quattro laboratori restano dov'erano. Le rotte vecchie diventano alias
+  (`#/design-system` e `#/showcase` → `#/`, `#/landing` e `#/home` →
+  `#/sito`, `#/product` → `#/prodotto`), quindi nessun link in giro si rompe.
+  I gruppi di rotta passano da `sito`/`studio`/`lab` a
+  `sistema`/`lab`/`sito`.
+- **ds** · **l'header solo sul sito.** `App.tsx` monta `<SiteHeader />` solo
+  se `routeSpec(path).group === 'sito'`: design system, prototipi e
+  laboratori non ce l'hanno. Il `padding-top` che `site-header.css` riserva
+  alla barra fissa si spegne con `#contenuto[data-header='0']` in
+  `globals.css` — più specificità, senza toccare il file dell'header.
+- **ds** · **il footer è l'indice del progetto.** Quattro liste al posto di
+  tre: **Il sistema** (le undici sezioni del design system, da `SYSTEM_NAV`,
+  le stesse della colonna laterale della pagina), **Laboratori** (i quattro
+  lab, i prototipi, l'archivio 1.0), **Il sito** (home, prodotto, formula,
+  come funziona, domande, garanzia), **Aiuto**; poi contatti, informative e
+  riga legale. Regola nuova: se una pagina o una sezione non ha il suo link
+  qui, non la trova nessuno.
+- **docs** · `SYSTEM_NAV` esce da `DesignSystem.tsx` ed entra in `routes.ts`,
+  perché la legge anche il footer; i link interni della pagina passano da
+  `#/design-system#id` a `to('/', id)`. Titolo e descrizione di `index.html`
+  parlano del design system. `scripts/screenshots.mjs` aggiornato sulle rotte
+  nuove. README, CLAUDE.md, docs 09 e mappa riscritti.
+- **Da sistemare, quando l'header lo riprende il proprietario**: il logo
+  dell'header punta a `to('/')`, che ora è il design system e non più la home
+  del sito (HEADER-04). Claude non tocca l'header.
+
 ## [3.2.1] · 2026-09-26 · chiusura dello stato
 
 Branch `task/ds-footer-panel`.

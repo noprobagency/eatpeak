@@ -73,3 +73,13 @@ nuovo. Niente segreti: token e password non si scrivono qui.
 - Il pannello browser nascosto ferma le animazioni CSS a 0 ms: per vedere una
   transizione si fa uno screenshot (forza il rendering) o si usa Chrome
   headless via CDP (con Node 20 serve `node --experimental-websocket`).
+- Stessa causa, trappola peggiore: **con il pannello nascosto
+  `requestAnimationFrame` non scatta mai**. Lo scorrimento alle ancore di
+  `App.tsx` passa da un rAF, quindi misurato da lì sembra rotto quando non lo
+  è. Si verifica facendo prima uno screenshot (forza il rendering) e poi la
+  misura. Chrome headless non serve: con un'ancora nell'URL rende la pagina
+  vuota.
+- `StickyAddToCart` sulla PDP e sul design system è fissato in basso: negli
+  screenshot a finestra alta l'ultima riga di pixel non è mai il fondo della
+  pagina. Per ritagliare il footer conviene chiedere al browser la posizione
+  di `<footer>` e tagliare su quella, non cercare l'ultimo pixel colorato.

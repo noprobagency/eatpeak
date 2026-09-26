@@ -14,10 +14,14 @@ servono subito sono importati qui sotto e arrivano in contesto da soli.
   vitamina D3 in stick monodose, formula CreaVida™, una busta da 30 stick per
   30 giorni, 3 g al giorno senza fase di carico, due gusti (Nº01 Arancia Rossa,
   Nº02 Lime & Menta). Posizionamento: la costanza, non la potenza.
-- Questo repo è il **design system 3.0** e il **sito simulato** che lo mette
-  alla prova: Home, PDP, Formula, Design system, Prototipi e quattro
-  laboratori. Vite + React 18 + TypeScript + Tailwind 3, nessuna dipendenza
-  runtime oltre React, routing sull'hash.
+- Questo repo è il **design system** e il **sito simulato** che lo mette alla
+  prova. Dalla 3.3 la **radice `#/` è il design system**: è lui il lavoro. Il
+  sito (Home `#/sito`, PDP, Formula) sta sotto ed è l'unico gruppo di rotte
+  che mostra l'header; prototipi e quattro laboratori completano il quadro.
+  **Tutto si naviga dal footer**, che è uguale su ogni pagina e ne è l'indice:
+  se una pagina o una sezione non ha il suo link lì, non la trova nessuno.
+  Vite + React 18 + TypeScript + Tailwind 3, nessuna dipendenza runtime oltre
+  React, routing sull'hash.
 - **Produzione**: https://drinkpeak.vercel.app = branch `main` (Vercel, team
   `noprobagency`, progetto `eatpeak`). Ogni branch ha una preview, dietro il
   login del team.

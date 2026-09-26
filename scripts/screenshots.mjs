@@ -40,14 +40,14 @@ if (!existsSync(CHROME)) {
 
 /** Nome del file, rotta, query (prima dell'hash), dimensioni della finestra. */
 const SHOTS = [
-  { name: 'home', route: '#/', width: 1440, height: 900 },
-  { name: 'home-full', route: '#/', width: 1440, height: 9000 },
-  { name: 'home-ref', route: '#/', query: 'ref=1', width: 1440, height: 9000 },
-  { name: 'home-mobile', route: '#/', width: 500, height: 7000 },
+  { name: 'design-system', route: '#/', width: 1440, height: 3200 },
+  { name: 'home', route: '#/sito', width: 1440, height: 900 },
+  { name: 'home-full', route: '#/sito', width: 1440, height: 9000 },
+  { name: 'home-ref', route: '#/sito', query: 'ref=1', width: 1440, height: 9000 },
+  { name: 'home-mobile', route: '#/sito', width: 500, height: 7000 },
   { name: 'pdp', route: '#/prodotto', width: 1440, height: 1100 },
   { name: 'pdp-full', route: '#/prodotto', width: 1440, height: 9600 },
   { name: 'pdp-mobile', route: '#/prodotto', width: 500, height: 7000 },
-  { name: 'design-system', route: '#/design-system', width: 1440, height: 3200 },
   { name: 'formula', route: '#/formula', width: 1440, height: 2400 },
   { name: 'prototipi', route: '#/prototipi', width: 1440, height: 1500 },
   { name: 'lab-font-nunito', route: '#/lab/font', query: 'font=nunito', width: 1440, height: 2600 },

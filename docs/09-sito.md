@@ -1,27 +1,40 @@
 # 09 — Il sito
 
-La 3.0 è **un sito simulato, umanizzato**: la home e la pagina prodotto sono
-ricostruite sezione per sezione sui reference ([10 — Riferimenti delle
-sezioni](10-riferimenti-sezioni.md)), con le fotografie ancora da fare al loro
-posto. Nessun ordine viene evaso, e il piede di pagina lo dice.
+**Dalla 3.3 la radice è il design system.** È lui il lavoro: chi apre
+l'indirizzo trova la scheda del brand per intero, non una vetrina. Il sito
+simulato — home, prodotto, formula — è la prova che gli sta sotto e vive da
+`#/sito` in giù; è anche l'unico gruppo che porta l'header. Tutto il resto si
+raggiunge **dai link in fondo alla pagina**: il footer è l'indice del
+progetto, ed è uguale su ogni pagina.
+
+Il sito simulato resta ricostruito sezione per sezione sui reference ([10 —
+Riferimenti delle sezioni](10-riferimenti-sezioni.md)), con le fotografie
+ancora da fare al loro posto. Nessun ordine viene evaso, e il piede lo dice.
 
 Il routing è sull'hash, senza dipendenze (`src/lib/routes.ts`). Un'ancora si
-scrive dopo un secondo cancelletto: `#/#come-funziona`. I parametri stanno
-prima dell'hash: `/?font=nunito&ref=1#/`.
+scrive dopo un secondo cancelletto: `#/#colore`, `#/sito#come-funziona`. I
+parametri stanno prima dell'hash: `/?font=nunito&ref=1#/`.
 
-| Rotta | Pagina | Cosa |
-|---|---|---|
-| `#/` | **Home** | H1–H15, sotto |
-| `#/prodotto` | **Prodotto (PDP)** | P1–P14, sotto |
-| `#/formula` | **La formula** | CreaVida™ ingrediente per ingrediente con i claim autorizzati, il protocollo, le risposte della co-fondatrice, la tabella |
-| `#/design-system` | **Design system 3.0** | La scheda del brand in dieci sezioni, i laboratori, i dettagli tecnici chiusi in fondo |
-| `#/prototipi` | **Prototipi** | Busta e stick dai componenti, la shot list per Higgsfield, l'archivio della 1.0 |
-| `#/lab/font` | **Laboratorio font** | Sette candidati per titoli e wordmark, la scorecard da compilare |
-| `#/lab/simbolo` | **Laboratorio simbolo** | Le sei varianti del vertice, a quattro misure e su quattro fondi |
-| `#/lab/box` | **Laboratorio sezioni** | I sei archetipi, uno sotto l'altro, e la stessa sequenza a 390px |
-| `#/lab/pack` | **Laboratorio pack** | Le tre varianti della busta, i retri, gli stick |
+| Rotta | Pagina | Gruppo | Cosa |
+|---|---|---|---|
+| `#/` | **Design system** | sistema | La scheda del brand in dieci sezioni, i laboratori, i dettagli tecnici chiusi in fondo. È la home |
+| `#/prototipi` | **Prototipi** | sistema | Busta e stick dai componenti, la shot list per Higgsfield, l'archivio della 1.0 |
+| `#/lab/font` | **Laboratorio font** | lab | Sette candidati per titoli e wordmark, la scorecard da compilare |
+| `#/lab/simbolo` | **Laboratorio simbolo** | lab | Le varianti del simbolo, a quattro misure e su quattro fondi |
+| `#/lab/box` | **Laboratorio sezioni** | lab | I sei archetipi, uno sotto l'altro, e la stessa sequenza a 390px |
+| `#/lab/pack` | **Laboratorio pack** | lab | Le tre varianti della busta, i retri, gli stick |
+| `#/sito` | **Home del sito** | sito | H1–H15, sotto |
+| `#/prodotto` | **Prodotto (PDP)** | sito | P1–P14, sotto |
+| `#/formula` | **La formula** | sito | CreaVida™ ingrediente per ingrediente con i claim autorizzati, il protocollo, le risposte della co-fondatrice, la tabella |
 
-Le rotte della 1.0 (`#/showcase`, `#/landing`, `#/product`) restano come alias.
+**Solo il gruppo `sito` mostra l'header**: `App.tsx` lo monta se
+`routeSpec(path).group === 'sito'`, e mette `data-header="0"` su `#contenuto`
+dove non c'è, così il `padding-top` che `site-header.css` riserva alla barra
+fissa si spegne (l'override sta in `globals.css`: il file dell'header non si
+tocca).
+
+Le rotte vecchie restano come alias: `#/design-system` e `#/showcase` → `#/`,
+`#/landing` e `#/home` → `#/sito`, `#/product` → `#/prodotto`.
 
 ---
 
@@ -39,17 +52,20 @@ Le rotte della 1.0 (`#/showcase`, `#/landing`, `#/product`) restano come alias.
 ## La navigazione
 
 **Header** — `src/site/SiteHeader.tsx` e `site-header.css`, fuori da questo
-lavoro (barra annunci arancia + barra di vetro, il simbolo che ruota e rivela
-il wordmark). Riceve di riflesso i token della 3.0: il wordmark nel font
-attivo, il simbolo V5 con la punta miele, il testo cacao.
+lavoro (barra annunci + barra di vetro, il simbolo che sale e rivela il
+wordmark). Dalla 3.3 compare **solo sulle tre pagine del sito**. Riceve di
+riflesso token e dati: il wordmark nel font attivo, il simbolo V7 con la
+salita, il testo cacao, le voci da `SITE_NAV`. Da sistemare, quando lo
+riprende il proprietario: il logo dell'header punta a `to('/')`, che ora è il
+design system e non più la home del sito (HEADER-04).
 
 **Footer** (`SiteFooter.tsx`), forma awenlab dalla 3.2: non una fascia a tutta
 larghezza ma un **pannello staccato** in ambra 400, raggio 40px (`rounded-2xl`)
 e un margine di carta di 16px attorno, che chiude la pagina come una scheda.
 Dentro, due colonne: a sinistra il lockup, il sign-off in display, i claim
 autorizzati nello stesso blocco (articolo 10(3)) e i due cerchi social; a
-destra tre liste (Il sito, Aiuto, Lo studio) con il titolo in etichetta
-maiuscola e il filo sotto, e la riga larga dei contatti con i segni. Sotto,
+destra quattro liste con il titolo in etichetta maiuscola e il filo sotto, e
+la riga larga dei contatti con i segni. Sotto,
 l'avviso "integratore alimentare", la riga delle informative e la riga legale
 con la firma dello studio. Tutto il testo è cacao 900 (7,4:1): sull'ambra i
 grigi e il bianco non reggono, e per questo la gerarchia si fa con corpo,
@@ -57,9 +73,17 @@ peso e crenatura, non con l'opacità. Il wordmark a tutta larghezza con il
 retino (H3, `<WordmarkHalftone />`) esce dal footer e resta senza posto: è una
 decisione aperta.
 
+Dalla 3.3 il footer è anche **l'unico indice del progetto**, perché l'header
+sta solo sul sito. Le quattro liste sono: **Il sistema** (le undici sezioni
+del design system, da `SYSTEM_NAV` in `routes.ts` — le stesse della colonna
+laterale della pagina), **Laboratori** (i quattro lab, i prototipi, l'archivio
+1.0), **Il sito** (home, prodotto, formula, come funziona, domande, garanzia),
+**Aiuto**. Regola: se una pagina o una sezione non ha il suo link qui, non la
+trova nessuno.
+
 ---
 
-## L'ordine della home (H1–H15)
+## L'ordine della home del sito, `#/sito` (H1–H15)
 
 | # | Sezione | Archetipo | Cosa fa |
 |---|---|---|---|

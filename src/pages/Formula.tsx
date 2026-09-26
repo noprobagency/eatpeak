@@ -152,7 +152,7 @@ export function Formula() {
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button as="a" href={to('/prodotto')}>Vai al prodotto</Button>
-            <Button variant="ghost" as="a" href={to('/design-system', 'voce')}>Cosa possiamo dire e cosa no</Button>
+            <Button variant="ghost" as="a" href={to('/', 'voce')}>Cosa possiamo dire e cosa no</Button>
           </div>
         </Container>
       </Section>

@@ -242,7 +242,7 @@ export function Product() {
         <Container>
           <nav aria-label="Percorso" className="mb-8">
             <ol className="flex flex-wrap items-center gap-2 text-body-sm text-text-muted">
-              <li><a href={to('/')} className="hover:text-text-brand">peak</a></li>
+              <li><a href={to('/sito')} className="hover:text-text-brand">peak</a></li>
               <li aria-hidden="true">·</li>
               <li aria-current="page" className="text-text-primary">{PRODUCT.descriptor}</li>
             </ol>

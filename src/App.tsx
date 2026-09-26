@@ -1,9 +1,12 @@
 /**
  * Il sito, con il router minimo sull'hash.
  *
- * Volutamente senza react-router: cinque pagine e un `hashchange`. Le rotte
+ * Volutamente senza react-router: nove pagine e un `hashchange`. Le rotte
  * stanno in src/lib/routes.ts; un'ancora dopo il secondo cancelletto
- * (`#/#domande`) scorre alla sezione una volta montata la pagina.
+ * (`#/sito#domande`) scorre alla sezione una volta montata la pagina.
+ *
+ * Dalla 3.3 la radice e' il design system e l'header compare solo sulle
+ * pagine del gruppo `sito`.
  */
 
 import { useEffect, useState } from 'react'
@@ -21,15 +24,15 @@ import { SiteFooter } from './site/SiteFooter'
 import { parseHash, routeSpec, type RoutePath } from './lib/routes'
 
 const PAGES: Record<RoutePath, () => JSX.Element> = {
-  '/': Home,
-  '/prodotto': Product,
-  '/formula': Formula,
-  '/design-system': DesignSystem,
+  '/': DesignSystem,
   '/prototipi': Prototypes,
   '/lab/font': FontLab,
   '/lab/simbolo': SymbolLab,
   '/lab/box': BoxLab,
   '/lab/pack': PackLab,
+  '/sito': Home,
+  '/prodotto': Product,
+  '/formula': Formula,
 }
 
 export function App() {
@@ -57,6 +60,9 @@ export function App() {
   }, [location])
 
   const Page = PAGES[location.path]
+  // L'header e' del sito simulato e basta. Sul design system, sui prototipi e
+  // nei laboratori la navigazione sta tutta in fondo alla pagina.
+  const hasHeader = routeSpec(location.path).group === 'sito'
 
   return (
     <>
@@ -67,9 +73,11 @@ export function App() {
         Salta al contenuto
       </a>
 
-      <SiteHeader current={location.path} />
+      {hasHeader && <SiteHeader current={location.path} />}
 
-      <main id="contenuto">
+      {/* `data-header="0"` spegne il padding che site-header.css mette su
+          #contenuto per la barra fissa: senza header non serve. */}
+      <main id="contenuto" data-header={hasHeader ? '1' : '0'}>
         <Page />
       </main>
 

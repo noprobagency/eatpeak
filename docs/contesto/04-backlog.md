@@ -24,6 +24,7 @@ Stati: `aperto` · `in corso` · `in attesa di <chi/cosa>` · `fatto (versione)`
 |---|---|---|---|
 | HEADER-01 | Rifacimento dell'header | in corso, per conto del proprietario | `SiteHeader.tsx`, `site-header.css`. Claude non tocca |
 | HEADER-02 | Dopo il rifacimento: verificare cosa cambia di riflesso, rigenerare `home.png` e `pdp.png` | aperto | dipende da HEADER-01 |
+| HEADER-04 | Il logo dell'header punta a `to('/')`, che dalla 3.3 è il design system e non più la home del sito: dovrebbe puntare a `to('/sito')` | in attesa del proprietario | una riga in `SiteHeader.tsx`, che Claude non tocca |
 | HEADER-03 | Nell'header 3.1 sono cambiati, su richiesta del proprietario, solo il simbolo (salita) e la striscia annunci (ambra 400, testo cacao). Di riflesso via token: il pulsante "Cerca" del pannello (ambra, cacao). Da decidere: le voci del menu mobile hanno `font-weight: 900`, che con Denim diventa Heavy | in attesa del proprietario | `site-header.css`, `.peak-header__panel-link` |
 
 ## Fotografie e prototipi
@@ -71,7 +72,9 @@ Stati: `aperto` · `in corso` · `in attesa di <chi/cosa>` · `fatto (versione)`
 | DS-02 | Chiudere il font lab dopo BRAND-01: tenere il candidato scelto come default, lasciare gli altri raggiungibili con `?font=` | in attesa di BRAND-01 | — |
 | DS-03 | **Footer a pannello** sulla forma di awenlab.com (D27) | fatto (3.2.0) | `SiteFooter.tsx`; docs 09 e 10 aggiornati |
 | DS-04 | Dove va il wordmark a tutta larghezza con il retino (H3, `<WordmarkHalftone />`), uscito dal footer (D29) | in attesa del proprietario | oggi il componente resta in `src/brand/` e non lo usa nessuno: chiusura pagina altrove, pagina del design system, o si toglie |
-| DS-05 | Contatti, social e pagine di servizio del footer: oggi sono segnaposto (`[numero]`, `ciao@[dominio]`, link in home) | in attesa del proprietario | `SEGNAPOSTO` e i blocchi Contatti/Informative in `SiteFooter.tsx` |
+| DS-05 | Contatti, social e pagine di servizio del footer: oggi sono segnaposto (`[numero]`, `ciao@[dominio]`, link alla radice) | in attesa del proprietario | `SEGNAPOSTO` e i blocchi Contatti/Informative in `SiteFooter.tsx` |
+| DS-06 | **La radice è il design system**, header solo sul sito, footer come indice del progetto (D30–D32) | fatto (3.3.0) | `routes.ts`, `App.tsx`, `globals.css`, `SiteFooter.tsx`, `DesignSystem.tsx` |
+| DS-07 | La colonna "Il sistema" del footer è alta il doppio delle altre: le undici sezioni in una lista sola | aperto | si può spezzare in due colonne o accorciare le etichette |
 
 ## Copy e compliance
 
@@ -91,6 +94,7 @@ Stati: `aperto` · `in corso` · `in attesa di <chi/cosa>` · `fatto (versione)`
 | INFRA-05 | Dominio definitivo e meta per i social | aperto | `index.html` |
 | INFRA-06 | Merge di `v3-ambra` su `main` (porta anche `task/setup-contesto`) | fatto | `origin/main` è a `811242c`: il proprietario l'ha lanciato. Chiude anche INFRA-01 |
 | INFRA-07 | Merge di `task/ds-footer-panel` su `main` | fatto | `588a9fa`, deploy di produzione READY |
+| INFRA-08 | Merge di `task/ds-radice` su `main` | in attesa del proprietario | comando nella risposta |
 
 ## Licenze
 

@@ -12,6 +12,7 @@ rimanda al log di sessione in `sessioni/` e al registro in `CHANGELOG.md`.
 | 2026-09-26 | [Setup del contesto](sessioni/2026-09-26-setup-contesto.md) | 3.0.1 | `CLAUDE.md`, `CHANGELOG.md`, `docs/contesto/`: l'impianto per lavorare task per task con il contesto sempre pronto. Branch `task/setup-contesto`, arrivato su `main` con `v3-ambra` | `a433a77` |
 | 2026-09-26 | [Ambra, quattro punti, salita](sessioni/2026-09-26-v3-ambra.md) | 3.1.0 | Il brand passa all'ambra; il simbolo diventa quattro punti con la salita nell'header; torna il wordmark della v1, bianco o ambra; Denim per tutto il testo. Denim e Rund sono in trial: solo in locale, in produzione i ripieghi. Branch `v3-ambra`; il merge su `main` lo ha lanciato il proprietario | `811242c` |
 | 2026-09-26 | [Il footer a pannello](sessioni/2026-09-26-footer-panel.md) | 3.2.0 | Il footer rifatto sulla forma di awenlab.com: pannello staccato in ambra con i raggi grandi, due colonne, informative e riga legale. Esce il wordmark enorme con il retino. Branch `task/ds-footer-panel`; il merge su `main` lo ha lanciato il proprietario | `588a9fa` |
+| 2026-09-26 | [Piazza pulita: la radice è il design system](sessioni/2026-09-26-ds-radice.md) | 3.3.0 | La home diventa il design system; il sito scende a `#/sito`; l'header resta solo sul sito; il footer diventa l'indice del progetto. Branch `task/ds-radice` | in attesa di merge |
 
 ## Le versioni maggiori, in una riga ciascuna
 
@@ -27,3 +28,6 @@ rimanda al log di sessione in `sessioni/` e al registro in `CHANGELOG.md`.
   sono le licenze.
 - **3.2** — il piede della pagina diventa un pannello staccato, sulla forma
   di awenlab: la prima sezione che non è una fascia a tutta larghezza.
+- **3.3** — piazza pulita: il design system prende la radice, il sito scende
+  di un piano, l'header resta solo dov'è del sito e il footer diventa
+  l'indice di tutto.

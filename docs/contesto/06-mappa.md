@@ -79,7 +79,9 @@ eatpeak/
 
 ## Le rotte
 
-`#/` home · `#/prodotto` · `#/formula` · `#/design-system` · `#/prototipi` ·
-`#/lab/font` · `#/lab/simbolo` · `#/lab/box` · `#/lab/pack`. Le ancore vanno
-dopo un secondo cancelletto (`#/#domande`); i parametri prima dell'hash
-(`/?font=nunito&ref=1#/`).
+`#/` **design system (è la home)** · `#/prototipi` · `#/lab/font` ·
+`#/lab/simbolo` · `#/lab/box` · `#/lab/pack` · `#/sito` home del sito ·
+`#/prodotto` · `#/formula`. Le ancore vanno dopo un secondo cancelletto
+(`#/colore`, `#/sito#domande`); i parametri prima dell'hash
+(`/?font=nunito&ref=1#/`). Solo il gruppo `sito` mostra l'header; tutto il
+resto si naviga dal footer, che è l'indice del progetto.

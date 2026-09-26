@@ -1,5 +1,5 @@
 /**
- * <SiteFooter /> — il piede del sito (H15, archetipo A), forma awenlab.
+ * <SiteFooter /> — il piede di ogni pagina (H15, archetipo A), forma awenlab.
  *
  * Il riferimento e' il piede di awenlab.com: non una fascia a tutta larghezza ma un
  * pannello staccato, con i raggi grandi e un margine di carta attorno, che
@@ -12,6 +12,12 @@
  * e il bianco non reggono; il marchio invece resta bianco, perche' la regola
  * del logo (3.1) e' bianco su ogni fondo colore. Niente nero.
  *
+ * Dalla 3.3 il footer e' anche **l'unico indice del progetto**: l'header sta
+ * solo sulle pagine del sito simulato, e da qui si raggiunge tutto — le undici
+ * sezioni del design system (che e' la home), i prototipi, i quattro
+ * laboratori, il sito. Se una pagina o una sezione non ha il suo link qui,
+ * non la trova nessuno.
+ *
  * I claim autorizzati stanno nello stesso blocco della firma (articolo
  * 10(3)). Contatti e dati d'impresa sono segnaposto in parentesi quadre: il
  * sito e' dimostrativo e non si inventano numeri.
@@ -21,7 +27,7 @@ import type { ReactNode } from 'react'
 import { Grain, Lockup } from '../brand'
 import { authorizedClaimText } from '../lib/compliance'
 import { CLAIMS, PRODUCT } from '../lib/copy'
-import { LAB_NAV, SITE_NAV, STUDIO_NAV, to } from '../lib/routes'
+import { LAB_NAV, SITE_NAV, SYSTEM_NAV, to } from '../lib/routes'
 
 /**
  * Le pagine di servizio e i profili social non esistono nel sito simulato:
@@ -108,7 +114,7 @@ export function SiteFooter() {
       <div className="relative overflow-hidden rounded-2xl bg-bg-brand text-text-on-brand">
         <Grain />
         <div className="relative mx-auto max-w-container px-6 pb-8 pt-16 md:px-12 md:pt-20">
-          <div className="grid gap-12 lg:grid-cols-[1.1fr_1.4fr] lg:gap-16">
+          <div className="grid gap-12 lg:grid-cols-[1fr_2.4fr] lg:gap-16">
             {/* Il marchio: logo, firma, claim, social. */}
             <div>
               <a href={to('/')} aria-label="peak" className="inline-block">
@@ -138,15 +144,36 @@ export function SiteFooter() {
               </ul>
             </div>
 
-            {/* Le liste. */}
-            <div className="grid gap-8 sm:grid-cols-3">
-              <nav aria-label="Il sito">
+            {/* Le liste: da qui si raggiunge ogni pagina e ogni sezione. */}
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              <nav aria-label="Il sistema">
+                <GroupTitle>Il sistema</GroupTitle>
+                <ul className="flex flex-col gap-3">
+                  {SYSTEM_NAV.map((n) => (
+                    <FooterLink key={n.id} href={to('/', n.id)}>{n.label}</FooterLink>
+                  ))}
+                </ul>
+              </nav>
+
+              <nav aria-label="Laboratori e prototipi">
+                <GroupTitle>Laboratori</GroupTitle>
+                <ul className="flex flex-col gap-3">
+                  {LAB_NAV.map((l) => (
+                    <FooterLink key={l.href} href={l.href}>{l.label}</FooterLink>
+                  ))}
+                  <FooterLink href={to('/prototipi')}>Prototipi</FooterLink>
+                  <FooterLink href={to('/prototipi', 'archivio-v1')}>Archivio 1.0</FooterLink>
+                </ul>
+              </nav>
+
+              <nav aria-label="Il sito simulato">
                 <GroupTitle>Il sito</GroupTitle>
                 <ul className="flex flex-col gap-3">
+                  <FooterLink href={to('/sito')}>Home</FooterLink>
                   {SITE_NAV.map((l) => (
                     <FooterLink key={l.href} href={l.href}>{l.label}</FooterLink>
                   ))}
-                  <FooterLink href={to('/', 'garanzia')}>Garanzia</FooterLink>
+                  <FooterLink href={to('/sito', 'garanzia')}>Garanzia</FooterLink>
                 </ul>
               </nav>
 
@@ -159,20 +186,7 @@ export function SiteFooter() {
                 </ul>
               </nav>
 
-              <nav aria-label="Lo studio">
-                <GroupTitle>Lo studio</GroupTitle>
-                <ul className="flex flex-col gap-3">
-                  {STUDIO_NAV.map((l) => (
-                    <FooterLink key={l.href} href={l.href}>{l.label}</FooterLink>
-                  ))}
-                  {LAB_NAV.map((l) => (
-                    <FooterLink key={l.href} href={l.href}>{l.label}</FooterLink>
-                  ))}
-                  <FooterLink href={to('/prototipi', 'archivio-v1')}>Archivio 1.0</FooterLink>
-                </ul>
-              </nav>
-
-              <div className="sm:col-span-3">
+              <div className="sm:col-span-2 lg:col-span-4">
                 <GroupTitle>Contatti</GroupTitle>
                 <ul className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-10">
                   <Contact href={SEGNAPOSTO} icon={<IconChat />}>WhatsApp [numero]</Contact>
