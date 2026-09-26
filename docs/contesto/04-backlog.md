@@ -94,7 +94,7 @@ Stati: `aperto` · `in corso` · `in attesa di <chi/cosa>` · `fatto (versione)`
 | INFRA-05 | Dominio definitivo e meta per i social | aperto | `index.html` |
 | INFRA-06 | Merge di `v3-ambra` su `main` (porta anche `task/setup-contesto`) | fatto | `origin/main` è a `811242c`: il proprietario l'ha lanciato. Chiude anche INFRA-01 |
 | INFRA-07 | Merge di `task/ds-footer-panel` su `main` | fatto | `588a9fa`, deploy di produzione READY |
-| INFRA-08 | Merge di `task/ds-radice` su `main` | in attesa del proprietario | comando nella risposta |
+| INFRA-08 | Merge di `task/ds-radice` su `main` | fatto | `2f25a4c`, deploy di produzione READY |
 
 ## Licenze
 

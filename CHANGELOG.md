@@ -8,6 +8,14 @@ componente nuovo, major per un cambio di sistema. I racconti per fase della
 qui c'è il registro. Ogni commit aggiunge la sua riga qui, nello stesso
 commit.
 
+## [3.3.1] · 2026-09-26 · chiusura dello stato
+
+Branch `task/ds-radice`.
+
+- **docs** · verificato il merge della 3.3.0: `main` è a `2f25a4c` e il
+  deploy di produzione è READY — https://drinkpeak.vercel.app apre sul design
+  system. Stato, storico e backlog chiusi (INFRA-08).
+
 ## [3.3.0] · 2026-09-26 · piazza pulita: la radice è il design system
 
 Branch `task/ds-radice`.

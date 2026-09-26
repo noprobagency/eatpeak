@@ -8,15 +8,15 @@ resta vero. Si aggiorna a ogni commit.
 
 | | |
 |---|---|
-| Versione | **3.3.0** in `package.json` (3.2.0 è quella su `main` e in produzione) |
-| `main` | `588a9fa` "ds: il footer diventa un pannello, sulla forma di awenlab", in produzione su https://drinkpeak.vercel.app (deploy Vercel READY). Il merge l'ha lanciato il proprietario (INFRA-07, chiusa) |
-| Branch aperti | `task/ds-radice`: la radice diventa il design system (3.3.0), da `main`. `task/ds-footer-panel` è mergiato più la chiusura dello stato, che arriva con questo |
-| Branch mergiati | `ds-v2`, `v3-home-pdp`, `task/setup-contesto`, `v3-ambra`, `task/ds-footer-panel`: si possono cancellare, in locale e su origin (INFRA-02) |
+| Versione | **3.3.1** in `package.json` (3.3.0 è quella su `main` e in produzione) |
+| `main` | `2f25a4c` "ds: piazza pulita — la radice è il design system", in produzione su https://drinkpeak.vercel.app (deploy Vercel READY): l'indirizzo apre sul design system. Il merge l'ha lanciato il proprietario (INFRA-08, chiusa) |
+| Branch aperti | `task/ds-radice`: mergiato, resta solo per la chiusura dello stato (3.3.1) |
+| Branch mergiati | `ds-v2`, `v3-home-pdp`, `task/setup-contesto`, `v3-ambra`, `task/ds-footer-panel`, `task/ds-radice`: si possono cancellare, in locale e su origin (INFRA-02) |
 | Header | del proprietario. Non toccato: dalla 3.3 compare solo sulle tre pagine del sito, e il suo logo punta alla radice, che ora è il design system (HEADER-04) |
 | Test | `npm test` verde sul branch |
 | Identità git | `user.email` locale = hello@noprob.agency; i commit precedenti al 26/09 sono di west-marney |
 
-## Cosa c'è, oggi (3.3, sul branch)
+## Cosa c'è, oggi (3.3, su `main` e in produzione)
 
 - **Colore**: il brand è l'**ambra** `#FFAE34` (fondi, sopra solo cacao 900)
   con il profondo **ambra 700** `#A04F06` (punti, simbolo, link, testo brand).
@@ -69,9 +69,8 @@ Il dettaglio è in `03-decisioni.md` (D21–D32), la procedura in
 
 ## In corso e prossimo
 
-- Merge di `task/ds-radice` su `main` (INFRA-08): lo lancia il proprietario.
-  Senza le licenze la produzione mostra i ripieghi (Nunito/Inter/Fraunces,
-  wordmark Gabarito 900), non Denim e Rund.
+- Niente in corso. Senza le licenze la produzione mostra i ripieghi
+  (Nunito/Inter/Fraunces, wordmark Gabarito 900), non Denim e Rund.
 - L'header, per conto del proprietario.
 - Le 13 fotografie con Higgsfield: shot list in `#/prototipi`, brief in
   `src/lib/media.ts`.
