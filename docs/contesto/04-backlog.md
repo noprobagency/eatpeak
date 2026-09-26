@@ -1,0 +1,91 @@
+# 04 — Backlog per area
+
+I task del progetto, per area, con lo stato. Si lavora **un task per volta**,
+su un branch `task/<ambito>-<slug>`. Quando un task si apre o si chiude, si
+aggiorna la riga qui e la voce in `CHANGELOG.md`, nello stesso commit.
+
+Stati: `aperto` · `in corso` · `in attesa di <chi/cosa>` · `fatto (versione)`.
+
+## Brand: le decisioni del proprietario
+
+| Id | Task | Stato | Note |
+|---|---|---|---|
+| BRAND-01 | Scegliere il font tra i sette candidati | in attesa del proprietario | `#/lab/font`, scorecard. Poi: `DEFAULT_FONT_ID`, `npm run assets:generate`, screenshot, docs 02 e 03 |
+| BRAND-02 | Scegliere la variante del simbolo (V1–V6) | in attesa del proprietario | `#/lab/simbolo`. Poi: `SYMBOL_VARIANT`, `npm run assets:generate`, favicon, docs 03 |
+| BRAND-03 | Decidere il fondo del rituale H6 (lime 700 o carta) | in attesa del proprietario | `tone` del `ColorField` in `Home.tsx` |
+| BRAND-04 | Nome autore dei commit (oggi "west-marney") ed eventuale riscrittura degli 8 commit della 3.0 | in attesa del proprietario | Solo su richiesta esplicita: richiede force push |
+
+## Header
+
+| Id | Task | Stato | Note |
+|---|---|---|---|
+| HEADER-01 | Rifacimento dell'header | in corso, per conto del proprietario | `SiteHeader.tsx`, `site-header.css`. Claude non tocca |
+| HEADER-02 | Dopo il rifacimento: verificare cosa cambia di riflesso, rigenerare `home.png` e `pdp.png` | aperto | dipende da HEADER-01 |
+
+## Fotografie e prototipi
+
+| Id | Task | Stato | Note |
+|---|---|---|---|
+| FOTO-01 | Produrre i 13 scatti con Higgsfield e metterli in `public/media/` | aperto | shot list in `#/prototipi`, brief in `src/lib/media.ts`; ids: hero-busta-arancia, hero-busta-lime, gesto-stick, pdp-busta-fronte, pdp-busta-retro, pdp-stick-mano, pdp-bicchiere, duo, ambiente-scrivania, dottoressa, formula-ingredienti, meta-quadrato-arancia, meta-quadrato-lime |
+| FOTO-02 | Illustrazione definitiva della frutta sul pack al posto del placeholder SVG | aperto | brief in `FLAVORS[].fruitBrief`; `pack/Fruit.tsx` |
+| FOTO-03 | I tre video della co-fondatrice (per tema) | aperto | `EXPERT_VIDEOS` in `copy.ts`; oggi segnaposto |
+
+## Pack e laboratorio
+
+| Id | Task | Stato | Note |
+|---|---|---|---|
+| PACK-01 | Fustella di busta e stick dal laboratorio | in attesa del laboratorio | poi `ratio`, `pack.safe`, `pack.sealBand` diventano veri |
+| PACK-02 | Valori di composizione: glicina, vitamina D3 in µg e %VNR, kcal, zuccheri, aromi, peso netto | in attesa del laboratorio | chiudono tabella, retro, `[dal laboratorio]` e decidono i claim sulla vitamina D |
+| PACK-03 | Finitura e prova colore (arancia `#E4572E`, lime `#5E9E1F`) | in attesa del laboratorio | — |
+| PACK-04 | Etichetta di legge del retro con laboratorio e notifica al Ministero | in attesa di PACK-02 | `PackBack` resta l'elenco |
+
+## Home
+
+| Id | Task | Stato | Note |
+|---|---|---|---|
+| HOME-00 | H1–H15 sui reference | fatto (3.0.0) | `docs/09`, `docs/10` |
+| HOME-01 | Fondo del rituale H6 | in attesa di BRAND-03 | — |
+| HOME-02 | Foto al posto dei placeholder (hero, gesto, recensioni, co-fondatrice) | in attesa di FOTO-01 | — |
+| HOME-03 | Revisione su dispositivi reali (iPhone, Android) dopo l'header nuovo | aperto | in emulazione a 375px non c'è overflow |
+
+## PDP
+
+| Id | Task | Stato | Note |
+|---|---|---|---|
+| PDP-00 | P1–P14 sui reference | fatto (3.0.0) | — |
+| PDP-01 | Recensioni vere al posto degli esempi | in attesa di recensioni | togliere `example: true` in `REVIEWS`, il tag sparisce |
+| PDP-02 | Foto della galleria (gesto, co-fondatrice) | in attesa di FOTO-01 | — |
+| PDP-03 | Revisione su dispositivi reali | aperto | — |
+
+## Formula, Design system, Prototipi, Laboratori
+
+| Id | Task | Stato | Note |
+|---|---|---|---|
+| DS-00 | Allineamento alla 3.0 | fatto (3.0.0) | — |
+| DS-01 | Aggiungere `Ritual` e le sezioni A–F ai dettagli tecnici del Design system | aperto | oggi stanno solo in `#/lab/box` |
+| DS-02 | Chiudere il font lab dopo BRAND-01: tenere il candidato scelto come default, lasciare gli altri raggiungibili con `?font=` | in attesa di BRAND-01 | — |
+
+## Copy e compliance
+
+| Id | Task | Stato | Note |
+|---|---|---|---|
+| COPY-01 | Rileggere tutto il copy 3.0 con il proprietario (è una bozza tradotta e adattata dai reference) | aperto | `docs/10`, colonna "Da riscrivere" |
+| COPY-02 | Nota legale della garanzia (condizioni, 90 giorni) da validare | aperto | `GUARANTEE` in `copy.ts` |
+
+## Infrastruttura
+
+| Id | Task | Stato | Note |
+|---|---|---|---|
+| INFRA-01 | Merge di `task/setup-contesto` su `main` | in attesa del proprietario | comando in `07-procedure.md` |
+| INFRA-02 | Cancellare i branch mergiati `ds-v2` e `v3-home-pdp` (locale e origin) | aperto, lo fa il proprietario | `git branch -d`, `git push origin --delete` |
+| INFRA-03 | Tag git `v3.0.0` su `f8378bd` | aperto, lo fa il proprietario | `git tag v3.0.0 f8378bd && git push origin v3.0.0` |
+| INFRA-04 | Carrello vero (Shopify) al posto del toast | aperto, dopo il lancio | i componenti sono pronti a diventare sezioni di un tema |
+| INFRA-05 | Dominio definitivo e meta per i social | aperto | `index.html` |
+
+## Documentazione
+
+| Id | Task | Stato | Note |
+|---|---|---|---|
+| DOCS-00 | Setup del contesto | fatto (3.0.1) | questa cartella |
+| DOCS-01 | `docs/07-claude-design-setup.md` è ancora 2.0 | aperto | aggiornare i testi pronti alla 3.0 |
+| DOCS-02 | `docs/04-components.md`: schede complete per i componenti nuovi della 3.0 | aperto | oggi c'è solo la tabella "Nuovi nella 3.0" |

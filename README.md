@@ -18,6 +18,19 @@ font e il simbolo si scelgono nei laboratori.
 
 ---
 
+## Per lavorare con Claude Code
+
+Il contesto del progetto è nel repo, pronto per ogni sessione:
+
+- [`CLAUDE.md`](CLAUDE.md) — le istruzioni che ogni sessione carica: regole,
+  ciclo di un task, dove sta cosa. Importa da solo lo stato e il memo.
+- [`docs/contesto/`](docs/contesto/00-indice.md) — il contesto vivo: stato,
+  storico, decisioni, backlog per area, memo di progetto, mappa, procedure,
+  log di sessione.
+- [`CHANGELOG.md`](CHANGELOG.md) — una voce per commit, per versione.
+
+---
+
 ## ⚠ Prima di generare qualsiasi contenuto
 
 Il prodotto è un **integratore alimentare venduto nell'Unione Europea**. Sono
@@ -190,6 +203,8 @@ non si committano.
 | 08 | [Packaging](docs/08-packaging.md) | Busta, stick, retro, export, cosa chiedere al laboratorio |
 | 09 | [Il sito](docs/09-sito.md) | Le pagine, gli interruttori, home H1–H15, PDP P1–P14, gli archetipi |
 | 10 | [Riferimenti delle sezioni](docs/10-riferimenti-sezioni.md) | Per ogni sezione il reference, cosa si copia e cosa no |
+| — | [Contesto](docs/contesto/00-indice.md) | Stato, storico, decisioni, backlog, memo, mappa, procedure, sessioni |
+| — | [Changelog](CHANGELOG.md) | Una voce per commit, per versione |
 | — | [Changelog 3.0](docs/CHANGELOG-v3.md) | Home e PDP sui reference, i laboratori, le tre decisioni aperte |
 | — | [Changelog 2.0](docs/CHANGELOG-v2.md) | La 2.0, per fase |
 
